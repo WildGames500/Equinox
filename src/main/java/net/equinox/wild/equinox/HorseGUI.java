@@ -1,7 +1,9 @@
 package net.equinox.wild.equinox;
 
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,21 +11,32 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.FileReader;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static org.bukkit.Bukkit.getServer;
+import static org.bukkit.Bukkit.spigot;
 
 
 public class HorseGUI implements Listener {
-    File breeds = new File("plugins/Equinox/Breeds.yml");
+    private Equinox plugin;
+    public HorseGUI(Equinox equinox) {
+        this.plugin = equinox;
+    }
+
+
 
     @EventHandler
     public void OnInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         Economy eco = Equinox.getEconomy();
+
 
         if (e.getView().getTitle().equals("§0Menu")) {
             e.setCancelled(true);
@@ -89,20 +102,25 @@ public class HorseGUI implements Listener {
             }
         } else if (e.getView().getTitle().equals("§0Horse Creation")) {
             e.setCancelled(true);
-            List brds = Collections.singletonList(breeds.list().equals("Breeds"));
-            if (e.getSlot() == 1) {
+            List bds = plugin.getCustomConfig().getStringList("Breeds");
+            System.out.println(bds);
+            int slot = 0;
+            if (e.getSlot() == 2) {
                 p.closeInventory();
                 
                 Inventory br = getServer().createInventory(null, 27, "§0Breeds");
 
-                ItemStack ref1 = new ItemStack(Material.PAPER);
-                ItemMeta metaref1 = ref1.getItemMeta();
-                ref1.setItemMeta(metaref1);
-                metaref1.setDisplayName(String.valueOf(brds));
-                ref1.setItemMeta(metaref1);
-                br.setItem(1, ref1);
+                for (String brds : plugin.getCustomConfig().getStringList("Breeds")) {
 
-                p.openInventory(br);
+                    ItemStack ref1 = new ItemStack(Material.PAPER);
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ref1.setItemMeta(metaref1);
+                    metaref1.setDisplayName(String.valueOf(brds));
+                    ref1.setItemMeta(metaref1);
+                    br.setItem(slot, ref1);
+                    slot += 1;
+
+                } p.openInventory(br);
             }
         }
     }
