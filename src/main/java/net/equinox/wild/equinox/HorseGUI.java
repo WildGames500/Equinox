@@ -18,7 +18,7 @@ import static org.bukkit.Bukkit.getServer;
 
 
 public class HorseGUI implements Listener {
-    public static HashMap<UUID, String> breedname = new HashMap<>();
+    public static HashMap<UUID, String> breedname = new HashMap<UUID, String>();
     private Equinox plugin;
     public HorseGUI(Equinox equinox) {
         this.plugin = equinox;
@@ -116,7 +116,7 @@ public class HorseGUI implements Listener {
             }
         } else if (e.getView().getTitle().equals("§0Breeds")) {
             e.setCancelled(true);
-            String sln = p.getItemOnCursor().toString();
+            String sln = e.getCurrentItem().getItemMeta().getDisplayName();
             breedname.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
                 p.closeInventory();
