@@ -14,7 +14,9 @@ import java.io.IOException;
 public final class Equinox extends JavaPlugin {
     private static Economy econ = null;
     private File breedsConfigFile;
+    private File discConfigFile;
     private FileConfiguration breedsConfig;
+    private FileConfiguration discConfig;
 
     @Override
     public void onEnable() {
@@ -29,15 +31,28 @@ public final class Equinox extends JavaPlugin {
             return;
         }
     }
-    public FileConfiguration getCustomConfig() {
+    public FileConfiguration getBreedsConfig() {
         return this.breedsConfig;
 
     }
+    public FileConfiguration getDiscConfig() {
+        return this.discConfig;
+    }
     private void createCustomConfig() {
         breedsConfigFile = new File(getDataFolder(), "Breeds.yml");
+        discConfigFile = new File(getDataFolder(), "Disciplines.yml");
         if (!breedsConfigFile.exists()) {
             breedsConfigFile.getParentFile().mkdirs();
             saveResource("Breeds.yml", false);
+        } if (!discConfigFile.exists()) {
+            discConfigFile.getParentFile().mkdirs();
+            saveResource("Disciplines.yml", false);
+        }
+        discConfig = new YamlConfiguration();
+        try{
+            discConfig.load(discConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
         }
         breedsConfig = new YamlConfiguration();
         try {
