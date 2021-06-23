@@ -14,11 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static net.equinox.wild.equinox.Events1.collection;
 import static org.bukkit.Bukkit.getServer;
 
 
 public class HorseGUI implements Listener {
     public static HashMap<UUID, String> breedname = new HashMap<UUID, String>();
+    public static HashMap<UUID, String> gendername = new HashMap<UUID, String>();
     private Equinox plugin;
     public HorseGUI(Equinox equinox) {
         this.plugin = equinox;
@@ -97,7 +99,33 @@ public class HorseGUI implements Listener {
         } else if (e.getView().getTitle().equals("§0Horse Creation")) {
             e.setCancelled(true);
             int slot = 0;
-            if (e.getSlot() == 2) {
+            if (e.getSlot() == 1) {
+                p.closeInventory();
+
+                Inventory gn = getServer().createInventory(null, 9, "§0Genders");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                metaref1.setDisplayName("Mare");
+                metaref2.setDisplayName("Stallion");
+                metaref3.setDisplayName("Gelding");
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                gn.setItem(0, ref1);
+                gn.setItem(1, ref2);
+                gn.setItem(2, ref3);
+
+                p.openInventory(gn);
+            }
+            else if (e.getSlot() == 2) {
                 p.closeInventory();
                 
                 Inventory br = getServer().createInventory(null, 36, "§0Breeds");
@@ -114,9 +142,80 @@ public class HorseGUI implements Listener {
 
                 } p.openInventory(br);
             }
+        } else if (e.getView().getTitle().equals("§0Genders")) {
+            e.setCancelled(true);
+            UUID uuid = p.getUniqueId();
+            String breed = breedname.get(uuid);
+            String sln = e.getCurrentItem().getItemMeta().getDisplayName();
+            gendername.put(p.getUniqueId(), sln);
+            if (e.getSlot() >= 0) {
+                p.closeInventory();
+
+                Inventory hc = getServer().createInventory(null, 27, "§0Horse Creation");
+                ItemStack ref1 = new ItemStack(Material.BOOK);
+                ItemStack ref2 = new ItemStack(Material.BOOK);
+                ItemStack ref3 = new ItemStack(Material.BOOK);
+                ItemStack ref4 = new ItemStack(Material.BOOK);
+                ItemStack ref5 = new ItemStack(Material.BOOK);
+                ItemStack ref6 = new ItemStack(Material.BOOK);
+                ItemStack ref7 = new ItemStack(Material.BOOK);
+                ItemStack ref8 = new ItemStack(Material.YELLOW_TERRACOTTA);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+                ItemMeta metaref5 = ref5.getItemMeta();
+                ItemMeta metaref6 = ref6.getItemMeta();
+                ItemMeta metaref7 = ref7.getItemMeta();
+                ItemMeta metaref8 = ref8.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+                ref6.setItemMeta(metaref6);
+                ref7.setItemMeta(metaref7);
+                ref8.setItemMeta(metaref8);
+                metaref1.setDisplayName(sln);
+                if (breedname.isEmpty()) {
+                    metaref2.setDisplayName("§bBreeds");
+                } else {
+                    metaref2.setDisplayName(breed);
+                }
+                metaref3.setDisplayName("§bCoat Color");
+                metaref4.setDisplayName("§bCoat Pattern");
+                metaref5.setDisplayName("§bDiscipline");
+                metaref6.setDisplayName("§bSpeed");
+                metaref7.setDisplayName("§bJump");
+                metaref8.setDisplayName("§ePurchase");
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+                ref6.setItemMeta(metaref6);
+                ref7.setItemMeta(metaref7);
+                ref8.setItemMeta(metaref8);
+
+                hc.setItem(1, ref1);
+                hc.setItem(2, ref2);
+                hc.setItem(3, ref3);
+                hc.setItem(4, ref4);
+                hc.setItem(5, ref5);
+                hc.setItem(6, ref6);
+                hc.setItem(7, ref7);
+                hc.setItem(25, ref8);
+
+                p.openInventory(hc);
+            }
+
         } else if (e.getView().getTitle().equals("§0Breeds")) {
             e.setCancelled(true);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
+            UUID uuid = p.getUniqueId();
+            String gender = gendername.get(uuid);
             breedname.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
                 p.closeInventory();
@@ -148,7 +247,11 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                metaref1.setDisplayName("§bGender");
+                if (gendername.isEmpty()) {
+                    metaref1.setDisplayName("§bGender");
+                } else {
+                    metaref1.setDisplayName(gender);
+                }
                 metaref2.setDisplayName(sln);
                 metaref3.setDisplayName("§bCoat Color");
                 metaref4.setDisplayName("§bCoat Pattern");
