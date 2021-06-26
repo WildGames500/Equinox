@@ -15,7 +15,7 @@ import java.util.UUID;
 
 // Storage Of Selected Horse
 public class Events1 implements Listener {
-    public static HashMap<UUID, UUID> collection = new HashMap<>();
+    public static HashMap<UUID, UUID> collection = new HashMap<UUID, UUID>();
 
 // Damage Select Horse
     @EventHandler
