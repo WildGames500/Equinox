@@ -1,11 +1,14 @@
 package net.equinox.wild.equinox;
 
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -48,6 +51,12 @@ public class Events1 implements Listener {
                 }
             }
         }
-        e.setCancelled(true);
+
+    }
+    @EventHandler
+    public void AllDamage(EntityDamageEvent d) {
+        if (d.getEntityType() == EntityType.HORSE) {
+            d.setCancelled(true);
+        }
     }
 }
