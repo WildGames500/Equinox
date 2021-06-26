@@ -47,7 +47,7 @@ public class Events1 implements Listener {
                     }
                 }
             }
-            e.setCancelled(true);
         }
+        e.setCancelled(true);
     }
 }

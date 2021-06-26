@@ -4,6 +4,7 @@ import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
+import java.util.Random;
 import java.util.UUID;
 
 import static org.bukkit.Bukkit.getServer;
@@ -107,39 +109,36 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                if (gendername.isEmpty()) {
-                    metaref1.setDisplayName("§bGender");
+                if (!gendername.isEmpty()) {
+                    metaref1.setDisplayName(gender);
                 } else {
-                    metaref2.setDisplayName(gender);
-                }
-                if (breedname.isEmpty()) {
-                    metaref2.setDisplayName("§bBreed");
-                } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
-                }
-                if (coatcolor.isEmpty()) {
-                    metaref3.setDisplayName("§bCoat Color");
                 } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
-                }
-                if (coatstyle.isEmpty()) {
-                    metaref4.setDisplayName("§bCoat Pattern");
                 } else {
+                    metaref3.setDisplayName("§bCoat Color");
+                }
+                if (!coatstyle.isEmpty()) {
                     metaref4.setDisplayName(coats);
-                }
-                if (speeds.isEmpty()) {
-                    metaref6.setDisplayName("§bSpeed");
                 } else {
+                    metaref4.setDisplayName("§bCoat Pattern");
+                }
+                if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
-                }
-                if (jumpheight.isEmpty()) {
-                    metaref7.setDisplayName("§bJump");
                 } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
-                }
-                if (jumpheight.isEmpty()) {
-                    metaref8.setDisplayName("§ePurchase");
                 } else {
+                    metaref7.setDisplayName("§bJump");
+                }
+                if (!jumpheight.isEmpty())  {
                     if (speed.equals("Tier 1")) {
                         if (jump.equals("1ft")) {
                             purchase.put(p.getUniqueId(), buy11);
@@ -242,7 +241,12 @@ public class HorseGUI implements Listener {
                             purchase.put(p.getUniqueId(), buy65);
                             metaref8.setDisplayName(String.valueOf(buy65));
                         }
+                    } else {
+                        purchase.put(p.getUniqueId(), 0);
+                        metaref8.setDisplayName(String.valueOf(0));
                     }
+                } else {
+                    metaref8.setDisplayName("§ePurchase");
                 }
                 ref1.setItemMeta(metaref1);
                 ref2.setItemMeta(metaref2);
@@ -485,38 +489,113 @@ public class HorseGUI implements Listener {
                 Location loc = p.getLocation();
                 World world = p.getWorld();
                 UUID uuid = p.getUniqueId();
+                String gender = gendername.get(uuid);
                 String breed = breedname.get(uuid);
                 String coat = coatcolor.get(uuid);
                 String coats = coatstyle.get(uuid);
                 String speed = speeds.get(uuid);
                 String jump = jumpheight.get(uuid);
+                Random r = new Random();
+                double t7 = 0.65 + (0.75 - 0.65) * r.nextDouble();
+                double t6 = 0.55 + (0.65 - 0.55) * r.nextDouble();
+                double t5 = 0.45 + (0.55 - 0.45) * r.nextDouble();
+                double t4 = 0.35 + (0.45 - 0.35) * r.nextDouble();
+                double t3 = 0.25 + (0.35 - 0.25) * r.nextDouble();
+                double t2 = 0.15 + (0.25 - 0.15) * r.nextDouble();
+                double t1 = 0.009 + (0.15 - 0.009) * r.nextDouble();
                 Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                h.setTamed(true);
+                h.addScoreboardTag("Owner:" + uuid);
+                h.addScoreboardTag("Owned");
+                h.addScoreboardTag("Hunger:10");
+                h.addScoreboardTag("Thirst:10");
+                h.addScoreboardTag("Private");
+                if (!breedname.isEmpty()){
+                    h.addScoreboardTag("Breed:" + breed);
+                }
+                if (!gendername.isEmpty()){
+                    h.addScoreboardTag("Gender:" + gender);
+                }
                 if (coat.equals("Black")) {
                     h.setColor(Horse.Color.BLACK);
+                    h.addScoreboardTag("Color:Black");
                 } else if (coat.equals("Chestnut")) {
+                    h.addScoreboardTag("Color:Chestnut");
                     h.setColor(Horse.Color.CHESTNUT);
                 } else if (coat.equals("Bay")) {
+                    h.addScoreboardTag("Color:Bay");
                     h.setColor(Horse.Color.DARK_BROWN);
                 } else if (coat.equals("Brown")) {
+                    h.addScoreboardTag("Color:Brown");
                     h.setColor(Horse.Color.BROWN);
                 } else if (coat.equals("White")) {
+                    h.addScoreboardTag("Color:White");
                     h.setColor(Horse.Color.WHITE);
                 } else if (coat.equals("Palomino")) {
+                    h.addScoreboardTag("Color:Palomino");
                     h.setColor(Horse.Color.CREAMY);
                 } else if (coat.equals("Silver")) {
+                    h.addScoreboardTag("Color:Silver");
                     h.setColor(Horse.Color.GRAY);
                 }
                 if (coats.equals("Blaze")) {
+                    h.addScoreboardTag("Style:Blaze");
                     h.setStyle(Horse.Style.WHITE);
                 } else if (coats.equals("Paint")) {
+                    h.addScoreboardTag("Style:Paint");
                     h.setStyle(Horse.Style.WHITEFIELD);
                 } else if (coats.equals("Star")) {
+                    h.addScoreboardTag("Style:Star");
                     h.setStyle(Horse.Style.WHITE_DOTS);
                 } else if (coats.equals("Crescent")) {
+                    h.addScoreboardTag("Style:Crescent");
                     h.setStyle(Horse.Style.BLACK_DOTS);
                 } else if (coats.equals("None")) {
+                    h.addScoreboardTag("Style:None");
                     h.setStyle(Horse.Style.NONE);
                 }
+                if (speed.equals("Tier 7")) {
+                    h.addScoreboardTag("Speed:T7");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                } else if (speed.equals("Tier 6")) {
+                    h.addScoreboardTag("Speed:T6");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                } else if (speed.equals("Tier 5")) {
+                    h.addScoreboardTag("Speed:T5");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                } else if (speed.equals("Tier 4")) {
+                    h.addScoreboardTag("Speed:T4");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                } else if (speed.equals("Tier 3")) {
+                    h.addScoreboardTag("Speed:T3");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                } else if (speed.equals("Tier 2")) {
+                    h.addScoreboardTag("Speed:T2");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                } else if (speed.equals("Tier 1")) {
+                    h.addScoreboardTag("Speed:T1");
+                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                }
+                if (jump.equals("1ft")) {
+                    h.addScoreboardTag("1ft");
+                    h.setJumpStrength(.517);
+                } else if (jump.equals("2ft")) {
+                    h.addScoreboardTag("2ft");
+                    h.setJumpStrength(.617);
+                } else if (jump.equals("3ft")) {
+                    h.addScoreboardTag("3ft");
+                    h.setJumpStrength(.717);
+                } else if (jump.equals("4ft")) {
+                    h.addScoreboardTag("4ft");
+                    h.setJumpStrength(.817);
+                } else if (jump.equals("5ft")) {
+                    h.addScoreboardTag("5ft");
+                    h.setJumpStrength(.917);
+                } else if (jump.equals("6ft")) {
+                    h.addScoreboardTag("6ft");
+                    h.setJumpStrength(1.017);
+                }
+
             }
         } else if (e.getView().getTitle().equals("§0Genders")) {
             e.setCancelled(true);
@@ -526,6 +605,7 @@ public class HorseGUI implements Listener {
             String coats = coatstyle.get(uuid);
             String speed = speeds.get(uuid);
             String jump = jumpheight.get(uuid);
+            String gender = gendername.get(uuid);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
             gendername.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
@@ -556,30 +636,34 @@ public class HorseGUI implements Listener {
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
                 metaref1.setDisplayName(sln);
-                if (breedname.isEmpty()) {
-                    metaref2.setDisplayName("§bBreeds");
+                if (!gendername.isEmpty()) {
+                    metaref1.setDisplayName(gender);
                 } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
-                }
-                if (coatcolor.isEmpty()) {
-                    metaref3.setDisplayName("§bCoat Color");
                 } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
+                } else {
+                    metaref3.setDisplayName("§bCoat Color");
                 }
-                if (coatstyle.isEmpty()) {
+                if (!coatstyle.isEmpty()) {
+                    metaref4.setDisplayName(coats);
+                } else {
                     metaref4.setDisplayName("§bCoat Pattern");
-                } else {
-                    metaref4.setDisplayName(coats);;
                 }
-                if (speeds.isEmpty()) {
-                    metaref6.setDisplayName("§bSpeed");
-                } else {
+                if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
-                }
-                if (jumpheight.isEmpty()) {
-                    metaref7.setDisplayName("§bJump");
                 } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
+                } else {
+                    metaref7.setDisplayName("§bJump");
                 }
                 metaref8.setDisplayName("§ePurchase");
                 ref1.setItemMeta(metaref1);
@@ -610,6 +694,7 @@ public class HorseGUI implements Listener {
             String coats = coatstyle.get(uuid);
             String speed = speeds.get(uuid);
             String jump = jumpheight.get(uuid);
+            String breed = breedname.get(uuid);
             breedname.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
                 p.closeInventory();
@@ -638,31 +723,34 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                if (gendername.isEmpty()) {
-                    metaref1.setDisplayName("§bGender");
-                } else {
+                if (!gendername.isEmpty()) {
                     metaref1.setDisplayName(gender);
-                }
-                metaref2.setDisplayName(sln);
-                if (coatcolor.isEmpty()) {
-                    metaref3.setDisplayName("§bCoat Color");
                 } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
+                    metaref2.setDisplayName(breed);
+                } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
-                }
-                if (coatstyle.isEmpty()) {
-                    metaref4.setDisplayName("§bCoat Pattern");
                 } else {
+                    metaref3.setDisplayName("§bCoat Color");
+                }
+                if (!coatstyle.isEmpty()) {
                     metaref4.setDisplayName(coats);
-                }
-                if (speeds.isEmpty()) {
-                    metaref6.setDisplayName("§bSpeed");
                 } else {
+                    metaref4.setDisplayName("§bCoat Pattern");
+                }
+                if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
-                }
-                if (jumpheight.isEmpty()) {
-                    metaref7.setDisplayName("§bJump");
                 } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
+                } else {
+                    metaref7.setDisplayName("§bJump");
                 }
                 metaref8.setDisplayName("§ePurchase");
                 ref1.setItemMeta(metaref1);
@@ -692,6 +780,7 @@ public class HorseGUI implements Listener {
             String coats = coatstyle.get(uuid);
             String speed = speeds.get(uuid);
             String jump = jumpheight.get(uuid);
+            String coat = coatcolor.get(uuid);
             coatcolor.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
                 p.closeInventory();
@@ -720,31 +809,34 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                if (gendername.isEmpty()) {
-                    metaref1.setDisplayName("§bGender");
-                } else {
+                if (!gendername.isEmpty()) {
                     metaref1.setDisplayName(gender);
-                }
-                if (breedname.isEmpty()) {
-                    metaref2.setDisplayName("§bBreed");
                 } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
-                }
-                metaref3.setDisplayName(sln);
-                if (coatstyle.isEmpty()) {
-                    metaref4.setDisplayName("§bCoat Pattern");
                 } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
+                    metaref3.setDisplayName(coat);
+                } else {
+                    metaref3.setDisplayName("§bCoat Color");
+                }
+                if (!coatstyle.isEmpty()) {
                     metaref4.setDisplayName(coats);
-                }
-                if (speeds.isEmpty()) {
-                    metaref6.setDisplayName("§bSpeed");
                 } else {
+                    metaref4.setDisplayName("§bCoat Pattern");
+                }
+                if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
-                }
-                if (jumpheight.isEmpty()) {
-                    metaref7.setDisplayName("§bJump");
                 } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
+                } else {
+                    metaref7.setDisplayName("§bJump");
                 }
                 metaref8.setDisplayName("§ePurchase");
                 ref1.setItemMeta(metaref1);
@@ -776,6 +868,7 @@ public class HorseGUI implements Listener {
             String coat = coatcolor.get(uuid);
             String speed = speeds.get(uuid);
             String jump = jumpheight.get(uuid);
+            String coats = coatstyle.get(uuid);
             coatstyle.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
                 p.closeInventory();
@@ -804,31 +897,34 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                if (gendername.isEmpty()) {
-                    metaref1.setDisplayName("§bGender");
-                } else {
+                if (!gendername.isEmpty()) {
                     metaref1.setDisplayName(gender);
-                }
-                if (breedname.isEmpty()) {
-                    metaref2.setDisplayName("§bBreed");
                 } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
-                }
-                if (coatcolor.isEmpty()) {
-                    metaref3.setDisplayName("§bCoat Color");
                 } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
-                }
-                metaref4.setDisplayName(sln);
-                if (speeds.isEmpty()) {
-                    metaref6.setDisplayName("§bSpeed");
                 } else {
+                    metaref3.setDisplayName("§bCoat Color");
+                }
+                if (!coatstyle.isEmpty()) {
+                    metaref4.setDisplayName(coats);
+                } else {
+                    metaref4.setDisplayName("§bCoat Pattern");
+                }
+                if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
-                }
-                if (jumpheight.isEmpty()) {
-                    metaref7.setDisplayName("§bJump");
                 } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
+                } else {
+                    metaref7.setDisplayName("§bJump");
                 }
                 metaref8.setDisplayName("§ePurchase");
                 ref1.setItemMeta(metaref1);
@@ -859,6 +955,7 @@ public class HorseGUI implements Listener {
             String coat = coatcolor.get(uuid);
             String coats = coatstyle.get(uuid);
             String jump = jumpheight.get(uuid);
+            String speed = speeds.get(uuid);
             speeds.put(p.getUniqueId(), sln);
             if (e.getSlot() >= 0) {
                 Inventory hc = getServer().createInventory(null, 27, "§0Horse Creation");
@@ -885,31 +982,34 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                if (gendername.isEmpty()) {
-                    metaref1.setDisplayName("§bGender");
-                } else {
+                if (!gendername.isEmpty()) {
                     metaref1.setDisplayName(gender);
-                }
-                if (breedname.isEmpty()) {
-                    metaref2.setDisplayName("§bBreed");
                 } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
-                }
-                if (coatcolor.isEmpty()) {
-                    metaref3.setDisplayName("§bCoat Color");
                 } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
-                }
-                if (coatstyle.isEmpty()) {
-                    metaref4.setDisplayName("§bCoat Pattern");
                 } else {
+                    metaref3.setDisplayName("§bCoat Color");
+                }
+                if (!coatstyle.isEmpty()) {
                     metaref4.setDisplayName(coats);
-                }
-                metaref6.setDisplayName(sln);
-                if (jumpheight.isEmpty()) {
-                    metaref7.setDisplayName("§bJump");
                 } else {
+                    metaref4.setDisplayName("§bCoat Pattern");
+                }
+                if (!speeds.isEmpty()) {
+                    metaref6.setDisplayName(speed);
+                } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
+                } else {
+                    metaref7.setDisplayName("§bJump");
                 }
                 metaref8.setDisplayName("§ePurchase");
                 ref1.setItemMeta(metaref1);
@@ -940,6 +1040,7 @@ public class HorseGUI implements Listener {
             String coat = coatcolor.get(uuid);
             String coats = coatstyle.get(uuid);
             String speed = speeds.get(uuid);
+            String jump = jumpheight.get(uuid);
             int buy11 = 2200;
             int buy12 = 2400;
             int buy13 = 2800;
@@ -996,31 +1097,34 @@ public class HorseGUI implements Listener {
                 ref6.setItemMeta(metaref6);
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
-                if (gendername.isEmpty()) {
-                    metaref1.setDisplayName("§bGender");
-                } else {
+                if (!gendername.isEmpty()) {
                     metaref1.setDisplayName(gender);
-                }
-                if (breedname.isEmpty()) {
-                    metaref2.setDisplayName("§bBreed");
                 } else {
+                    metaref2.setDisplayName("§bGender");
+                }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
-                }
-                if (coatcolor.isEmpty()) {
-                    metaref3.setDisplayName("§bCoat Color");
                 } else {
+                    metaref2.setDisplayName("§bBreeds");
+                }
+                if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
-                }
-                if (coatstyle.isEmpty()) {
-                    metaref4.setDisplayName("§bCoat Pattern");
                 } else {
+                    metaref3.setDisplayName("§bCoat Color");
+                }
+                if (!coatstyle.isEmpty()) {
                     metaref4.setDisplayName(coats);
-                }
-                metaref7.setDisplayName(sln);
-                if (jumpheight.isEmpty()) {
-                    metaref6.setDisplayName("§bSpeed");
                 } else {
+                    metaref4.setDisplayName("§bCoat Pattern");
+                }
+                if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
+                } else {
+                    metaref6.setDisplayName("§bSpeed");
+                }
+                if (!jumpheight.isEmpty()) {
+                    metaref7.setDisplayName(jump);
+                } else {
+                    metaref7.setDisplayName("§bJump");
                 }
                 if (speed.equals("Tier 1")) {
                     if (sln.equals("1ft")) {
