@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 
 import java.io.File;
@@ -94,7 +95,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 24000, 24000);
+        }.runTaskTimer(plugin, 0, 24000);
     }
     //Loop Thirst
     public void thirstLoop(Plugin plugin) {
@@ -150,61 +151,68 @@ public final class Equinox extends JavaPlugin {
             public void run() {
                 World world = getServer().getWorld("world");
                 for (Entity e : world.getEntities()) {
-                    Random rnd = new Random();
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
-                        int radius = 7;
-                        for (int x = -radius; x < radius; x++) {
-                            for (int y = -radius; y < radius; y++) {
-                                for (int z = -radius; z < radius; z++) {
+                        int radius = 1;
+                        for (int x = -radius; x <= radius; x++) {
+                            for (int y = -radius; y <= radius; y++) {
+                                for (int z = -radius; z <= radius; z++) {
                                     Block block = world.getBlockAt(loc.getBlockX()+x, loc.getBlockY()+y, loc.getBlockZ()+z);
-                                    if (block.getType() == Material.HAY_BLOCK) {
-                                        Location loc2 = block.getLocation();
+                                    Location loc2 = block.getLocation();
+                                    Material bt = block.getType();
+                                    if (bt == Material.HAY_BLOCK) {
                                         ((Horse) e).getPathfinder().findPath(loc2);
-                                        try {
-                                            wait(4);
-                                        } catch (InterruptedException interruptedException) {
-                                            interruptedException.printStackTrace();
-                                        }
                                         block.setType(Material.AIR);
                                         if (e.getScoreboardTags().contains("Hunger:9")) {
                                             e.removeScoreboardTag("Hunger:9");
                                             e.addScoreboardTag("Hunger:10");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:8")) {
                                             e.removeScoreboardTag("Hunger:8");
                                             e.addScoreboardTag("Hunger:9");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:7")) {
                                             e.removeScoreboardTag("Hunger:7");
                                             e.addScoreboardTag("Hunger:8");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:6")) {
                                             e.removeScoreboardTag("Hunger:6");
                                             e.addScoreboardTag("Hunger:7");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:5")) {
                                             e.removeScoreboardTag("Hunger:5");
                                             e.addScoreboardTag("Hunger:6");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:4")) {
                                             e.removeScoreboardTag("Hunger:4");
                                             e.addScoreboardTag("Hunger:5");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:3")) {
                                             e.removeScoreboardTag("Hunger:3");
                                             e.addScoreboardTag("Hunger:4");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:2")) {
                                             e.removeScoreboardTag("Hunger:2");
                                             e.addScoreboardTag("Hunger:1");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:1")) {
                                             e.removeScoreboardTag("Hunger:1");
                                             e.addScoreboardTag("Hunger:2");
+                                            return;
                                         } else if (e.getScoreboardTags().contains("Hunger:0")) {
                                             e.removeScoreboardTag("Hunger:0");
                                             e.addScoreboardTag("Hunger:1");
                                             if (e.getScoreboardTags().contains("DayH-1")) {
                                                 e.removeScoreboardTag("DayH-1");
+                                                return;
                                             }
                                             if (e.getScoreboardTags().contains("DayH-2")) {
                                                 e.removeScoreboardTag("DayH-2");
+                                                return;
                                             }
                                             if (e.getScoreboardTags().contains("DayH-3")) {
                                                 e.removeScoreboardTag("DayH-3");
+                                                return;
                                             }
                                         }
                                     }
@@ -217,7 +225,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 24000, 24000);
+        }.runTaskTimer(plugin, 1200, 1200);
     }
 
 
