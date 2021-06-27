@@ -1,7 +1,10 @@
 package net.equinox.wild.equinox;
 
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,7 +31,9 @@ public final class Equinox extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        testLoop(this);
+        hungerLoop(this);
+        thirstLoop(this);
+        eatLoop(this);
         createCustomConfig();
         getServer().getPluginManager().registerEvents(new Events1(), this);
         getServer().getPluginManager().registerEvents(new HorseGUI(this), this);
@@ -43,8 +48,8 @@ public final class Equinox extends JavaPlugin {
 
 
 
-    //Loop Test
-    public void testLoop(Plugin plugin) {
+    //Loop Hunger
+    public void hungerLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
                 World world = getServer().getWorld("world");
@@ -52,7 +57,7 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if(i <= 65) {
+                        if(i <= 55) {
                             if (e.getScoreboardTags().contains("Hunger:10")) {
                                 e.removeScoreboardTag("Hunger:10");
                                 e.addScoreboardTag("Hunger:9");
@@ -89,7 +94,130 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0, 24000);
+        }.runTaskTimer(plugin, 24000, 24000);
+    }
+    //Loop Thirst
+    public void thirstLoop(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    Random rnd = new Random();
+                    int i = rnd.nextInt(100);
+                    if (e instanceof Horse) {
+                        if(i <= 35) {
+                            if (e.getScoreboardTags().contains("Thirst:10")) {
+                                e.removeScoreboardTag("Thirst:10");
+                                e.addScoreboardTag("Thirst:9");
+                            } else if (e.getScoreboardTags().contains("Thirst:9")) {
+                                e.removeScoreboardTag("Thirst:9");
+                                e.addScoreboardTag("Thirst:8");
+                            } else if (e.getScoreboardTags().contains("Thirst:8")) {
+                                e.removeScoreboardTag("Thirst:8");
+                                e.addScoreboardTag("Thirst:7");
+                            } else if (e.getScoreboardTags().contains("Thirst:7")) {
+                                e.removeScoreboardTag("Thirst:7");
+                                e.addScoreboardTag("Thirst:6");
+                            } else if (e.getScoreboardTags().contains("Thirst:6")) {
+                                e.removeScoreboardTag("Thirst:6");
+                                e.addScoreboardTag("Thirst:5");
+                            } else if (e.getScoreboardTags().contains("Thirst:5")) {
+                                e.removeScoreboardTag("Thirst:5");
+                                e.addScoreboardTag("Thirst:4");
+                            } else if (e.getScoreboardTags().contains("Thirst:4")) {
+                                e.removeScoreboardTag("Thirst:4");
+                                e.addScoreboardTag("Thirst:3");
+                            } else if (e.getScoreboardTags().contains("Thirst:3")) {
+                                e.removeScoreboardTag("Thirst:3");
+                                e.addScoreboardTag("Thirst:2");
+                            } else if (e.getScoreboardTags().contains("Thirst:2")) {
+                                e.removeScoreboardTag("Thirst:2");
+                                e.addScoreboardTag("Thirst:1");
+                            } else if (e.getScoreboardTags().contains("Thirst:1")) {
+                                e.removeScoreboardTag("Thirst:1");
+                                e.addScoreboardTag("Thirst:0");
+                            }
+                        }
+
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 24000, 24000);
+    }
+    //Loop EatHay
+    public void eatLoop(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    Random rnd = new Random();
+                    if (e instanceof Horse) {
+                        Location loc = e.getLocation();
+                        int radius = 7;
+                        for (int x = -radius; x < radius; x++) {
+                            for (int y = -radius; y < radius; y++) {
+                                for (int z = -radius; z < radius; z++) {
+                                    Block block = world.getBlockAt(loc.getBlockX()+x, loc.getBlockY()+y, loc.getBlockZ()+z);
+                                    if (block.getType() == Material.HAY_BLOCK) {
+                                        Location loc2 = block.getLocation();
+                                        ((Horse) e).getPathfinder().findPath(loc2);
+                                        try {
+                                            wait(4);
+                                        } catch (InterruptedException interruptedException) {
+                                            interruptedException.printStackTrace();
+                                        }
+                                        block.setType(Material.AIR);
+                                        if (e.getScoreboardTags().contains("Hunger:9")) {
+                                            e.removeScoreboardTag("Hunger:9");
+                                            e.addScoreboardTag("Hunger:10");
+                                        } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                            e.removeScoreboardTag("Hunger:8");
+                                            e.addScoreboardTag("Hunger:9");
+                                        } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                            e.removeScoreboardTag("Hunger:7");
+                                            e.addScoreboardTag("Hunger:8");
+                                        } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                            e.removeScoreboardTag("Hunger:6");
+                                            e.addScoreboardTag("Hunger:7");
+                                        } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                            e.removeScoreboardTag("Hunger:5");
+                                            e.addScoreboardTag("Hunger:6");
+                                        } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                            e.removeScoreboardTag("Hunger:4");
+                                            e.addScoreboardTag("Hunger:5");
+                                        } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                            e.removeScoreboardTag("Hunger:3");
+                                            e.addScoreboardTag("Hunger:4");
+                                        } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                            e.removeScoreboardTag("Hunger:2");
+                                            e.addScoreboardTag("Hunger:1");
+                                        } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                            e.removeScoreboardTag("Hunger:1");
+                                            e.addScoreboardTag("Hunger:2");
+                                        } else if (e.getScoreboardTags().contains("Hunger:0")) {
+                                            e.removeScoreboardTag("Hunger:0");
+                                            e.addScoreboardTag("Hunger:1");
+                                            if (e.getScoreboardTags().contains("DayH-1")) {
+                                                e.removeScoreboardTag("DayH-1");
+                                            }
+                                            if (e.getScoreboardTags().contains("DayH-2")) {
+                                                e.removeScoreboardTag("DayH-2");
+                                            }
+                                            if (e.getScoreboardTags().contains("DayH-3")) {
+                                                e.removeScoreboardTag("DayH-3");
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
+
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 24000, 24000);
     }
 
 
