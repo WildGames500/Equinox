@@ -1,23 +1,23 @@
 package net.equinox.wild.equinox;
 
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
 
+
 // Storage Of Selected Horse
 public class Events1 implements Listener {
     public static HashMap<UUID, UUID> collection = new HashMap<UUID, UUID>();
 
-// Damage Select Horse
+
+    // Damage Select Horse
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
 
@@ -58,5 +58,6 @@ public class Events1 implements Listener {
         if (d.getEntityType() == EntityType.HORSE) {
             d.setCancelled(true);
         }
+
     }
 }

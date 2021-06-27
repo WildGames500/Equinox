@@ -20,7 +20,6 @@ import java.util.*;
 
 public class Commands implements CommandExecutor {
     private final Equinox plugin;
-    public static HashMap<Player, UUID> offlineuuid = new HashMap<Player, UUID>();
 
 
     public Commands(Equinox plugin) {
@@ -276,6 +275,36 @@ public class Commands implements CommandExecutor {
                             }
                             if (e.getScoreboardTags().contains("Hunger:10")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:9")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++++" + ChatColor.RED + "-" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:8")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++" + ChatColor.RED + "--" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:7")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++" + ChatColor.RED + "---" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:6")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++" + ChatColor.RED + "----" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:5")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++" + ChatColor.RED + "-----" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:4")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++" + ChatColor.RED + "------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:3")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++" + ChatColor.RED + "-------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++" + ChatColor.RED + "--------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Hunger:0")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
                             }
                             if (e.getScoreboardTags().contains("Thirst:10")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]" );
