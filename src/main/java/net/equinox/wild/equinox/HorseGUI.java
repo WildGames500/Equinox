@@ -17,9 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
@@ -519,7 +517,14 @@ public class HorseGUI implements Listener {
                         h.addScoreboardTag("Thirst:10");
                         h.addScoreboardTag("Private");
                         h.addScoreboardTag("Level:0");
-                        h.addScoreboardTag("XP:0");
+                        h.addScoreboardTag("XP:1");
+                        for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
+                            List tr = Arrays.asList(trts);
+                            Random rn = new Random();
+                            String rnt = (String) tr.get(rn.nextInt(tr.size()));
+                            h.addScoreboardTag("Trait:" + rnt);
+                            break;
+                        }
                         if (!breedname.isEmpty()) {
                             h.addScoreboardTag("Breed:" + breed);
                         }
@@ -651,11 +656,7 @@ public class HorseGUI implements Listener {
                 ref7.setItemMeta(metaref7);
                 ref8.setItemMeta(metaref8);
                 metaref1.setDisplayName(sln);
-                if (!gendername.isEmpty()) {
-                    metaref1.setDisplayName(gender);
-                } else {
-                    metaref2.setDisplayName("§bGender");
-                }if (!breedname.isEmpty()) {
+                if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
                 } else {
                     metaref2.setDisplayName("§bBreeds");
@@ -742,11 +743,8 @@ public class HorseGUI implements Listener {
                     metaref1.setDisplayName(gender);
                 } else {
                     metaref2.setDisplayName("§bGender");
-                }if (!breedname.isEmpty()) {
-                    metaref2.setDisplayName(breed);
-                } else {
-                    metaref2.setDisplayName("§bBreeds");
                 }
+                metaref2.setDisplayName(sln);
                 if (!coatcolor.isEmpty()) {
                     metaref3.setDisplayName(coat);
                 } else {
@@ -833,11 +831,7 @@ public class HorseGUI implements Listener {
                 } else {
                     metaref2.setDisplayName("§bBreeds");
                 }
-                if (!coatcolor.isEmpty()) {
-                    metaref3.setDisplayName(coat);
-                } else {
-                    metaref3.setDisplayName("§bCoat Color");
-                }
+                metaref3.setDisplayName(sln);
                 if (!coatstyle.isEmpty()) {
                     metaref4.setDisplayName(coats);
                 } else {
@@ -926,11 +920,7 @@ public class HorseGUI implements Listener {
                 } else {
                     metaref3.setDisplayName("§bCoat Color");
                 }
-                if (!coatstyle.isEmpty()) {
-                    metaref4.setDisplayName(coats);
-                } else {
-                    metaref4.setDisplayName("§bCoat Pattern");
-                }
+                metaref4.setDisplayName(sln);
                 if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
                 } else {
@@ -1016,11 +1006,7 @@ public class HorseGUI implements Listener {
                 } else {
                     metaref4.setDisplayName("§bCoat Pattern");
                 }
-                if (!speeds.isEmpty()) {
-                    metaref6.setDisplayName(speed);
-                } else {
-                    metaref6.setDisplayName("§bSpeed");
-                }
+                metaref6.setDisplayName(sln);
                 if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
                 } else {
@@ -1131,11 +1117,7 @@ public class HorseGUI implements Listener {
                 } else {
                     metaref4.setDisplayName("§bCoat Pattern");
                 }
-                if (!speeds.isEmpty()) {
-                    metaref6.setDisplayName(speed);
-                } else {
-                    metaref6.setDisplayName("§bSpeed");
-                }
+                metaref6.setDisplayName(sln);
                 if (!jumpheight.isEmpty()) {
                     metaref7.setDisplayName(jump);
                 } else {

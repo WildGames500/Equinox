@@ -1,6 +1,6 @@
 package net.equinox.wild.equinox;
 
-import org.bukkit.ChatColor;
+import org.bukkit.ChatColor;;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -58,6 +58,5 @@ public class Events1 implements Listener {
         if (d.getEntityType() == EntityType.HORSE) {
             d.setCancelled(true);
         }
-
     }
 }

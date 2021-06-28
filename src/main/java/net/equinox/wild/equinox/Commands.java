@@ -225,6 +225,85 @@ public class Commands implements CommandExecutor {
                                     player.sendMessage(" ");
                                 }
                             }
+                            if (e.getScoreboardTags().contains("Level:0")) {
+                                int xp = 1;
+                                while (xp <= 10) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level0:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/10");
+                                        break;
+                                    }++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:1")) {
+                                int xp = 10;
+                                while (xp <= 35) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level1:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/35");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:2")) {
+                                int xp = 35;
+                                while (xp <= 65) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level2:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/65");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:3")) {
+                                int xp = 65;
+                                while (xp <= 85) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level3:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/85");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:4")) {
+                                int xp = 85;
+                                while (xp <= 115) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level4:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/115");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:5")) {
+                                int xp = 115;
+                                while (xp <= 145) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level5:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/145");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:6")) {
+                                int xp = 145;
+                                while (xp <= 195) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level6:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/195");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:7")) {
+                                int xp = 195;
+                                while (xp <= 265) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level7:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/265");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
                             if (e.getScoreboardTags().contains("Gender:Mare")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Mare");
                             } else if (e.getScoreboardTags().contains("Gender:Stallion")) {
@@ -311,6 +390,11 @@ public class Commands implements CommandExecutor {
                             }
                             if (e.getScoreboardTags().contains("6ft")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "6ft");
+                            }
+                            for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
+                                if (e.getScoreboardTags().contains("Trait:" + trts)) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Trait:  " + ChatColor.WHITE + trts);
+                                }
                             }
                             if (e.getScoreboardTags().contains("Hunger:10")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
