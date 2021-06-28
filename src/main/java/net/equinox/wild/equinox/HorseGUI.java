@@ -518,6 +518,8 @@ public class HorseGUI implements Listener {
                         h.addScoreboardTag("Hunger:10");
                         h.addScoreboardTag("Thirst:10");
                         h.addScoreboardTag("Private");
+                        h.addScoreboardTag("Level:0");
+                        h.addScoreboardTag("XP:0");
                         if (!breedname.isEmpty()) {
                             h.addScoreboardTag("Breed:" + breed);
                         }

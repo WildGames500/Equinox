@@ -213,6 +213,9 @@ public final class Equinox extends JavaPlugin {
                                             if (e.getScoreboardTags().contains("DayH-3")) {
                                                 e.removeScoreboardTag("DayH-3");
                                                 return;
+
+                                            } else {
+                                                return;
                                             }
                                         }
                                     }

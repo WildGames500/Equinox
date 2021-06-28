@@ -273,6 +273,45 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("Style:Crescent")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Crescent");
                             }
+                            if (e.getScoreboardTags().contains("Speed:T1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 1");
+                            }
+                            if (e.getScoreboardTags().contains("Speed:T2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 2");
+                            }
+                            if (e.getScoreboardTags().contains("Speed:T3")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 3");
+                            }
+                            if (e.getScoreboardTags().contains("Speed:T4")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 4");
+                            }
+                            if (e.getScoreboardTags().contains("Speed:T5")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 5");
+                            }
+                            if (e.getScoreboardTags().contains("Speed:T6")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 6");
+                            }
+                            if (e.getScoreboardTags().contains("Speed:T7")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 7");
+                            }
+                            if (e.getScoreboardTags().contains("1ft")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "1ft");
+                            }
+                            if (e.getScoreboardTags().contains("2ft")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "2ft");
+                            }
+                            if (e.getScoreboardTags().contains("3ft")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "3ft");
+                            }
+                            if (e.getScoreboardTags().contains("4ft")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "4ft");
+                            }
+                            if (e.getScoreboardTags().contains("5ft")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "5ft");
+                            }
+                            if (e.getScoreboardTags().contains("6ft")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "6ft");
+                            }
                             if (e.getScoreboardTags().contains("Hunger:10")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
                             }
