@@ -1,24 +1,27 @@
 package net.equinox.wild.equinox;
 
-import net.milkbowl.vault.economy.Economy;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import static net.equinox.wild.equinox.Events1.*;
 
 import java.util.*;
 
 
-public class Commands implements CommandExecutor {
+public class Commands<fun> implements CommandExecutor {
     private final Equinox plugin;
 
 
@@ -201,6 +204,852 @@ public class Commands implements CommandExecutor {
                 menu.setItem(5, ref2);
                 player.openInventory(menu);
                 return true;
+            } else if (args[0].equalsIgnoreCase("lunge")) {
+                Player p = (Player) sender;
+                UUID uuid = p.getUniqueId();
+                UUID euid = collection.get(uuid);
+                World world = p.getWorld();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            if (((Horse) e).getLeashHolder() instanceof Player) {
+                                new BukkitRunnable() {
+                                    int tick = 0;
+                                    int timer = 0;
+                                    public void run() {
+                                        final float radius = 4.0f;
+                                        final float radPerSec = (float) (2 * Math.PI / 4);
+                                        final float radPerTick = radPerSec * tick / 20f;
+                                        final Location center = p.getLocation();
+
+                                        ++tick;
+
+                                        Location loc = getLocAroundCircle(center, radius, radPerTick);
+
+                                        e.teleport(loc);
+                                        ++timer;
+
+                                        if (timer == 100) {
+                                            int i = 1;
+                                            if (e.getScoreboardTags().contains("Level:0")) {
+                                                while (i <= 10) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 10) {
+                                                            e.removeScoreboardTag("Level:0");
+                                                            e.addScoreboardTag("Level:1");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 1!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:1")) {
+                                                while (i <= 35) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 35) {
+                                                            e.removeScoreboardTag("Level:1");
+                                                            e.addScoreboardTag("Level:2");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 2!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:2")) {
+                                                while (i <= 65) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 65) {
+                                                            e.removeScoreboardTag("Level:2");
+                                                            e.addScoreboardTag("Level:3");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 3!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:3")) {
+                                                while (i <= 85) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 85) {
+                                                            e.removeScoreboardTag("Level:3");
+                                                            e.addScoreboardTag("Level:4");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 4!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 115) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 115) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 145) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 145) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:5")) {
+                                                while (i <= 195) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 195) {
+                                                            e.removeScoreboardTag("Level:5");
+                                                            e.addScoreboardTag("Level:6");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 6!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:6")) {
+                                                while (i <= 265) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 265) {
+                                                            e.removeScoreboardTag("Level:6");
+                                                            e.addScoreboardTag("Level:7");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                            for (String tb : plugin.getConfig().getStringList("Bad")) {
+                                                                if (e.getScoreboardTags().contains(tb)) {
+                                                                    e.removeScoreboardTag("Trait:" + tb);
+                                                                    for (String trts : plugin.getConfig().getStringList("Good")) {
+                                                                        List tr = Arrays.asList(trts);
+                                                                        Random rn = new Random();
+                                                                        String rnt = (String) tr.get(rn.nextInt(tr.size()));
+                                                                        e.addScoreboardTag("Trait:" + rnt);
+                                                                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse has lost there bad trait!");
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (timer == 200) {
+                                            int i = 1;
+                                            if (e.getScoreboardTags().contains("Level:0")) {
+                                                while (i <= 10) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 10) {
+                                                            e.removeScoreboardTag("Level:0");
+                                                            e.addScoreboardTag("Level:1");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 1!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:1")) {
+                                                while (i <= 35) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 35) {
+                                                            e.removeScoreboardTag("Level:1");
+                                                            e.addScoreboardTag("Level:2");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 2!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:2")) {
+                                                while (i <= 65) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 65) {
+                                                            e.removeScoreboardTag("Level:2");
+                                                            e.addScoreboardTag("Level:3");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 3!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:3")) {
+                                                while (i <= 85) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 85) {
+                                                            e.removeScoreboardTag("Level:3");
+                                                            e.addScoreboardTag("Level:4");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 4!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 115) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 115) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 145) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 145) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:5")) {
+                                                while (i <= 195) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 195) {
+                                                            e.removeScoreboardTag("Level:5");
+                                                            e.addScoreboardTag("Level:6");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 6!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:6")) {
+                                                while (i <= 265) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 265) {
+                                                            e.removeScoreboardTag("Level:6");
+                                                            e.addScoreboardTag("Level:7");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                            for (String tb : plugin.getConfig().getStringList("Bad")) {
+                                                                if (e.getScoreboardTags().contains(tb)) {
+                                                                    e.removeScoreboardTag("Trait:" + tb);
+                                                                    for (String trts : plugin.getConfig().getStringList("Good")) {
+                                                                        List tr = Arrays.asList(trts);
+                                                                        Random rn = new Random();
+                                                                        String rnt = (String) tr.get(rn.nextInt(tr.size()));
+                                                                        e.addScoreboardTag("Trait:" + rnt);
+                                                                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse has lost there bad trait!");
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (timer == 300) {
+                                            int i = 1;
+                                            if (e.getScoreboardTags().contains("Level:0")) {
+                                                while (i <= 10) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 10) {
+                                                            e.removeScoreboardTag("Level:0");
+                                                            e.addScoreboardTag("Level:1");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 1!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:1")) {
+                                                while (i <= 35) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 35) {
+                                                            e.removeScoreboardTag("Level:1");
+                                                            e.addScoreboardTag("Level:2");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 2!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:2")) {
+                                                while (i <= 65) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 65) {
+                                                            e.removeScoreboardTag("Level:2");
+                                                            e.addScoreboardTag("Level:3");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 3!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:3")) {
+                                                while (i <= 85) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 85) {
+                                                            e.removeScoreboardTag("Level:3");
+                                                            e.addScoreboardTag("Level:4");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 4!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 115) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 115) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 145) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 145) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:5")) {
+                                                while (i <= 195) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 195) {
+                                                            e.removeScoreboardTag("Level:5");
+                                                            e.addScoreboardTag("Level:6");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 6!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:6")) {
+                                                while (i <= 265) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 265) {
+                                                            e.removeScoreboardTag("Level:6");
+                                                            e.addScoreboardTag("Level:7");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                            for (String tb : plugin.getConfig().getStringList("Bad")) {
+                                                                if (e.getScoreboardTags().contains(tb)) {
+                                                                    e.removeScoreboardTag("Trait:" + tb);
+                                                                    for (String trts : plugin.getConfig().getStringList("Good")) {
+                                                                        List tr = Arrays.asList(trts);
+                                                                        Random rn = new Random();
+                                                                        String rnt = (String) tr.get(rn.nextInt(tr.size()));
+                                                                        e.addScoreboardTag("Trait:" + rnt);
+                                                                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse has lost there bad trait!");
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        if (timer == 400) {
+                                            int i = 1;
+                                            if (e.getScoreboardTags().contains("Level:0")) {
+                                                while (i <= 10) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 10) {
+                                                            e.removeScoreboardTag("Level:0");
+                                                            e.addScoreboardTag("Level:1");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 1!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:1")) {
+                                                while (i <= 35) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 35) {
+                                                            e.removeScoreboardTag("Level:1");
+                                                            e.addScoreboardTag("Level:2");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 2!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:2")) {
+                                                while (i <= 65) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 65) {
+                                                            e.removeScoreboardTag("Level:2");
+                                                            e.addScoreboardTag("Level:3");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 3!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:3")) {
+                                                while (i <= 85) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 85) {
+                                                            e.removeScoreboardTag("Level:3");
+                                                            e.addScoreboardTag("Level:4");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 4!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 115) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 115) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 145) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 145) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:5")) {
+                                                while (i <= 195) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 195) {
+                                                            e.removeScoreboardTag("Level:5");
+                                                            e.addScoreboardTag("Level:6");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 6!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:6")) {
+                                                while (i <= 265) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 265) {
+                                                            e.removeScoreboardTag("Level:6");
+                                                            e.addScoreboardTag("Level:7");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                            for (String tb : plugin.getConfig().getStringList("Bad")) {
+                                                                if (e.getScoreboardTags().contains(tb)) {
+                                                                    e.removeScoreboardTag("Trait:" + tb);
+                                                                    for (String trts : plugin.getConfig().getStringList("Good")) {
+                                                                        List tr = Arrays.asList(trts);
+                                                                        Random rn = new Random();
+                                                                        String rnt = (String) tr.get(rn.nextInt(tr.size()));
+                                                                        e.addScoreboardTag("Trait:" + rnt);
+                                                                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse has lost there bad trait!");
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (timer > 500) {
+                                            this.cancel();
+                                            int i = 1;
+                                            if (e.getScoreboardTags().contains("Level:0")) {
+                                                while (i <= 10) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 10) {
+                                                            e.removeScoreboardTag("Level:0");
+                                                            e.addScoreboardTag("Level:1");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 1!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:1")) {
+                                                while (i <= 35) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 35) {
+                                                            e.removeScoreboardTag("Level:1");
+                                                            e.addScoreboardTag("Level:2");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 2!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:2")) {
+                                                while (i <= 65) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 65) {
+                                                            e.removeScoreboardTag("Level:2");
+                                                            e.addScoreboardTag("Level:3");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 3!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:3")) {
+                                                while (i <= 85) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 85) {
+                                                            e.removeScoreboardTag("Level:3");
+                                                            e.addScoreboardTag("Level:4");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 4!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 115) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 115) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:4")) {
+                                                while (i <= 145) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 145) {
+                                                            e.removeScoreboardTag("Level:4");
+                                                            e.addScoreboardTag("Level:5");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:5")) {
+                                                while (i <= 195) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 195) {
+                                                            e.removeScoreboardTag("Level:5");
+                                                            e.addScoreboardTag("Level:6");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 6!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:6")) {
+                                                while (i <= 265) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 265) {
+                                                            e.removeScoreboardTag("Level:6");
+                                                            e.addScoreboardTag("Level:7");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                            for (String tb : plugin.getConfig().getStringList("Bad")) {
+                                                                if (e.getScoreboardTags().contains(tb)) {
+                                                                    e.removeScoreboardTag("Trait:" + tb);
+                                                                    for (String trts : plugin.getConfig().getStringList("Good")) {
+                                                                        List tr = Arrays.asList(trts);
+                                                                        Random rn = new Random();
+                                                                        String rnt = (String) tr.get(rn.nextInt(tr.size()));
+                                                                        e.addScoreboardTag("Trait:" + rnt);
+                                                                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse has lost there bad trait!");
+                                                                        break;
+                                                                    }
+                                                                }
+                                                                break;
+                                                            }
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                } .runTaskTimer(plugin, 0L,1L);
+                            }
+                        }
+                    }
+                }
+            } return true;
 
 
             } else if (args[0].equalsIgnoreCase("info")) {
@@ -231,7 +1080,8 @@ public class Commands implements CommandExecutor {
                                     if (e.getScoreboardTags().contains("XP:" + xp)) {
                                         player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level0:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/10");
                                         break;
-                                    }++xp;
+                                    }
+                                    ++xp;
                                 }
                             }
                             if (e.getScoreboardTags().contains("Level:1")) {
@@ -430,13 +1280,26 @@ public class Commands implements CommandExecutor {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
                             }
                             if (e.getScoreboardTags().contains("Thirst:10")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]" );
-                            } return true;
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
+                            }
+                            return true;
                         }
                     }
                 }
             }
-        }
         return false;
+    }
+
+    public Location getLocAroundCircle(Location center, double radius, double angleRad) {
+        double x = center.getX() + radius * Math.cos(angleRad);
+        double z = center.getZ() + radius * Math.sin(angleRad);
+        double y = center.getY();
+
+        Location loc = new Location(center.getWorld(), x, y, z);
+        Vector difference = center.toVector().clone().subtract(loc.toVector());
+        Vector lookDir = new Vector(difference.getZ(), 0.0, -difference.getX());
+        loc.setDirection(lookDir);
+
+        return loc;
     }
 }

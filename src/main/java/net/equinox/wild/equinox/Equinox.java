@@ -15,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 
 import java.io.File;
@@ -49,6 +50,7 @@ public final class Equinox extends JavaPlugin {
             return;
         }
     }
+
 
 
     //Loop Hunger
@@ -237,6 +239,9 @@ public final class Equinox extends JavaPlugin {
             public void run() {
                 int i = 1;
                 for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (p.getVehicle() == null) {
+                        return;
+                    }
                     Entity e = p.getVehicle();
                     if (e.getScoreboardTags().contains("Level:0")) {
                         while (i <= 10) {
@@ -400,6 +405,11 @@ public final class Equinox extends JavaPlugin {
             }
         }.runTaskTimer(plugin, 3600, 3600);
     }
+
+
+
+
+
 
 
 
