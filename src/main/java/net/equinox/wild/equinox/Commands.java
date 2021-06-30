@@ -1,5 +1,6 @@
 package net.equinox.wild.equinox;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -222,6 +223,7 @@ public class Commands<fun> implements CommandExecutor {
                                         final float radPerSec = (float) (2 * Math.PI / 4);
                                         final float radPerTick = radPerSec * tick / 20f;
                                         final Location center = p.getLocation();
+                                        NBTEditor.set(e, 0, "EatingHaystack");
 
                                         ++tick;
 
