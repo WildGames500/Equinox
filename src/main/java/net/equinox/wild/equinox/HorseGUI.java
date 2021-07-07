@@ -1117,11 +1117,11 @@ public class HorseGUI implements Listener {
                 } else {
                     metaref4.setDisplayName("§bCoat Pattern");
                 }
-                metaref6.setDisplayName(sln);
-                if (!jumpheight.isEmpty()) {
-                    metaref7.setDisplayName(jump);
+                metaref7.setDisplayName(sln);
+                if (!speeds.isEmpty()) {
+                    metaref6.setDisplayName(speed);
                 } else {
-                    metaref7.setDisplayName("§bJump");
+                    metaref6.setDisplayName("§bSpeed");
                 }
                 if (speed.equals("Tier 1")) {
                     if (sln.equals("1ft")) {

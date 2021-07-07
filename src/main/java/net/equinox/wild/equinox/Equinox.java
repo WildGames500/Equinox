@@ -1,17 +1,20 @@
 package net.equinox.wild.equinox;
 
+import dev.dbassett.skullcreator.SkullCreator;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,23 +34,32 @@ public final class Equinox extends JavaPlugin {
     private File traitConfigFile;
     private FileConfiguration breedsConfig;
     private FileConfiguration traitConfig;
+    private boolean useHolographicDisplays;
 
 
     @Override
     public void onEnable() {
+        poop(this);
         eatLoop2(this);
         horseRiding(this);
         hungerLoop(this);
         thirstLoop(this);
         eatLoop(this);
         createCustomConfig();
-        getServer().getPluginManager().registerEvents(new Events1(), this);
+        useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+        getServer().getPluginManager().registerEvents(new Events1(this), this);
         getServer().getPluginManager().registerEvents(new HorseGUI(this), this);
         this.getCommand("eq").setExecutor(new Commands(this));
         getLogger().info("Plugin Has Been Enabled! Hello ^-^");
         if (!setupEconomy()) {
             System.out.println("No Economy Plugin Found! Disabling Vault...");
             getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
+            getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
+            getLogger().severe("*** This plugin will be disabled. ***");
+            this.setEnabled(false);
             return;
         }
     }
@@ -329,6 +341,29 @@ public final class Equinox extends JavaPlugin {
         }.runTaskTimer(plugin, 1200, 1200);
     }
 
+    public void poop(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        Random rnd = new Random();
+                        int i = rnd.nextInt(100);
+                        if (i <= 25) {
+                            Block loc = e.getLocation().getBlock();
+                            Material block = loc.getType();
+                            String s = "http://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
+                            if (block == Material.AIR) {
+                                SkullCreator.blockWithUrl(loc, s);
+                                loc.setMetadata("Poop", new FixedMetadataValue(plugin, "Poop"));
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 3000, 3000);
+    }
+
     public void horseRiding(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
@@ -500,6 +535,8 @@ public final class Equinox extends JavaPlugin {
             }
         }.runTaskTimer(plugin, 3600, 3600);
     }
+
+
 
 
 

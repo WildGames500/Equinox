@@ -218,6 +218,7 @@ public class Commands<fun> implements CommandExecutor {
                                 new BukkitRunnable() {
                                     int tick = 0;
                                     int timer = 0;
+
                                     public void run() {
                                         final float radius = 4.0f;
                                         final float radPerSec = (float) (2 * Math.PI / 4);
@@ -1046,13 +1047,11 @@ public class Commands<fun> implements CommandExecutor {
                                         }
                                     }
 
-                                } .runTaskTimer(plugin, 0L,1L);
+                                }.runTaskTimer(plugin, 0L, 1L);
                             }
                         }
                     }
-                }
-            } return true;
-
+                } return true;
 
             } else if (args[0].equalsIgnoreCase("info")) {
                 Player player = (Player) sender;
@@ -1289,9 +1288,8 @@ public class Commands<fun> implements CommandExecutor {
                     }
                 }
             }
-        return false;
+        } return false;
     }
-
     public Location getLocAroundCircle(Location center, double radius, double angleRad) {
         double x = center.getX() + radius * Math.cos(angleRad);
         double z = center.getZ() + radius * Math.sin(angleRad);
