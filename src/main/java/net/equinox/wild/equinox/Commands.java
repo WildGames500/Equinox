@@ -224,7 +224,7 @@ public class Commands<fun> implements CommandExecutor {
                                         final float radPerSec = (float) (2 * Math.PI / 4);
                                         final float radPerTick = radPerSec * tick / 20f;
                                         final Location center = p.getLocation();
-                                        NBTEditor.set(e, 0, "EatingHaystack");
+                                        NBTEditor.set(e, ( byte ) 0, "EatingHaystack");
 
                                         ++tick;
 
@@ -1072,6 +1072,13 @@ public class Commands<fun> implements CommandExecutor {
                                 String offp = p.getName();
                                 if (e.getScoreboardTags().contains("Owner:" + puuid)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Owner:  " + ChatColor.WHITE + offp);
+                                }
+                                if (e.getScoreboardTags().contains("Private")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.RED + "Private");
+                                    player.sendMessage(" ");
+                                }
+                                if (e.getScoreboardTags().contains("Public")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.GREEN + "Public");
                                     player.sendMessage(" ");
                                 }
                             }
@@ -1282,6 +1289,36 @@ public class Commands<fun> implements CommandExecutor {
                             }
                             if (e.getScoreboardTags().contains("Thirst:10")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:9")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++++" + ChatColor.RED + "-" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:8")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++" + ChatColor.RED + "--" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:7")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++" + ChatColor.RED + "---" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:6")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++" + ChatColor.RED + "----" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:5")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++" + ChatColor.RED + "-----" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:4")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++" + ChatColor.RED + "------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:3")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++" + ChatColor.RED + "-------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++" + ChatColor.RED + "--------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Thirst:0")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
                             }
                             return true;
                         }
