@@ -172,7 +172,7 @@ public final class Equinox extends JavaPlugin {
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
-                        int radius = 1;
+                        int radius = 2;
                         for (int x = -radius; x <= radius; x++) {
                             for (int y = -radius; y <= radius; y++) {
                                 for (int z = -radius; z <= radius; z++) {
@@ -185,7 +185,6 @@ public final class Equinox extends JavaPlugin {
                                         while (i < 10) {
                                             ++i;
                                         } if (i == 10) {
-                                            NBTEditor.set(e, 1, "EatingHaystack");
                                             block.setType(Material.AIR);
                                             if (e.getScoreboardTags().contains("Hunger:9")) {
                                                 e.removeScoreboardTag("Hunger:9");
@@ -217,7 +216,7 @@ public final class Equinox extends JavaPlugin {
                                                 return;
                                             } else if (e.getScoreboardTags().contains("Hunger:2")) {
                                                 e.removeScoreboardTag("Hunger:2");
-                                                e.addScoreboardTag("Hunger:1");
+                                                e.addScoreboardTag("Hunger:3");
                                                 return;
                                             } else if (e.getScoreboardTags().contains("Hunger:1")) {
                                                 e.removeScoreboardTag("Hunger:1");
@@ -260,7 +259,7 @@ public final class Equinox extends JavaPlugin {
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
-                        int radius = 1;
+                        int radius = 2;
                         for (int x = -radius; x <= radius; x++) {
                             for (int y = -radius; y <= radius; y++) {
                                 for (int z = -radius; z <= radius; z++) {
@@ -273,7 +272,6 @@ public final class Equinox extends JavaPlugin {
                                         while (i < 10) {
                                             ++i;
                                         } if (i == 10) {
-                                            NBTEditor.set(e, 1, "EatingHaystack");
                                             block.setType(Material.YELLOW_STAINED_GLASS_PANE);
                                             if (e.getScoreboardTags().contains("Hunger:9")) {
                                                 e.removeScoreboardTag("Hunger:9");
@@ -338,7 +336,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 1200, 1200);
+        }.runTaskTimer(plugin, 500, 500);
     }
 
     public void poop(Plugin plugin) {
@@ -349,7 +347,7 @@ public final class Equinox extends JavaPlugin {
                     if (e instanceof Horse) {
                         Random rnd = new Random();
                         int i = rnd.nextInt(100);
-                        if (i <= 25) {
+                        if (i <= 15) {
                             Block loc = e.getLocation().getBlock();
                             Material block = loc.getType();
                             String s = "http://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
@@ -361,7 +359,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 3000, 3000);
+        }.runTaskTimer(plugin, 6000, 6000);
     }
 
     public void horseRiding(Plugin plugin) {
