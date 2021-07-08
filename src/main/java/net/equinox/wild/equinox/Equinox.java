@@ -1,13 +1,11 @@
 package net.equinox.wild.equinox;
 
 import dev.dbassett.skullcreator.SkullCreator;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -27,6 +25,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static org.bukkit.Sound.BLOCK_GRASS_BREAK;
+
 
 public final class Equinox extends JavaPlugin {
     private static Economy econ = null;
@@ -42,6 +42,7 @@ public final class Equinox extends JavaPlugin {
         drinkLoop(this);
         poop(this);
         eatLoop2(this);
+        eatLoop3(this);
         horseRiding(this);
         hungerLoop(this);
         thirstLoop(this);
@@ -76,7 +77,7 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 55) {
+                        if (i <= 20) {
                             if (e.getScoreboardTags().contains("Hunger:10")) {
                                 e.removeScoreboardTag("Hunger:10");
                                 e.addScoreboardTag("Hunger:9");
@@ -113,7 +114,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0, 24000);
+        }.runTaskTimer(plugin, 30000, 30000);
     }
 
     //Loop Thirst
@@ -125,7 +126,7 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 35) {
+                        if (i <= 25) {
                             if (e.getScoreboardTags().contains("Thirst:10")) {
                                 e.removeScoreboardTag("Thirst:10");
                                 e.addScoreboardTag("Thirst:9");
@@ -162,7 +163,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 24000, 24000);
+        }.runTaskTimer(plugin, 35000, 35000);
     }
 
     public void drinkLoop(Plugin plugin) {
@@ -269,67 +270,67 @@ public final class Equinox extends JavaPlugin {
                                     Material bt = block.getType();
                                     if (bt == Material.HAY_BLOCK) {
                                         ((Horse) e).getPathfinder().findPath(loc2);
-                                        int i = 1;
-                                        while (i < 10) {
-                                            ++i;
-                                        } if (i == 10) {
-                                            block.setType(Material.AIR);
-                                            if (e.getScoreboardTags().contains("Hunger:9")) {
-                                                e.removeScoreboardTag("Hunger:9");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:8")) {
-                                                e.removeScoreboardTag("Hunger:8");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:7")) {
-                                                e.removeScoreboardTag("Hunger:7");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:6")) {
-                                                e.removeScoreboardTag("Hunger:6");
-                                                e.addScoreboardTag("Hunger:9");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:5")) {
-                                                e.removeScoreboardTag("Hunger:5");
-                                                e.addScoreboardTag("Hunger:8");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:4")) {
-                                                e.removeScoreboardTag("Hunger:4");
-                                                e.addScoreboardTag("Hunger:7");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:3")) {
-                                                e.removeScoreboardTag("Hunger:3");
-                                                e.addScoreboardTag("Hunger:6");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:2")) {
-                                                e.removeScoreboardTag("Hunger:2");
-                                                e.addScoreboardTag("Hunger:5");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:1")) {
-                                                e.removeScoreboardTag("Hunger:1");
-                                                e.addScoreboardTag("Hunger:4");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:0")) {
-                                                e.removeScoreboardTag("Hunger:0");
-                                                e.addScoreboardTag("Hunger:3");
-                                                if (e.getScoreboardTags().contains("DayH-1")) {
-                                                    e.removeScoreboardTag("DayH-1");
+                                        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                block.setType(Material.AIR);
+                                                if (e.getScoreboardTags().contains("Hunger:9")) {
+                                                    e.removeScoreboardTag("Hunger:9");
+                                                    e.addScoreboardTag("Hunger:10");
                                                     return;
-                                                }
-                                                if (e.getScoreboardTags().contains("DayH-2")) {
-                                                    e.removeScoreboardTag("DayH-2");
+                                                } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                                    e.removeScoreboardTag("Hunger:8");
+                                                    e.addScoreboardTag("Hunger:10");
                                                     return;
-                                                }
-                                                if (e.getScoreboardTags().contains("DayH-3")) {
-                                                    e.removeScoreboardTag("DayH-3");
+                                                } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                                    e.removeScoreboardTag("Hunger:7");
+                                                    e.addScoreboardTag("Hunger:10");
                                                     return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                                    e.removeScoreboardTag("Hunger:6");
+                                                    e.addScoreboardTag("Hunger:9");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                                    e.removeScoreboardTag("Hunger:5");
+                                                    e.addScoreboardTag("Hunger:8");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                                    e.removeScoreboardTag("Hunger:4");
+                                                    e.addScoreboardTag("Hunger:7");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                                    e.removeScoreboardTag("Hunger:3");
+                                                    e.addScoreboardTag("Hunger:6");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                                    e.removeScoreboardTag("Hunger:2");
+                                                    e.addScoreboardTag("Hunger:5");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                                    e.removeScoreboardTag("Hunger:1");
+                                                    e.addScoreboardTag("Hunger:4");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:0")) {
+                                                    e.removeScoreboardTag("Hunger:0");
+                                                    e.addScoreboardTag("Hunger:3");
+                                                    if (e.getScoreboardTags().contains("DayH-1")) {
+                                                        e.removeScoreboardTag("DayH-1");
+                                                        return;
+                                                    }
+                                                    if (e.getScoreboardTags().contains("DayH-2")) {
+                                                        e.removeScoreboardTag("DayH-2");
+                                                        return;
+                                                    }
+                                                    if (e.getScoreboardTags().contains("DayH-3")) {
+                                                        e.removeScoreboardTag("DayH-3");
+                                                        return;
 
-                                                } else {
-                                                    return;
+                                                    } else {
+                                                        return;
+                                                    }
                                                 }
                                             }
-                                        }
+                                        }, 100);
                                     }
                                 }
                             }
@@ -356,67 +357,67 @@ public final class Equinox extends JavaPlugin {
                                     Material bt = block.getType();
                                     if (bt == Material.RED_STAINED_GLASS_PANE) {
                                         ((Horse) e).getPathfinder().findPath(loc2);
-                                        int i = 1;
-                                        while (i < 10) {
-                                            ++i;
-                                        } if (i == 10) {
-                                            block.setType(Material.YELLOW_STAINED_GLASS_PANE);
-                                            if (e.getScoreboardTags().contains("Hunger:9")) {
-                                                e.removeScoreboardTag("Hunger:9");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:8")) {
-                                                e.removeScoreboardTag("Hunger:8");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:7")) {
-                                                e.removeScoreboardTag("Hunger:7");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:6")) {
-                                                e.removeScoreboardTag("Hunger:6");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:5")) {
-                                                e.removeScoreboardTag("Hunger:5");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:4")) {
-                                                e.removeScoreboardTag("Hunger:4");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:3")) {
-                                                e.removeScoreboardTag("Hunger:3");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:2")) {
-                                                e.removeScoreboardTag("Hunger:2");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:1")) {
-                                                e.removeScoreboardTag("Hunger:1");
-                                                e.addScoreboardTag("Hunger:10");
-                                                return;
-                                            } else if (e.getScoreboardTags().contains("Hunger:0")) {
-                                                e.removeScoreboardTag("Hunger:0");
-                                                e.addScoreboardTag("Hunger:10");
-                                                if (e.getScoreboardTags().contains("DayH-1")) {
-                                                    e.removeScoreboardTag("DayH-1");
+                                        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                block.setType(Material.YELLOW_STAINED_GLASS_PANE);
+                                                if (e.getScoreboardTags().contains("Hunger:9")) {
+                                                    e.removeScoreboardTag("Hunger:9");
+                                                    e.addScoreboardTag("Hunger:10");
                                                     return;
-                                                }
-                                                if (e.getScoreboardTags().contains("DayH-2")) {
-                                                    e.removeScoreboardTag("DayH-2");
+                                                } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                                    e.removeScoreboardTag("Hunger:8");
+                                                    e.addScoreboardTag("Hunger:10");
                                                     return;
-                                                }
-                                                if (e.getScoreboardTags().contains("DayH-3")) {
-                                                    e.removeScoreboardTag("DayH-3");
+                                                } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                                    e.removeScoreboardTag("Hunger:7");
+                                                    e.addScoreboardTag("Hunger:10");
                                                     return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                                    e.removeScoreboardTag("Hunger:6");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                                    e.removeScoreboardTag("Hunger:5");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                                    e.removeScoreboardTag("Hunger:4");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                                    e.removeScoreboardTag("Hunger:3");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                                    e.removeScoreboardTag("Hunger:2");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                                    e.removeScoreboardTag("Hunger:1");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:0")) {
+                                                    e.removeScoreboardTag("Hunger:0");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    if (e.getScoreboardTags().contains("DayH-1")) {
+                                                        e.removeScoreboardTag("DayH-1");
+                                                        return;
+                                                    }
+                                                    if (e.getScoreboardTags().contains("DayH-2")) {
+                                                        e.removeScoreboardTag("DayH-2");
+                                                        return;
+                                                    }
+                                                    if (e.getScoreboardTags().contains("DayH-3")) {
+                                                        e.removeScoreboardTag("DayH-3");
+                                                        return;
 
-                                                } else {
-                                                    return;
+                                                    } else {
+                                                        return;
+                                                    }
                                                 }
                                             }
-                                        }
+                                        }, 100);
                                     }
                                 }
                             }
@@ -425,6 +426,96 @@ public final class Equinox extends JavaPlugin {
                 }
             }
         }.runTaskTimer(plugin, 500, 500);
+    }
+
+    public void eatLoop3(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        Location loc = e.getLocation();
+                        int radius = 2;
+                        for (int x = -radius; x <= radius; x++) {
+                            for (int y = -radius; y <= radius; y++) {
+                                for (int z = -radius; z <= radius; z++) {
+                                    Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() + y, loc.getBlockZ() + z);
+                                    Location loc2 = block.getLocation();
+                                    Material bt = block.getType();
+                                    if (bt == Material.GRASS_BLOCK) {
+                                        ((Horse) e).getPathfinder().findPath(loc2);
+                                        for (Player p : loc2.getNearbyPlayers(5)) {
+                                            p.playSound(loc2, BLOCK_GRASS_BREAK, 1, 1);
+                                        }
+                                        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                block.setType(Material.DIRT);
+                                                if (e.getScoreboardTags().contains("Hunger:9")) {
+                                                    e.removeScoreboardTag("Hunger:9");
+                                                    e.addScoreboardTag("Hunger:10");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                                    e.removeScoreboardTag("Hunger:8");
+                                                    e.addScoreboardTag("Hunger:9");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                                    e.removeScoreboardTag("Hunger:7");
+                                                    e.addScoreboardTag("Hunger:8");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                                    e.removeScoreboardTag("Hunger:6");
+                                                    e.addScoreboardTag("Hunger:7");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                                    e.removeScoreboardTag("Hunger:5");
+                                                    e.addScoreboardTag("Hunger:6");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                                    e.removeScoreboardTag("Hunger:4");
+                                                    e.addScoreboardTag("Hunger:5");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                                    e.removeScoreboardTag("Hunger:3");
+                                                    e.addScoreboardTag("Hunger:4");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                                    e.removeScoreboardTag("Hunger:2");
+                                                    e.addScoreboardTag("Hunger:3");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                                    e.removeScoreboardTag("Hunger:1");
+                                                    e.addScoreboardTag("Hunger:2");
+                                                    return;
+                                                } else if (e.getScoreboardTags().contains("Hunger:0")) {
+                                                    e.removeScoreboardTag("Hunger:0");
+                                                    e.addScoreboardTag("Hunger:1");
+                                                    if (e.getScoreboardTags().contains("DayH-1")) {
+                                                        e.removeScoreboardTag("DayH-1");
+                                                        return;
+                                                    }
+                                                    if (e.getScoreboardTags().contains("DayH-2")) {
+                                                        e.removeScoreboardTag("DayH-2");
+                                                        return;
+                                                    }
+                                                    if (e.getScoreboardTags().contains("DayH-3")) {
+                                                        e.removeScoreboardTag("DayH-3");
+                                                        return;
+
+                                                    } else {
+                                                        return;
+                                                    }
+                                                }
+                                            }
+                                        }, 100);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 560, 560);
     }
 
     public void poop(Plugin plugin) {
