@@ -22,7 +22,7 @@ import static net.equinox.wild.equinox.Events1.*;
 import java.util.*;
 
 
-public class Commands<fun> implements CommandExecutor {
+public class Commands implements CommandExecutor {
     private final Equinox plugin;
 
 
@@ -1076,10 +1076,12 @@ public class Commands<fun> implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Private")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.RED + "Private");
                                     player.sendMessage(" ");
+                                    break;
                                 }
                                 if (e.getScoreboardTags().contains("Public")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.GREEN + "Public");
                                     player.sendMessage(" ");
+                                    break;
                                 }
                             }
                             if (e.getScoreboardTags().contains("Level:0")) {
@@ -1168,6 +1170,20 @@ public class Commands<fun> implements CommandExecutor {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Stallion");
                             } else if (e.getScoreboardTags().contains("Gender:Gelding")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.YELLOW + "Gelding");
+                            }
+                            if (e.getScoreboardTags().contains("InHeat")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.RED + "In Heat");
+                            }
+                            int i = 0;
+                            while (i <= 1) {
+                                if (e.getScoreboardTags().contains("Age:" + i)) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Year");
+                                } ++i;
+                            }
+                            while (i >= 2) {
+                                if (e.getScoreboardTags().contains("Age:" + i)) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Years");
+                                } ++i;
                             }
                             for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
                                 if (e.getScoreboardTags().contains("Breed:" + brds)) {

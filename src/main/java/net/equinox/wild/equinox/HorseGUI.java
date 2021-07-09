@@ -518,6 +518,8 @@ public class HorseGUI implements Listener {
                         h.addScoreboardTag("Private");
                         h.addScoreboardTag("Level:0");
                         h.addScoreboardTag("XP:1");
+                        h.addScoreboardTag("Age:4");
+                        h.addScoreboardTag("Heat1");
                         for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
                             List tr = Arrays.asList(trts);
                             Random rn = new Random();

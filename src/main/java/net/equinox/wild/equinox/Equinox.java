@@ -52,6 +52,7 @@ public final class Equinox extends JavaPlugin {
         eatLoop(this);
         createCustomConfig();
         useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
+        this.getCommand("eqa").setExecutor(new Commands2(this));
         getServer().getPluginManager().registerEvents(new Events1(this), this);
         getServer().getPluginManager().registerEvents(new HorseGUI(this), this);
         this.getCommand("eq").setExecutor(new Commands(this));
