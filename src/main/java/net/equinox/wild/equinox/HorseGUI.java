@@ -519,7 +519,6 @@ public class HorseGUI implements Listener {
                         h.addScoreboardTag("Level:0");
                         h.addScoreboardTag("XP:1");
                         h.addScoreboardTag("Age:4");
-                        h.addScoreboardTag("Heat1");
                         for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
                             List tr = Arrays.asList(trts);
                             Random rn = new Random();
@@ -532,6 +531,9 @@ public class HorseGUI implements Listener {
                         }
                         if (!gendername.isEmpty()) {
                             h.addScoreboardTag("Gender:" + gender);
+                            if (gender.equals("Mare")) {
+                                h.addScoreboardTag("Heat1");
+                            }
                         }
                         if (coat.equals("Black")) {
                             h.setColor(Horse.Color.BLACK);
