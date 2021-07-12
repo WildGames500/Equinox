@@ -1494,11 +1494,11 @@ public class Commands implements CommandExecutor {
                         if (!e.getScoreboardTags().contains("Vaxed")) {
                             Random rnd = new Random();
                             int i = rnd.nextInt(100);
-                            if (i <= 10) {
+                            if (i >= 80) {
                                 e.addScoreboardTag("uill1");
                                 return true;
                             }
-                            if (i <= 10) {
+                            if (i >= 90) {
                                 e.addScoreboardTag("uill2");
                                 return true;
                             }
@@ -1506,7 +1506,7 @@ public class Commands implements CommandExecutor {
                                 e.addScoreboardTag("uill3");
                                 return true;
                             }
-                            if (i <= 10) {
+                            if (i <= 40) {
                                 if (e.getScoreboardTags().contains("Thirst:0")) {
                                     e.addScoreboardTag("uill4");
                                     return true;
