@@ -2,6 +2,7 @@ package net.equinox.wild.equinox;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -1053,6 +1054,102 @@ public class Commands implements CommandExecutor {
                     }
                 }
                 return true;
+            } else if (args[0].equalsIgnoreCase("info2")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                World world = player.getWorld();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            String hn = e.getName();
+                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + "<<" + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "------------------");
+                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq info"));
+                            player.spigot().sendMessage(msg);
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
+                            player.sendMessage(" ");
+                            if (e.getScoreboardTags().contains("Vaxed")) {
+                                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------------------[" + ChatColor.WHITE + "Vaccines" + ChatColor.GRAY + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "-------------------");
+                                player.sendMessage(" ");
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Rabies");
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Tetanus");
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " West Nile Virus");
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Strangles");
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Flu");
+                            }
+                            player.sendMessage(" ");
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------------------[" + ChatColor.WHITE + "Illnesses & Injuries" + ChatColor.GRAY + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "-------------------");
+                            if (e.getScoreboardTags().contains("Flu")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Flu");
+                            }
+                            if (e.getScoreboardTags().contains("Colic")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Colic");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles");
+                            }
+                            if (e.getScoreboardTags().contains("West Nile Virus")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " West Nile Virus");
+                            }
+                            if (e.getScoreboardTags().contains("Tetanus")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tetanus");
+                            }
+                            if (e.getScoreboardTags().contains("Rabies")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Rabies");
+                            }
+                            if (e.getScoreboardTags().contains("Sprain")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Injury:" + ChatColor.WHITE + " Sprain");
+                            }
+                            if (e.getScoreboardTags().contains("Broken Bone")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Injury:" + ChatColor.WHITE + " Broken Bone");
+                            }
+                            if (e.getScoreboardTags().contains("Scratch")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Injury:" + ChatColor.WHITE + " Scratch");
+                            }
+                            if (e.getScoreboardTags().contains("Bite")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Injury:" + ChatColor.WHITE + " Bite");
+                            }
+                            if (e.getScoreboardTags().contains("Pulled Muscle")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Injury:" + ChatColor.WHITE + " Pulled Muscle");
+                            }
+                            if (e.getScoreboardTags().contains("uill1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Illness:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uill2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Illness:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uill3")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Illness:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uill4")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Illness:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uill5")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Illness:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uill6")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Illness:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uij1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Injury:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uij2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Injury:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uij3")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Injury:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uij4")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Injury:" + ChatColor.WHITE + " Unknown");
+                            }
+                            if (e.getScoreboardTags().contains("uij5")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Injury:" + ChatColor.WHITE + " Unknown");
+                            }
+                        }
+                    }
+                }
 
             } else if (args[0].equalsIgnoreCase("info")) {
                 Player player = (Player) sender;
@@ -1064,7 +1161,9 @@ public class Commands implements CommandExecutor {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             String hn = e.getName();
-                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
+                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "------------------");
+                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq info2"));
+                            player.spigot().sendMessage(msg);
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
                             player.sendMessage(" ");
@@ -1359,6 +1458,64 @@ public class Commands implements CommandExecutor {
                 }
             }
         }if (cmd.getName().equalsIgnoreCase("eqa")) {
+            if (args[0].equalsIgnoreCase("injury")) {
+                World world = Bukkit.getWorld("world");
+                Player player = (Player) Bukkit.getOnlinePlayers();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getPassenger() == player) {
+                            if (e.getScoreboardTags().contains("uji1")) {
+                                e.addScoreboardTag("uij3");
+                                return true;
+                            }
+                            if (e.getScoreboardTags().contains("uji2")) {
+                                e.addScoreboardTag("uij3");
+                                return true;
+                            }
+                            Random rnd = new Random();
+                            int i = rnd.nextInt(100);
+                            if (i <= 10) {
+                                e.addScoreboardTag("uij1");
+                                return true;
+
+                            } if (i >= 80) {
+                                e.addScoreboardTag("uij2");
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }if (cmd.getName().equalsIgnoreCase("eqa")) {
+            if (args[0].equalsIgnoreCase("illness")) {
+                World world = Bukkit.getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (!e.getScoreboardTags().contains("Vaxed")) {
+                            Random rnd = new Random();
+                            int i = rnd.nextInt(100);
+                            if (i <= 10) {
+                                e.addScoreboardTag("uill1");
+                                return true;
+                            }
+                            if (i <= 10) {
+                                e.addScoreboardTag("uill2");
+                                return true;
+                            }
+                            if (i <= 10) {
+                                e.addScoreboardTag("uill3");
+                                return true;
+                            }
+                            if (i <= 10) {
+                                if (e.getScoreboardTags().contains("Thirst:0")) {
+                                    e.addScoreboardTag("uill4");
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (args[0].equalsIgnoreCase("dirty")) {
                 World world = Bukkit.getWorld("world");
                 for (Entity e : world.getEntities()) {
