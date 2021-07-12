@@ -224,7 +224,7 @@ public class Commands implements CommandExecutor {
                                         final float radPerSec = (float) (2 * Math.PI / 4);
                                         final float radPerTick = radPerSec * tick / 20f;
                                         final Location center = p.getLocation();
-                                        NBTEditor.set(e, ( byte ) 0, "EatingHaystack");
+                                        NBTEditor.set(e, (byte) 0, "EatingHaystack");
 
                                         ++tick;
 
@@ -1051,7 +1051,8 @@ public class Commands implements CommandExecutor {
                             }
                         }
                     }
-                } return true;
+                }
+                return true;
 
             } else if (args[0].equalsIgnoreCase("info")) {
                 Player player = (Player) sender;
@@ -1178,12 +1179,14 @@ public class Commands implements CommandExecutor {
                             while (i <= 1) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Year");
-                                } ++i;
+                                }
+                                ++i;
                             }
                             while (i >= 2) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Years");
-                                } ++i;
+                                }
+                                ++i;
                             }
                             for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
                                 if (e.getScoreboardTags().contains("Breed:" + brds)) {
@@ -1265,6 +1268,20 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("6ft")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "6ft");
                             }
+                            if (e.getScoreboardTags().contains("hbrush")) {
+                                if (e.getScoreboardTags().contains("sbrush")) {
+                                    if (e.getScoreboardTags().contains("hpick")) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.GREEN + "Clean");
+                                    }
+                                }
+                            }
+                            if (!e.getScoreboardTags().contains("hbrush")) {
+                                if (!e.getScoreboardTags().contains("sbrush")) {
+                                    if (!e.getScoreboardTags().contains("hpick")) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.RED + "Dirty");
+                                    }
+                                }
+                            }
                             for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
                                 if (e.getScoreboardTags().contains("Trait:" + trts)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Trait:  " + ChatColor.WHITE + trts);
@@ -1336,6 +1353,73 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("Thirst:0")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
                             }
+                            return true;
+                        }
+                    }
+                }
+            }
+        }if (cmd.getName().equalsIgnoreCase("eqa")) {
+            if (args[0].equalsIgnoreCase("dirty")) {
+                World world = Bukkit.getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        e.removeScoreboardTag("hbrush");
+                        e.removeScoreboardTag("sbrush");
+                        e.removeScoreboardTag("hpick");
+                    }
+                }
+            }
+            if (args[0].equalsIgnoreCase("age")) {
+                World world = Bukkit.getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        int i = 0;
+                        while (i <= 62) {
+                            if (e.getScoreboardTags().contains("Age:" + i)) {
+                                e.removeScoreboardTag("Age:" + i);
+                                ++i;
+                                e.addScoreboardTag("Age:" + i);
+
+                            }
+                            ++i;
+                        }
+                    }
+                }
+
+            } else if (args[0].equalsIgnoreCase("heat")) {
+                World world = Bukkit.getWorld("world");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        int i = 1;
+                        while (i <= 13) {
+                            if (e.getScoreboardTags().contains("Heat" + i)) {
+                                e.removeScoreboardTag("Heat" + i);
+                                ++i;
+                                e.addScoreboardTag("Heat" + i);
+
+                            }
+                            ++i;
+
+                        }
+                        if (e.getScoreboardTags().contains("Heat14")) {
+                            e.removeScoreboardTag("Heat14");
+                            e.addScoreboardTag("Heat1");
+                            e.addScoreboardTag("InHeat1");
+                            return true;
+                        }
+                        if (e.getScoreboardTags().contains("InHeat1")) {
+                            e.removeScoreboardTag("InHeat1");
+                            e.removeScoreboardTag("InHeat2");
+                            return true;
+                        }
+                        if (e.getScoreboardTags().contains("InHeat2")) {
+                            e.removeScoreboardTag("InHeat2");
+                            e.removeScoreboardTag("InHeat3");
+                            return true;
+                        }
+                        if (e.getScoreboardTags().contains("InHeat3")) {
+                            e.removeScoreboardTag("InHeat3");
+                            e.removeScoreboardTag("InHeat");
                             return true;
                         }
                     }

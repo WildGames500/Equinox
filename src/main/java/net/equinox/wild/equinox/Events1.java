@@ -2,23 +2,20 @@ package net.equinox.wild.equinox;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.event.world.ChunkUnloadEvent;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -31,10 +28,6 @@ public class Events1 implements Listener {
     public Events1(Equinox plugin) {
         this.plugin = plugin;
     }
-
-
-
-
 
 
     @EventHandler
@@ -75,10 +68,47 @@ public class Events1 implements Listener {
 
         if (e.getEntityType()== EntityType.HORSE) {
             Player player = ((Player) e.getDamager()).getPlayer();
+            Location ploc = player.getLocation();
             UUID uuid = (UUID) player.getUniqueId();
             if (e.getDamager() instanceof Player) {
                 if (e.getEntity().getScoreboardTags().contains("Private")) {
                     if (e.getEntity().getScoreboardTags().contains("Owner:" + uuid)) {
+                        if (player.getItemInHand().getType() == Material.EMERALD) {
+                            if (!e.getEntity().getScoreboardTags().contains("hbrush")) {
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a hard brush!");
+                                player.playSound(ploc, "BLOCK_SAND_STEP", 4, 1.5F);
+                                e.getEntity().addScoreboardTag("hbrush");
+                                if (e.getEntity().getScoreboardTags().contains("sbrush")) {
+                                    if (e.getEntity().getScoreboardTags().contains("hpick")) {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
+                                        player.giveExp(3);
+                                    }
+                                }
+                            } else if (!e.getEntity().getScoreboardTags().contains("sbrush")) {
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a soft brush!");
+                                player.playSound(ploc, "BLOCK_SAND_STEP", 4, 1.5F);
+                                e.getEntity().addScoreboardTag("sbrush");
+                                if (e.getEntity().getScoreboardTags().contains("hbrush")) {
+                                    if (e.getEntity().getScoreboardTags().contains("hpick")) {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
+                                        player.giveExp(3);
+                                    }
+                                }
+                            } else if (!e.getEntity().getScoreboardTags().contains("hpick")) {
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have picked this horses hooves!");
+                                player.playSound(ploc, "BLOCK_STONE_STEP", 4, 1.5F);
+                                e.getEntity().addScoreboardTag("hpick");
+                                if (e.getEntity().getScoreboardTags().contains("sbrush")) {
+                                    if (e.getEntity().getScoreboardTags().contains("hbrush")) {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
+                                        player.giveExp(3);
+                                    }
+                                }
+                            }
+                        }
                         collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
                     } else if (!e.getEntity().getScoreboardTags().contains("Owned")) {
@@ -104,6 +134,21 @@ public class Events1 implements Listener {
             }
         }
 
+    }
+    @EventHandler
+    public void onChunkUnload(ChunkUnloadEvent unload) {
+        World world = Bukkit.getWorld("world");
+        Chunk chunk = unload.getChunk();
+        if (unload instanceof Cancellable) {
+            for (Entity e : world.getEntities()) {
+                if (e instanceof Horse) {
+                    Chunk chunk1 = e.getChunk();
+                    if (chunk == chunk1) {
+                        ((Cancellable) unload).setCancelled(true);
+                    }
+                }
+            }
+        }
     }
     @EventHandler
     public void AllDamage(EntityDamageEvent d) {

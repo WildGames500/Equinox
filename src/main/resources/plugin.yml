@@ -8,3 +8,6 @@ commands:
   eq:
     description: Returns pong!
     usage: /<command> [ping|tphere|tp|kill|name]
+  eqa:
+    description: Returns pong!
+    usage: /<command> [heat]
