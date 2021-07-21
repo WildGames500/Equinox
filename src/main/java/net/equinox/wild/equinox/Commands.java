@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import static net.equinox.wild.equinox.Events1.*;
 
@@ -37,6 +38,81 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
+            } else if (args[0].equalsIgnoreCase("deny")) {
+                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Transfer request denied!");
+                return true;
+            }
+            else if (args[0].equalsIgnoreCase("accept")) {
+                if (args.length == 2) {
+                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    UUID uuid2 = p2.getUniqueId();
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    UUID euid = collection.get(uuid2);
+                    World world = player.getWorld();
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            String n = e.getCustomName();
+                            if (euid.equals(h)) {
+                                if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                    e.addScoreboardTag("Owner:" + uuid);
+                                    e.removeScoreboardTag("Owner:" + uuid2);
+                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + sender + " has accepted your request!");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the owner of " + n + "!");
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (args[0].equalsIgnoreCase("transfer")) {
+                if (args.length == 2) {
+                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    UUID euid = collection.get(uuid);
+                    World world = player.getWorld();
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            String n = e.getCustomName();
+                            if (euid.equals(h)) {
+                                if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + sender + " would like to transfer ownership of " + n + " to you!");
+                                    TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
+                                    TextComponent msg2 = new TextComponent(ChatColor.GRAY + "[" + ChatColor.RED + "Deny" + ChatColor.GRAY + "]");
+                                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq accept " + sender));
+                                    msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq deny"));
+                                    player.spigot().sendMessage(msg, msg2);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (args[0].equalsIgnoreCase("trust")) {
+                if (args.length == 2) {
+                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    UUID uuid2 = p2.getUniqueId();
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    UUID euid = collection.get(uuid);
+                    World world = player.getWorld();
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have trusted " + p2 + " to your horse!");
+                                e.addScoreboardTag("Member:" + uuid2);
+                                return true;
+                            }
+                        }
+                    }
+
+                }
             } else if (args[0].equalsIgnoreCase("tphere")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
