@@ -46,8 +46,8 @@ public class Commands implements CommandExecutor {
                     if (e instanceof Horse) {
                         if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                             String hn = e.getCustomName();
-                            TextComponent msg = new TextComponent(ChatColor.BLUE + " ● " + hn);
-                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq select " + hn));
+                            TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
                             player.spigot().sendMessage(msg);
                             return true;
                         }
@@ -64,7 +64,7 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                 if (e.getCustomName().equals(args[1])) {
-                                    player.damage(1, e);
+                                    ((Horse) e).damage(1, player);
                                     return true;
                                 }
                             }
@@ -117,8 +117,8 @@ public class Commands implements CommandExecutor {
                                     p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + sender + " would like to transfer ownership of " + n + " to you!");
                                     TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
                                     TextComponent msg2 = new TextComponent(ChatColor.GRAY + "[" + ChatColor.RED + "Deny" + ChatColor.GRAY + "]");
-                                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq accept " + sender));
-                                    msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq deny"));
+                                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq accept " + sender));
+                                    msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq deny"));
                                     player.spigot().sendMessage(msg, msg2);
                                     return true;
                                 }
@@ -1175,7 +1175,7 @@ public class Commands implements CommandExecutor {
                         if (euid.equals(h)) {
                             String hn = e.getName();
                             TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + "<<" + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "------------------");
-                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq info"));
+                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info"));
                             player.spigot().sendMessage(msg);
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
@@ -1272,7 +1272,7 @@ public class Commands implements CommandExecutor {
                         if (euid.equals(h)) {
                             String hn = e.getName();
                             TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "------------------");
-                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq info2"));
+                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info2"));
                             player.spigot().sendMessage(msg);
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
