@@ -21,7 +21,7 @@ import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
 
-
+@SuppressWarnings("all")
 public class HorseGUI implements Listener {
     public static HashMap<UUID, String> breedname = new HashMap<UUID, String>();
     public static HashMap<UUID, String> gendername = new HashMap<UUID, String>();

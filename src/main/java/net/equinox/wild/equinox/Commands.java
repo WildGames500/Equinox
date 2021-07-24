@@ -9,7 +9,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -17,13 +16,12 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Nullable;
-
-import static net.equinox.wild.equinox.Events1.*;
 
 import java.util.*;
 
+import static net.equinox.wild.equinox.Events1.collection;
 
+@SuppressWarnings("all")
 public class Commands implements CommandExecutor {
     private final Equinox plugin;
 
@@ -38,7 +36,43 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
-            } else if (args[0].equalsIgnoreCase("deny")) {
+            } else if (args[0].equalsIgnoreCase("list")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                            String hn = e.getCustomName();
+                            TextComponent msg = new TextComponent(ChatColor.BLUE + " ● " + hn);
+                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "eq select " + hn));
+                            player.spigot().sendMessage(msg);
+                            return true;
+                        }
+                    }
+                }
+            }
+            else if (args[0].equalsIgnoreCase("select")) {
+                if (args.length >= 2) {
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    Location loc = player.getLocation();
+                    World world = player.getWorld();
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                if (e.getCustomName().equals(args[1])) {
+                                    player.damage(1, e);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else if (args[0].equalsIgnoreCase("deny")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Transfer request denied!");
                 return true;
             }

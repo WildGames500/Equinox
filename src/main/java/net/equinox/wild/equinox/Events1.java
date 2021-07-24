@@ -19,7 +19,7 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 import java.util.HashMap;
 import java.util.UUID;
 
-
+@SuppressWarnings("all")
 // Storage Of Selected Horse
 public class Events1 implements Listener {
     public static HashMap<UUID, UUID> collection = new HashMap<UUID, UUID>();
