@@ -1388,12 +1388,14 @@ public class Commands implements CommandExecutor {
                             while (i <= 1) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Year");
+                                    break;
                                 }
                                 ++i;
                             }
                             while (i >= 2) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Years");
+                                    break;
                                 }
                                 ++i;
                             }
@@ -1646,6 +1648,7 @@ public class Commands implements CommandExecutor {
                                 e.removeScoreboardTag("Age:" + i);
                                 ++i;
                                 e.addScoreboardTag("Age:" + i);
+                                break;
 
                             }
                             ++i;
@@ -1663,6 +1666,7 @@ public class Commands implements CommandExecutor {
                                 e.removeScoreboardTag("Heat" + i);
                                 ++i;
                                 e.addScoreboardTag("Heat" + i);
+                                break;
 
                             }
                             ++i;
