@@ -13,11 +13,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 @SuppressWarnings("all")
 // Storage Of Selected Horse
@@ -29,6 +29,149 @@ public class Events1 implements Listener {
         this.plugin = plugin;
     }
 
+
+    @EventHandler
+    public void onBreeding(PlayerLeashEntityEvent e) {
+        Entity h = e.getEntity();
+        Player p = (Player) e.getLeashHolder();
+
+        if (h.getType() == EntityType.HORSE) {
+            if (h.getScoreboardTags().contains("Gender:Stallion")) {
+                h.addScoreboardTag("Breeding");
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    h.removeScoreboardTag("Breeding");
+                    return;
+                },100);
+            }
+            if (h.getScoreboardTags().contains("Gender:Mare")) {
+                double xloc = h.getLocation().getX();
+                double yloc = h.getLocation().getY();
+                double zloc = h.getLocation().getZ();
+                for (Entity h2 : h.getNearbyEntities(xloc, yloc, zloc)) {
+                    if (h2.getScoreboardTags().contains("Gender:Stallion")) {
+                        if (h2.getScoreboardTags().contains("Breeding")) {
+                            if (h.getScoreboardTags().contains("InHeat")) {
+                                if (!h.getScoreboardTags().contains("Pregnant")) {
+                                    p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "This horse has bred successfully!");
+                                    h2.teleport(h);
+                                    h.addScoreboardTag("Pregnant");
+                                    for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 49) {
+                                            if (h.getScoreboardTags().contains("Breed:" + brds)) {
+                                                h.addScoreboardTag("fb:" + brds);
+                                                p.sendMessage(brds);
+                                            }
+                                        } else {
+                                            if (h2.getScoreboardTags().contains("Breed:" + brds)) {
+                                                h.addScoreboardTag("fb:" + brds);
+                                                p.sendMessage(brds);
+                                            }
+
+                                        }
+                                    }
+                                    for (String clrs : plugin.getCoatConfig().getStringList("Color")) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 49) {
+                                            if (h.getScoreboardTags().contains("Color:" + clrs)) {
+                                                h.addScoreboardTag("fc:" + clrs);
+                                                p.sendMessage(clrs);
+                                            }
+                                        } else {
+                                            if (h2.getScoreboardTags().contains("Color:" + clrs)) {
+                                                h.addScoreboardTag("fc:" + clrs);
+                                                p.sendMessage(clrs);
+                                            }
+
+                                        }
+                                    }
+                                    for (String styl : plugin.getCoatConfig().getStringList("Style")) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 49) {
+                                            if (h.getScoreboardTags().contains("Style:" + styl)) {
+                                                h.addScoreboardTag("fs:" + styl);
+                                                p.sendMessage(styl);
+                                            }
+                                        } else {
+                                            if (h2.getScoreboardTags().contains("Style:" + styl)) {
+                                                h.addScoreboardTag("fs:" + styl);
+                                                p.sendMessage(styl);
+                                            }
+
+                                        }
+                                    }
+                                    Random rnd = new Random();
+                                    int i = rnd.nextInt(100);
+                                    if (i <= 49) {
+                                        h.addScoreboardTag("fg:Filly");
+                                    } else {
+                                        h.addScoreboardTag("fg:Colt");
+                                    }
+                                    int sps = 0;
+                                    int spe = 8;
+                                    for (int spd = sps + 1; spd < spe; spd++) {
+                                        System.out.println(spd);
+                                        if (h.getScoreboardTags().contains("Speed:T" + spd)) {
+                                            int spm = spd;
+                                            for (int spd2 = sps + 1; spd2 < spe; spd2++) {
+                                                if (h2.getScoreboardTags().contains("Speed:T" + spd2)) {
+                                                    int spst = spd2;
+                                                    if (spm >= spst) {
+                                                        Random random = new Random();
+                                                        int spfs = random.nextInt(spm - spst) + spst;
+                                                        p.sendMessage(String.valueOf(spfs));
+                                                        break;
+                                                    } else {
+                                                        Random random = new Random();
+                                                        int spfs = random.nextInt(spst - spm) + spm;
+                                                        p.sendMessage(String.valueOf(spfs));
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    int js = 0;
+                                    int je = 7;
+                                    for (int jd = js + 1; jd < je; jd++) {
+                                        if (h.getScoreboardTags().contains(jd + "ft")) {
+                                            int jm = jd;
+                                            for (int jd2 = js + 1; jd2 < je; jd2++) {
+                                                if (h2.getScoreboardTags().contains(jd2 + "ft")) {
+                                                    int jst = jd2;
+                                                    if (jm >= jst) {
+                                                        Random random = new Random();
+                                                        int jds = random.nextInt(jm - jst) + jst;
+                                                        h.addScoreboardTag("fj:" + jds);
+                                                        p.sendMessage(String.valueOf(jds));
+                                                        break;
+                                                    } else {
+                                                        Random random = new Random();
+                                                        int jds = random.nextInt(jst - jm) + jm;
+                                                        h.addScoreboardTag("fj:" + jds);
+                                                        p.sendMessage(String.valueOf(jds));
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    h2.removeScoreboardTag("Breeding");
+                                } else {
+                                    h2.removeScoreboardTag("Breeding");
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 
     @EventHandler
     public void onPoopPunch(PlayerInteractEvent e) {

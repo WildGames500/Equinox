@@ -5,10 +5,12 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -36,6 +38,22 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
+            } else if (args[0].equalsIgnoreCase("heat")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            e.addScoreboardTag("InHeat");
+                            player.sendMessage("Heat Given");
+                            return true;
+                        }
+                    }
+                }
             } else if (args[0].equalsIgnoreCase("list")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
@@ -1271,7 +1289,7 @@ public class Commands implements CommandExecutor {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             String hn = e.getName();
-                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "------------------");
+                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + "]" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------");
                             msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info2"));
                             player.spigot().sendMessage(msg);
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
@@ -1387,14 +1405,14 @@ public class Commands implements CommandExecutor {
                             int i = 0;
                             while (i <= 1) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Year");
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Year");
                                     break;
                                 }
                                 ++i;
                             }
                             while (i >= 2) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.WHITE + i + "Years");
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Years");
                                     break;
                                 }
                                 ++i;
@@ -1570,6 +1588,130 @@ public class Commands implements CommandExecutor {
                 }
             }
         }if (cmd.getName().equalsIgnoreCase("eqa")) {
+            if (args[0].equalsIgnoreCase("preg")) {
+                Random r = new Random();
+                double t7 = 0.65 + (0.75 - 0.65) * r.nextDouble();
+                double t6 = 0.55 + (0.65 - 0.55) * r.nextDouble();
+                double t5 = 0.45 + (0.55 - 0.45) * r.nextDouble();
+                double t4 = 0.35 + (0.45 - 0.35) * r.nextDouble();
+                double t3 = 0.25 + (0.35 - 0.25) * r.nextDouble();
+                double t2 = 0.15 + (0.25 - 0.15) * r.nextDouble();
+                double t1 = 0.009 + (0.15 - 0.009) * r.nextDouble();
+                World world = Bukkit.getWorld("world");
+                Player player = (Player) Bukkit.getOnlinePlayers();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        int i = 1;
+                        while (i <= 8) {
+                            if (e.getScoreboardTags().contains("Pregnant")) {
+                                e.removeScoreboardTag("preg" + i);
+                                ++i;
+                                e.addScoreboardTag("preg" + i);
+                                break;
+                            }
+                            ++i;
+                        }
+                    } if (e.getScoreboardTags().contains("preg8")) {
+                        e.removeScoreboardTag("preg8");
+                        e.removeScoreboardTag("Pregnant");
+                        Location loc = e.getLocation();
+                        Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                        h.setAge(-25000);
+                        h.addScoreboardTag("Hunger:10");
+                        h.addScoreboardTag("Thirst:10");
+                        h.addScoreboardTag("Private");
+                        h.addScoreboardTag("Level:0");
+                        h.addScoreboardTag("XP:1");
+                        h.addScoreboardTag("Age:0");
+                        h.setTamed(true);
+                        if (e.getScoreboardTags().contains("fg:Filly")) {
+                            h.addScoreboardTag("Gender:Filly");
+                        } if (e.getScoreboardTags().contains("fg:Colt")) {
+                            h.addScoreboardTag("Gender:Colt");
+                        } for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                            if (e.getScoreboardTags().contains("fb:" + brds)) {
+                                h.addScoreboardTag("Breed:" + brds);
+                                break;
+                            }
+                        }
+                        for (String brds : plugin.getCoatConfig().getStringList("Color")) {
+                            if (e.getScoreboardTags().contains("fc:" + brds)) {
+                                h.addScoreboardTag("Color:" + brds);
+                                if (brds == "Palomino") {
+                                    h.setColor(Horse.Color.CREAMY);
+                                }  if (brds == "Chestnut") {
+                                    h.setColor(Horse.Color.CHESTNUT);
+                                } if (brds == "Black") {
+                                    h.setColor(Horse.Color.BLACK);
+                                } if (brds == "Bay") {
+                                    h.setColor(Horse.Color.DARK_BROWN);
+                                } if (brds == "Buckskin") {
+                                    h.setColor(Horse.Color.BROWN);
+                                } if (brds == "Gray") {
+                                    h.setColor(Horse.Color.GRAY);
+                                } if (brds == "White") {
+                                    h.setColor(Horse.Color.WHITE);
+                                }
+                                break;
+
+                            }
+                        } for (String brds : plugin.getBreedsConfig().getStringList("Style")) {
+                            if (e.getScoreboardTags().contains("fs:" + brds)) {
+                                h.addScoreboardTag("Style:" + brds);
+                                if (brds == "Blaze") {
+                                    h.setStyle(Horse.Style.WHITE);
+                                }  if (brds == "Paint") {
+                                    h.setStyle(Horse.Style.WHITEFIELD);
+                                } if (brds == "Star") {
+                                    h.setStyle(Horse.Style.WHITE_DOTS);
+                                } if (brds == "Crescent") {
+                                    h.setStyle(Horse.Style.BLACK_DOTS);
+                                }
+                                break;
+                            }
+                        } if (e.getScoreboardTags().contains("fs:1")) {
+                            h.addScoreboardTag("T1");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                        } if (e.getScoreboardTags().contains("fs:2")) {
+                            h.addScoreboardTag("T2");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                        } if (e.getScoreboardTags().contains("fs:3")) {
+                            h.addScoreboardTag("T3");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                        } if (e.getScoreboardTags().contains("fs:4")) {
+                            h.addScoreboardTag("T4");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                        } if (e.getScoreboardTags().contains("fs:5")) {
+                            h.addScoreboardTag("T5");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                        } if (e.getScoreboardTags().contains("fs:6")) {
+                            h.addScoreboardTag("T6");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                        } if (e.getScoreboardTags().contains("fs:7")) {
+                            h.addScoreboardTag("T7");
+                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                        } if (e.getScoreboardTags().contains("fj:1")) {
+                            h.addScoreboardTag("1ft");
+                            h.setJumpStrength(.517);
+                        } if (e.getScoreboardTags().contains("fj:2")) {
+                            h.addScoreboardTag("2ft");
+                            h.setJumpStrength(.617);
+                        } if (e.getScoreboardTags().contains("fj:3")) {
+                            h.addScoreboardTag("3ft");
+                            h.setJumpStrength(.717);
+                        } if (e.getScoreboardTags().contains("fj:4")) {
+                            h.addScoreboardTag("4ft");
+                            h.setJumpStrength(.817);
+                        } if (e.getScoreboardTags().contains("fj:5")) {
+                            h.addScoreboardTag("5ft");
+                            h.setJumpStrength(.917);
+                        } if (e.getScoreboardTags().contains("fj:6")) {
+                            h.addScoreboardTag("6ft");
+                            h.setJumpStrength(1.017);
+                        }
+                    }
+                }
+            }
             if (args[0].equalsIgnoreCase("injury")) {
                 World world = Bukkit.getWorld("world");
                 Player player = (Player) Bukkit.getOnlinePlayers();
@@ -1598,7 +1740,6 @@ public class Commands implements CommandExecutor {
                     }
                 }
             }
-        }if (cmd.getName().equalsIgnoreCase("eqa")) {
             if (args[0].equalsIgnoreCase("illness")) {
                 World world = Bukkit.getWorld("world");
                 for (Entity e : world.getEntities()) {

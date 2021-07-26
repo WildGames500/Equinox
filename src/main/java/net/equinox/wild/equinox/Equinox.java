@@ -34,8 +34,10 @@ public final class Equinox extends JavaPlugin {
     private static Economy econ = null;
     private File breedsConfigFile;
     private File traitConfigFile;
+    private File coatConfigFile;
     private FileConfiguration breedsConfig;
     private FileConfiguration traitConfig;
+    private FileConfiguration coatConfig;
     private boolean useHolographicDisplays;
 
 
@@ -80,7 +82,7 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 20) {
+                        if (i <= 10) {
                             if (e.getScoreboardTags().contains("Hunger:10")) {
                                 e.removeScoreboardTag("Hunger:10");
                                 e.addScoreboardTag("Hunger:9");
@@ -159,7 +161,7 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 25) {
+                        if (i <= 15) {
                             if (e.getScoreboardTags().contains("Thirst:10")) {
                                 e.removeScoreboardTag("Thirst:10");
                                 e.addScoreboardTag("Thirst:9");
@@ -226,7 +228,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 35000, 35000);
+        }.runTaskTimer(plugin, 45000, 45000);
     }
 
     public void drinkLoop2(Plugin plugin) {
@@ -254,47 +256,94 @@ public final class Equinox extends JavaPlugin {
                                                         e.removeScoreboardTag("Thirst:9");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:8")) {
                                                         e.removeScoreboardTag("Thirst:8");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:7")) {
                                                         e.removeScoreboardTag("Thirst:7");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
-                                                        block.getState().getData().setData((byte) 2);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:6")) {
                                                         e.removeScoreboardTag("Thirst:6");
                                                         e.addScoreboardTag("Thirst:9");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:5")) {
                                                         e.removeScoreboardTag("Thirst:5");
                                                         e.addScoreboardTag("Thirst:8");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:4")) {
                                                         e.removeScoreboardTag("Thirst:4");
                                                         e.addScoreboardTag("Thirst:7");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:3")) {
                                                         e.removeScoreboardTag("Thirst:3");
                                                         e.addScoreboardTag("Thirst:6");
-                                                        block.getState().getData().setData((byte) 2);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:2")) {
                                                         e.removeScoreboardTag("Thirst:2");
                                                         e.addScoreboardTag("Thirst:5");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:1")) {
                                                         e.removeScoreboardTag("Thirst:1");
                                                         e.addScoreboardTag("Thirst:4");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:0")) {
                                                         e.removeScoreboardTag("Thirst:0");
                                                         e.addScoreboardTag("Thirst:3");
-                                                        block.getState().getData().setData((byte) 2);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 2);
+                                                        }
                                                         if (e.getScoreboardTags().contains("DayT-1")) {
                                                             e.removeScoreboardTag("DayT-1");
                                                             return;
@@ -319,47 +368,94 @@ public final class Equinox extends JavaPlugin {
                                                         e.removeScoreboardTag("Thirst:9");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:8")) {
                                                         e.removeScoreboardTag("Thirst:8");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:7")) {
                                                         e.removeScoreboardTag("Thirst:7");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
-                                                        block.getState().getData().setData((byte) 1);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:6")) {
                                                         e.removeScoreboardTag("Thirst:6");
                                                         e.addScoreboardTag("Thirst:9");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:5")) {
                                                         e.removeScoreboardTag("Thirst:5");
                                                         e.addScoreboardTag("Thirst:8");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:4")) {
                                                         e.removeScoreboardTag("Thirst:4");
                                                         e.addScoreboardTag("Thirst:7");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:3")) {
                                                         e.removeScoreboardTag("Thirst:3");
                                                         e.addScoreboardTag("Thirst:6");
-                                                        block.getState().getData().setData((byte) 1);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:2")) {
                                                         e.removeScoreboardTag("Thirst:2");
                                                         e.addScoreboardTag("Thirst:5");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:1")) {
                                                         e.removeScoreboardTag("Thirst:1");
                                                         e.addScoreboardTag("Thirst:4");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:0")) {
                                                         e.removeScoreboardTag("Thirst:0");
                                                         e.addScoreboardTag("Thirst:3");
-                                                        block.getState().getData().setData((byte) 1);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 1);
+                                                        }
                                                         if (e.getScoreboardTags().contains("DayT-1")) {
                                                             e.removeScoreboardTag("DayT-1");
                                                             return;
@@ -384,47 +480,94 @@ public final class Equinox extends JavaPlugin {
                                                         e.removeScoreboardTag("Thirst:9");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:8")) {
                                                         e.removeScoreboardTag("Thirst:8");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:7")) {
                                                         e.removeScoreboardTag("Thirst:7");
                                                         e.addScoreboardTag("Thirst:10");
                                                         e.removeScoreboardTag("Thirst");
-                                                        block.getState().getData().setData((byte) 0);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:6")) {
                                                         e.removeScoreboardTag("Thirst:6");
                                                         e.addScoreboardTag("Thirst:9");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:5")) {
                                                         e.removeScoreboardTag("Thirst:5");
                                                         e.addScoreboardTag("Thirst:8");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:4")) {
                                                         e.removeScoreboardTag("Thirst:4");
                                                         e.addScoreboardTag("Thirst:7");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Hunger:3")) {
                                                         e.removeScoreboardTag("Thirst:3");
                                                         e.addScoreboardTag("Thirst:6");
-                                                        block.getState().getData().setData((byte) 0);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:2")) {
                                                         e.removeScoreboardTag("Thirst:2");
                                                         e.addScoreboardTag("Thirst:5");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:1")) {
                                                         e.removeScoreboardTag("Thirst:1");
                                                         e.addScoreboardTag("Thirst:4");
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:0")) {
                                                         e.removeScoreboardTag("Thirst:0");
                                                         e.addScoreboardTag("Thirst:3");
-                                                        block.getState().getData().setData((byte) 0);
+                                                        Random rnd = new Random();
+                                                        int i = rnd.nextInt(100);
+                                                        if (i <= 25) {
+                                                            block.getState().getData().setData((byte) 0);
+                                                        }
                                                         if (e.getScoreboardTags().contains("DayT-1")) {
                                                             e.removeScoreboardTag("DayT-1");
                                                             return;
@@ -444,10 +587,10 @@ public final class Equinox extends JavaPlugin {
                                                 }, 100);
                                             }
                                         }
-                                    }
-                                }
+                                    } break;
+                                } break;
                             }
-                        } break;
+                        }
                     }
                 }
             }
@@ -535,9 +678,9 @@ public final class Equinox extends JavaPlugin {
                                             }, 100);
                                         }
                                     }
-                                }
-                            }
-                        } break;
+                                } break;
+                            } break;
+                        }
                     }
                 }
             }
@@ -630,15 +773,14 @@ public final class Equinox extends JavaPlugin {
                                             break;
                                         }break;
                                     }
-                                }
-                            }
-                        }break;
+                                } break;
+                            } break;
+                        }
                     }
                 }
             }
         }.runTaskTimer(plugin, 500, 500);
     }
-
     public void eatLoop2(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
@@ -730,9 +872,9 @@ public final class Equinox extends JavaPlugin {
                                             }, 100);
                                         }
                                     }
-                                }
-                            }
-                        }break;
+                                } break;
+                            } break;
+                        }
                     }
                 }
             }
@@ -831,9 +973,9 @@ public final class Equinox extends JavaPlugin {
                                         }
                                         break;
                                     }
-                                }
-                            }
-                        }break;
+                                } break;
+                            } break;
+                        }
                     }
                 }
             }
@@ -860,7 +1002,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 6000, 6000);
+        }.runTaskTimer(plugin, 10000, 10000);
     }
 
     public void horseRiding(Plugin plugin) {
@@ -1050,20 +1192,32 @@ public final class Equinox extends JavaPlugin {
     // Get config file
     public FileConfiguration getBreedsConfig() {
         return this.breedsConfig;
-
     }
     public FileConfiguration getTraitConfig() {
         return this.traitConfig;
     }
+    public FileConfiguration getCoatConfig() {
+        return this.coatConfig;
+    }
     private void createCustomConfig() {
         breedsConfigFile = new File(getDataFolder(), "Breeds.yml");
         traitConfigFile = new File(getDataFolder(), "Traits.yml");
+        coatConfigFile = new File(getDataFolder(), "Coat.yml");
         if (!breedsConfigFile.exists()) {
             breedsConfigFile.getParentFile().mkdirs();
             saveResource("Breeds.yml", false);
         } if (!traitConfigFile.exists()) {
             traitConfigFile.getParentFile().mkdirs();
             saveResource("Traits.yml", false);
+        } if (!coatConfigFile.exists()) {
+            coatConfigFile.getParentFile().mkdirs();
+            saveResource("Coat.yml", false);
+        }
+        coatConfig = new YamlConfiguration();
+        try{
+            coatConfig.load(coatConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
         }
         traitConfig = new YamlConfiguration();
         try{

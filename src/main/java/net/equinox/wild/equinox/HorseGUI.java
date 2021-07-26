@@ -41,8 +41,6 @@ public class HorseGUI implements Listener {
     public void OnInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         Economy eco = Equinox.getEconomy();
-
-
         if (e.getView().getTitle().equals("§0Menu")) {
             e.setCancelled(true);
             UUID uuid = p.getUniqueId();
@@ -519,13 +517,10 @@ public class HorseGUI implements Listener {
                         h.addScoreboardTag("Level:0");
                         h.addScoreboardTag("XP:1");
                         h.addScoreboardTag("Age:4");
-                        for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
-                            List tr = Arrays.asList(trts);
-                            Random rn = new Random();
-                            String rnt = (String) tr.get(rn.nextInt(tr.size()));
-                            h.addScoreboardTag("Trait:" + rnt);
-                            break;
-                        }
+                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                        int index = new Random().nextInt(list.size());
+                        String rnt = list.get(index);
+                        h.addScoreboardTag("Trait:" + rnt);
                         if (!breedname.isEmpty()) {
                             h.addScoreboardTag("Breed:" + breed);
                         }
