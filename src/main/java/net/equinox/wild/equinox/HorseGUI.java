@@ -110,7 +110,7 @@ public class HorseGUI implements Listener {
                 if (!gendername.isEmpty()) {
                     metaref1.setDisplayName(gender);
                 } else {
-                    metaref2.setDisplayName("§bGender");
+                    metaref1.setDisplayName("§bGender");
                 }if (!breedname.isEmpty()) {
                     metaref2.setDisplayName(breed);
                 } else {
