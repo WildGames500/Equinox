@@ -4,6 +4,7 @@ import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.command.Command;
@@ -38,7 +39,34 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
-            } else if (args[0].equalsIgnoreCase("heat")) {
+            }else if (args[0].equalsIgnoreCase("lease")) {
+                if (args.length == 3) {
+                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    UUID uuid2 = p2.getUniqueId();
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    UUID euid = collection.get(uuid2);
+                    World world = player.getWorld();
+                    int cost = Integer.parseInt(args[2]);
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            String n = e.getCustomName();
+                            if (euid.equals(h)) {
+                                p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + sender + "would like to lease you" + n + " for " + "$" + cost + "!" );
+                                TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
+                                TextComponent msg2 = new TextComponent(ChatColor.GRAY + "[" + ChatColor.RED + "Deny" + ChatColor.GRAY + "]");
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq accept2 " + sender + cost));
+                                msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq deny"));
+                                player.spigot().sendMessage(msg, msg2);
+                                return true;
+                            }
+
+                        }
+                    }
+                }
+            }
+            else if (args[0].equalsIgnoreCase("heat")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
@@ -93,6 +121,37 @@ public class Commands implements CommandExecutor {
             else if (args[0].equalsIgnoreCase("deny")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Transfer request denied!");
                 return true;
+            }else if (args[0].equalsIgnoreCase("accept2")) {
+                if (args.length == 3) {
+                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    UUID uuid2 = p2.getUniqueId();
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    UUID euid = collection.get(uuid2);
+                    World world = player.getWorld();
+                    Economy eco = Equinox.getEconomy();
+                    int cost = Integer.parseInt(args[2]);
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            String n = e.getCustomName();
+                            if (euid.equals(h)) {
+                                if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                    e.addScoreboardTag("Leased1");
+                                    e.addScoreboardTag("Leaser:" + uuid);
+                                    double bal = eco.getBalance(String.valueOf(sender));
+                                    if (bal >= cost) {
+                                        eco.withdrawPlayer(String.valueOf(sender), cost);
+                                        eco.depositPlayer(p2, cost);
+                                    }
+                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + sender + " has accepted your request!");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the lease owner of " + n + "!");
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
             }
             else if (args[0].equalsIgnoreCase("accept")) {
                 if (args.length == 2) {
@@ -1709,6 +1768,34 @@ public class Commands implements CommandExecutor {
                             h.addScoreboardTag("6ft");
                             h.setJumpStrength(1.017);
                         }
+                    }
+                }
+            } if (args[0].equalsIgnoreCase("lease")) {
+                World world = Bukkit.getWorld("world");
+                Player player = (Player) Bukkit.getOnlinePlayers();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        int num = 1;
+                        while (num <= 30) {
+                            if (e.getScoreboardTags().contains("Leased" + num)){
+                                e.removeScoreboardTag("Leased" + num);
+                                ++num;
+                                e.addScoreboardTag("Leased" + num);
+                                if (num == 30) {
+                                    e.removeScoreboardTag("Leased" + num);
+                                    for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                        UUID puuid = p.getUniqueId();
+                                        String offp = p.getName();
+                                        if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
+                                            e.removeScoreboardTag("Leaser:" + puuid);
+                                            break;
+                                        }
+                                    }
+                                } break;
+                            }
+                            ++num;
+                        }
+
                     }
                 }
             }
