@@ -238,7 +238,7 @@ public final class Equinox extends JavaPlugin {
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
-                        int radius = 2;
+                        int radius = 4;
                         if (e.getScoreboardTags().contains("Thirst")) {
                             for (int x = -radius; x <= radius; x++) {
                                 for (int y = -radius; y <= radius; y++) {
@@ -247,6 +247,7 @@ public final class Equinox extends JavaPlugin {
                                         Location loc2 = block.getLocation();
                                         Material bt = block.getType();
                                         if (bt == Material.CAULDRON) {
+                                            System.out.println("Cauldron");
                                             Cauldron c = (Cauldron) block.getState().getData();
                                             if (c.getData() == 3) {
                                                 ((Horse) e).getPathfinder().findPath(loc2);
@@ -585,16 +586,16 @@ public final class Equinox extends JavaPlugin {
                                                         }
                                                     }
                                                 }, 100);
-                                            }
+                                            } break;
                                         }
-                                    } break;
-                                } break;
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        }.runTaskTimer(plugin, 600, 600);
+        }.runTaskTimer(plugin, 0, 600);
     }
 
     public void drinkLoop(Plugin plugin) {
@@ -676,15 +677,15 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
-                                        }
+                                        } break;
                                     }
-                                } break;
-                            } break;
+                                }
+                            }
                         }
                     }
                 }
             }
-        }.runTaskTimer(plugin, 600, 600);
+        }.runTaskTimer(plugin, 0, 600);
     }
 
     //Loop EatHay
@@ -770,11 +771,10 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
-                                            break;
                                         }break;
                                     }
-                                } break;
-                            } break;
+                                }
+                            }
                         }
                     }
                 }
@@ -870,10 +870,10 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
-                                        }
+                                        }break;
                                     }
-                                } break;
-                            } break;
+                                }
+                            }
                         }
                     }
                 }
@@ -900,6 +900,7 @@ public final class Equinox extends JavaPlugin {
                                             ((Horse) e).getPathfinder().findPath(loc2);
                                             for (Player p : loc2.getNearbyPlayers(5)) {
                                                 p.playSound(loc2, BLOCK_GRASS_BREAK, 1, 1);
+                                                break;
                                             }
                                             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                                                 @Override
@@ -907,9 +908,7 @@ public final class Equinox extends JavaPlugin {
                                                     NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                                     Random rnd = new Random();
                                                     int i = rnd.nextInt(100);
-                                                    if (i <= 25) {
-                                                        block.setType(Material.DIRT);
-                                                    }
+                                                    block.setType(Material.DIRT);
                                                     if (e.getScoreboardTags().contains("Hunger:9")) {
                                                         e.removeScoreboardTag("Hunger:9");
                                                         e.addScoreboardTag("Hunger:10");
@@ -968,13 +967,11 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
-                                            break;
 
-                                        }
-                                        break;
+                                        } break;
                                     }
-                                } break;
-                            } break;
+                                }
+                            }
                         }
                     }
                 }
