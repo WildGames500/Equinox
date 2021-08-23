@@ -1236,6 +1236,60 @@ public class Commands implements CommandExecutor {
                                                             e.removeScoreboardTag("Level:6");
                                                             e.addScoreboardTag("Level:7");
                                                             p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:7")) {
+                                                while (i <= 565) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 565) {
+                                                            e.removeScoreboardTag("Level:7");
+                                                            e.addScoreboardTag("Level:8");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:8")) {
+                                                while (i <= 1000) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 1000) {
+                                                            e.removeScoreboardTag("Level:8");
+                                                            e.addScoreboardTag("Level:9");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                                        }
+                                                        return;
+                                                    } else {
+                                                        ++i;
+                                                    }
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Level:9")) {
+                                                while (i <= 1500) {
+                                                    if (e.getScoreboardTags().contains("XP:" + i)) {
+                                                        e.removeScoreboardTag("XP:" + i);
+                                                        ++i;
+                                                        e.addScoreboardTag("XP:" + i);
+                                                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                        p.giveExp(1);
+                                                        if (i == 1500) {
+                                                            e.removeScoreboardTag("Level:9");
+                                                            e.addScoreboardTag("Level:10");
+                                                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 8!");
                                                             for (String tb : plugin.getConfig().getStringList("Bad")) {
                                                                 if (e.getScoreboardTags().contains(tb)) {
                                                                     e.removeScoreboardTag("Trait:" + tb);
@@ -1472,6 +1526,36 @@ public class Commands implements CommandExecutor {
                                 while (xp <= 265) {
                                     if (e.getScoreboardTags().contains("XP:" + xp)) {
                                         player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level7:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/265");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:8")) {
+                                int xp = 265;
+                                while (xp <= 565) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level8:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/565");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:9")) {
+                                int xp = 565;
+                                while (xp <= 1000) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level9:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/1000");
+                                        break;
+                                    }
+                                    ++xp;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("Level:10")) {
+                                int xp = 565;
+                                while (xp <= 1500) {
+                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level10:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/1500");
                                         break;
                                     }
                                     ++xp;

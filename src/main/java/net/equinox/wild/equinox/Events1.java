@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -761,6 +762,13 @@ public class Events1 implements Listener {
                     }
                 }
             }
+        }
+    }
+    @EventHandler
+    public void onDissconnect(PlayerQuitEvent e) {
+        Player p = e.getPlayer();
+        if (p.getVehicle().getType() == EntityType.HORSE) {
+            p.eject();
         }
     }
 }
