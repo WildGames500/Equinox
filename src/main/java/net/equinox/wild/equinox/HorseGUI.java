@@ -239,6 +239,9 @@ public class HorseGUI implements Listener {
                             purchase.put(p.getUniqueId(), buy65);
                             metaref8.setDisplayName(String.valueOf(buy65));
                         }
+                    } else if (speed.equals(null)){
+                        purchase.put(p.getUniqueId(), 0);
+                        metaref8.setDisplayName(String.valueOf(0));
                     } else {
                         purchase.put(p.getUniqueId(), 0);
                         metaref8.setDisplayName(String.valueOf(0));
@@ -321,36 +324,42 @@ public class HorseGUI implements Listener {
                 ItemStack ref4 = new ItemStack(Material.PAPER);
                 ItemStack ref5 = new ItemStack(Material.PAPER);
                 ItemStack ref6 = new ItemStack(Material.PAPER);
+                ItemStack ref7 = new ItemStack(Material.PAPER);
                 ItemMeta metaref1 = ref1.getItemMeta();
                 ItemMeta metaref2 = ref2.getItemMeta();
                 ItemMeta metaref3 = ref3.getItemMeta();
                 ItemMeta metaref4 = ref4.getItemMeta();
                 ItemMeta metaref5 = ref5.getItemMeta();
                 ItemMeta metaref6 = ref6.getItemMeta();
+                ItemMeta metaref7 = ref7.getItemMeta();
                 ref1.setItemMeta(metaref1);
                 ref2.setItemMeta(metaref2);
                 ref3.setItemMeta(metaref3);
                 ref4.setItemMeta(metaref4);
                 ref5.setItemMeta(metaref5);
                 ref6.setItemMeta(metaref6);
+                ref7.setItemMeta(metaref7);
                 metaref1.setDisplayName("Bay");
                 metaref2.setDisplayName("Black");
                 metaref3.setDisplayName("Buckskin");
                 metaref4.setDisplayName("Chestnut");
                 metaref5.setDisplayName("Palomino");
                 metaref6.setDisplayName("White");
+                metaref7.setDisplayName("Gray");
                 ref1.setItemMeta(metaref1);
                 ref2.setItemMeta(metaref2);
                 ref3.setItemMeta(metaref3);
                 ref4.setItemMeta(metaref4);
                 ref5.setItemMeta(metaref5);
                 ref6.setItemMeta(metaref6);
+                ref7.setItemMeta(metaref7);
                 gn.setItem(0, ref1);
                 gn.setItem(1, ref2);
                 gn.setItem(2, ref3);
                 gn.setItem(3, ref4);
                 gn.setItem(4, ref5);
                 gn.setItem(5, ref6);
+                gn.setItem(6, ref7);
 
                 p.openInventory(gn);
 
@@ -376,7 +385,7 @@ public class HorseGUI implements Listener {
                 ref5.setItemMeta(metaref5);
                 metaref1.setDisplayName("None");
                 metaref2.setDisplayName("Blaze");
-                metaref3.setDisplayName("Cresent");
+                metaref3.setDisplayName("Snip");
                 metaref4.setDisplayName("Paint");
                 metaref5.setDisplayName("Star");
                 ref1.setItemMeta(metaref1);
@@ -539,21 +548,21 @@ public class HorseGUI implements Listener {
                         } else if (coat.equals("Bay")) {
                             h.addScoreboardTag("Color:Bay");
                             h.setColor(Horse.Color.DARK_BROWN);
-                        } else if (coat.equals("Brown")) {
-                            h.addScoreboardTag("Color:Brown");
-                            h.setColor(Horse.Color.BROWN);
                         } else if (coat.equals("White")) {
                             h.addScoreboardTag("Color:White");
                             h.setColor(Horse.Color.WHITE);
                         } else if (coat.equals("Palomino")) {
                             h.addScoreboardTag("Color:Palomino");
                             h.setColor(Horse.Color.CREAMY);
-                        } else if (coat.equals("Silver")) {
+                        } else if (coat.equals("Gray")) {
                             h.addScoreboardTag("Color:Silver");
                             h.setColor(Horse.Color.GRAY);
+                        }else if (coat.equals("Buckskin")) {
+                            h.addScoreboardTag("Color:Buckskin");
+                            h.setColor(Horse.Color.BROWN);
                         }
-                        if (coats.equals("Blaze")) {
-                            h.addScoreboardTag("Style:Blaze");
+                        if (coats.equals("Snip")) {
+                            h.addScoreboardTag("Style:Snip");
                             h.setStyle(Horse.Style.WHITE);
                         } else if (coats.equals("Paint")) {
                             h.addScoreboardTag("Style:Paint");
@@ -561,8 +570,8 @@ public class HorseGUI implements Listener {
                         } else if (coats.equals("Star")) {
                             h.addScoreboardTag("Style:Star");
                             h.setStyle(Horse.Style.WHITE_DOTS);
-                        } else if (coats.equals("Crescent")) {
-                            h.addScoreboardTag("Style:Crescent");
+                        } else if (coats.equals("Blaze")) {
+                            h.addScoreboardTag("Style:Blaze");
                             h.setStyle(Horse.Style.BLACK_DOTS);
                         } else if (coats.equals("None")) {
                             h.addScoreboardTag("Style:None");
@@ -1224,6 +1233,9 @@ public class HorseGUI implements Listener {
                         purchase.put(p.getUniqueId(), buy65);
                         metaref8.setDisplayName("$" + (buy65));
                     }
+                } else if (speed.equals(null)){
+                    purchase.put(p.getUniqueId(), 0);
+                    metaref8.setDisplayName("$0");
                 } else {
                     purchase.put(p.getUniqueId(), 0);
                     metaref8.setDisplayName("$0");

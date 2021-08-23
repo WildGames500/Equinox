@@ -7,19 +7,18 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.Levelled;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Cauldron;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -57,7 +56,7 @@ public final class Equinox extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Events1(this), this);
         getServer().getPluginManager().registerEvents(new HorseGUI(this), this);
         this.getCommand("eq").setExecutor(new Commands(this));
-        getLogger().info("Plugin Has Been Enabled! Hello ^-^");
+        getLogger().info(ChatColor.GREEN + "Plugin Has Been Enabled!");
         if (!setupEconomy()) {
             System.out.println("No Economy Plugin Found! Disabling Vault...");
             getServer().getPluginManager().disablePlugin(this);
@@ -77,7 +76,7 @@ public final class Equinox extends JavaPlugin {
     public void hungerLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
@@ -156,7 +155,7 @@ public final class Equinox extends JavaPlugin {
     public void thirstLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
@@ -234,7 +233,7 @@ public final class Equinox extends JavaPlugin {
     public void drinkLoop2(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
@@ -247,9 +246,8 @@ public final class Equinox extends JavaPlugin {
                                         Location loc2 = block.getLocation();
                                         Material bt = block.getType();
                                         if (bt == Material.CAULDRON) {
-                                            System.out.println("Cauldron");
-                                            Cauldron c = (Cauldron) block.getState().getData();
-                                            if (c.getData() == 3) {
+                                            Levelled c = (Levelled) block.getBlockData();
+                                            if (c.getLevel() == 3) {
                                                 ((Horse) e).getPathfinder().findPath(loc2);
                                                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                                     NBTEditor.set(e, (byte) 1, "EatingHaystack");
@@ -260,7 +258,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:8")) {
@@ -270,7 +269,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:7")) {
@@ -280,7 +280,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:6")) {
@@ -289,7 +290,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:5")) {
@@ -298,7 +300,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:4")) {
@@ -307,7 +310,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:3")) {
@@ -316,7 +320,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:2")) {
@@ -325,7 +330,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:1")) {
@@ -334,7 +340,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:0")) {
@@ -343,7 +350,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 2);
+                                                            c.setLevel(2);
+                                                            block.setBlockData(c);
                                                         }
                                                         if (e.getScoreboardTags().contains("DayT-1")) {
                                                             e.removeScoreboardTag("DayT-1");
@@ -362,7 +370,7 @@ public final class Equinox extends JavaPlugin {
                                                         }
                                                     }
                                                 }, 100);
-                                            } else if (c.getData() == 2) {
+                                            } else if (c.getLevel() == 2) {
                                                 ((Horse) e).getPathfinder().findPath(loc2);
                                                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                                     if (e.getScoreboardTags().contains("Thirst:9")) {
@@ -372,7 +380,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:8")) {
@@ -382,7 +391,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:7")) {
@@ -392,7 +402,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:6")) {
@@ -401,7 +412,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:5")) {
@@ -410,7 +422,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:4")) {
@@ -419,7 +432,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:3")) {
@@ -428,7 +442,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:2")) {
@@ -437,7 +452,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:1")) {
@@ -446,7 +462,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:0")) {
@@ -455,7 +472,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 1);
+                                                            c.setLevel(1);
+                                                            block.setBlockData(c);
                                                         }
                                                         if (e.getScoreboardTags().contains("DayT-1")) {
                                                             e.removeScoreboardTag("DayT-1");
@@ -474,7 +492,7 @@ public final class Equinox extends JavaPlugin {
                                                         }
                                                     }
                                                 }, 100);
-                                            } else if (c.getData() == 1) {
+                                            } else if (c.getLevel() == 1) {
                                                 ((Horse) e).getPathfinder().findPath(loc2);
                                                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                                     if (e.getScoreboardTags().contains("Thirst:9")) {
@@ -484,7 +502,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:8")) {
@@ -494,7 +513,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:7")) {
@@ -504,7 +524,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:6")) {
@@ -513,7 +534,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:5")) {
@@ -522,7 +544,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:4")) {
@@ -531,7 +554,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Hunger:3")) {
@@ -540,7 +564,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:2")) {
@@ -549,7 +574,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:1")) {
@@ -558,7 +584,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         return;
                                                     } else if (e.getScoreboardTags().contains("Thirst:0")) {
@@ -567,7 +594,8 @@ public final class Equinox extends JavaPlugin {
                                                         Random rnd = new Random();
                                                         int i = rnd.nextInt(100);
                                                         if (i <= 25) {
-                                                            block.getState().getData().setData((byte) 0);
+                                                            c.setLevel(0);
+                                                            block.setBlockData(c);
                                                         }
                                                         if (e.getScoreboardTags().contains("DayT-1")) {
                                                             e.removeScoreboardTag("DayT-1");
@@ -601,7 +629,7 @@ public final class Equinox extends JavaPlugin {
     public void drinkLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
@@ -687,12 +715,104 @@ public final class Equinox extends JavaPlugin {
             }
         }.runTaskTimer(plugin, 0, 600);
     }
-
     //Loop EatHay
+    public void eatLoop4(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("Equinox");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        Location loc = e.getLocation();
+                        int radius = 2;
+                        if (e.getScoreboardTags().contains("Hunger")) {
+                            for (int x = -radius; x <= radius; x++) {
+                                for (int y = -radius; y <= radius; y++) {
+                                    for (int z = -radius; z <= radius; z++) {
+                                        Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() + y, loc.getBlockZ() + z);
+                                        Location loc2 = block.getLocation();
+                                        Material bt = block.getType();
+                                        if (bt == Material.DRIED_KELP_BLOCK) {
+                                            ((Horse) e).getPathfinder().findPath(loc2);
+                                            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    NBTEditor.set(e, (byte) 1, "EatingHaystack");
+                                                    block.setType(Material.AIR);
+                                                    if (e.getScoreboardTags().contains("Hunger:9")) {
+                                                        e.removeScoreboardTag("Hunger:9");
+                                                        e.addScoreboardTag("Hunger:10");
+                                                        e.removeScoreboardTag("Hunger");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                                        e.removeScoreboardTag("Hunger:8");
+                                                        e.addScoreboardTag("Hunger:10");
+                                                        e.removeScoreboardTag("Hunger");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                                        e.removeScoreboardTag("Hunger:7");
+                                                        e.addScoreboardTag("Hunger:10");
+                                                        e.removeScoreboardTag("Hunger");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                                        e.removeScoreboardTag("Hunger:6");
+                                                        e.addScoreboardTag("Hunger:9");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                                        e.removeScoreboardTag("Hunger:5");
+                                                        e.addScoreboardTag("Hunger:8");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                                        e.removeScoreboardTag("Hunger:4");
+                                                        e.addScoreboardTag("Hunger:7");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                                        e.removeScoreboardTag("Hunger:3");
+                                                        e.addScoreboardTag("Hunger:6");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                                        e.removeScoreboardTag("Hunger:2");
+                                                        e.addScoreboardTag("Hunger:5");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                                        e.removeScoreboardTag("Hunger:1");
+                                                        e.addScoreboardTag("Hunger:4");
+                                                        return;
+                                                    } else if (e.getScoreboardTags().contains("Hunger:0")) {
+                                                        e.removeScoreboardTag("Hunger:0");
+                                                        e.addScoreboardTag("Hunger:3");
+                                                        if (e.getScoreboardTags().contains("DayH-1")) {
+                                                            e.removeScoreboardTag("DayH-1");
+                                                            return;
+                                                        }
+                                                        if (e.getScoreboardTags().contains("DayH-2")) {
+                                                            e.removeScoreboardTag("DayH-2");
+                                                            return;
+                                                        }
+                                                        if (e.getScoreboardTags().contains("DayH-3")) {
+                                                            e.removeScoreboardTag("DayH-3");
+                                                            return;
+
+                                                        } else {
+                                                            return;
+                                                        }
+                                                    }
+                                                }
+                                            }, 100);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 500, 500);
+    }
     public void eatLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
@@ -784,7 +904,7 @@ public final class Equinox extends JavaPlugin {
     public void eatLoop2(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
@@ -884,7 +1004,7 @@ public final class Equinox extends JavaPlugin {
     public void eatLoop3(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Location loc = e.getLocation();
@@ -982,7 +1102,7 @@ public final class Equinox extends JavaPlugin {
     public void poop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-                World world = getServer().getWorld("world");
+                World world = getServer().getWorld("Equinox");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
                         Random rnd = new Random();
