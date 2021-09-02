@@ -2,6 +2,7 @@ package net.equinox.wild.equinox;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
@@ -48,7 +49,7 @@ public class Events1 implements Listener {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     h.removeScoreboardTag("Breeding");
                     return;
-                },100);
+                }, 100);
             }
             if (h.getScoreboardTags().contains("Gender:Mare")) {
                 double xloc = h.getLocation().getX();
@@ -248,7 +249,7 @@ public class Events1 implements Listener {
                             if (player.hasPermission("eq.vet")) {
                                 e.getEntity().addScoreboardTag("Vaxed");
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
-                            }else {
+                            } else {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else if (player.getItemInHand().getType() == Material.FLINT) {
@@ -273,7 +274,7 @@ public class Events1 implements Listener {
                                     e.getEntity().addScoreboardTag("Colic");
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has colic!");
                                 }
-                            }else {
+                            } else {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else if (player.getItemInHand().getType() == Material.BOOK) {
@@ -294,13 +295,12 @@ public class Events1 implements Listener {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Please write this info in a book!");
 
                                     }
-                                }else {
+                                } else {
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                                 }
                             }
 
-                        }
-                        else if (player.getItemInHand().getType() == Material.EMERALD) {
+                        } else if (player.getItemInHand().getType() == Material.EMERALD) {
                             if (!e.getEntity().getScoreboardTags().contains("hbrush")) {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a hard brush!");
                                 player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
@@ -358,16 +358,26 @@ public class Events1 implements Listener {
                                 }
                             }
                         } else {
-                            collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                            if (player.isSneaking()) {
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have given this horse some pats!");
+                                World world = e.getEntity().getWorld();
+                                Location loc = e.getEntity().getLocation();
+                                int x = (int) loc.getX();
+                                int y = (int) loc.getY();
+                                int z = (int) loc.getZ();
+                                int y1 = y + 1;
+                                world.spawnParticle(Particle.HEART, x, y1, z, 5);
+                            } else {
+                                collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                            }
                         }
-                    }
-                    else if (player.hasPermission("eq.staff")) {
+                    } else if (player.hasPermission("eq.staff")) {
                         if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
                             if (player.hasPermission("eq.vet")) {
                                 e.getEntity().addScoreboardTag("Vaxed");
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
-                            }else {
+                            } else {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else if (player.getItemInHand().getType() == Material.FLINT) {
@@ -392,7 +402,7 @@ public class Events1 implements Listener {
                                     e.getEntity().addScoreboardTag("Colic");
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has colic!");
                                 }
-                            }else {
+                            } else {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else if (player.getItemInHand().getType() == Material.BOOK) {
@@ -413,13 +423,12 @@ public class Events1 implements Listener {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Please write this info in a book!");
 
                                     }
-                                }else {
+                                } else {
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                                 }
                             }
 
-                        }
-                        else if (player.getItemInHand().getType() == Material.EMERALD) {
+                        } else if (player.getItemInHand().getType() == Material.EMERALD) {
                             if (!e.getEntity().getScoreboardTags().contains("hbrush")) {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a hard brush!");
                                 player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
@@ -480,8 +489,7 @@ public class Events1 implements Listener {
                             collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
                         }
-                    }
-                    else if (e.getEntity().getScoreboardTags().contains("Member:" + uuid)) {
+                    } else if (e.getEntity().getScoreboardTags().contains("Member:" + uuid)) {
                         if (player.getItemInHand().getType() == Material.EMERALD) {
                             if (!e.getEntity().getScoreboardTags().contains("hbrush")) {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a hard brush!");
@@ -521,8 +529,7 @@ public class Events1 implements Listener {
                                     }
                                 }
                             }
-                        }
-                        else if (player.getItemInHand().getType() == Material.BLAZE_ROD) {
+                        } else if (player.getItemInHand().getType() == Material.BLAZE_ROD) {
                             if (!e.getEntity().getScoreboardTags().contains("sbrush")) {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a soft brush!");
                                 player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
@@ -560,12 +567,12 @@ public class Events1 implements Listener {
                                     }
                                 }
                             }
-                        }else if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
+                        } else if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
                             if (player.hasPermission("eq.vet")) {
                                 e.getEntity().addScoreboardTag("Vaxed");
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
                             } else {
-                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED+ "You do not have the training to do this.");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else if (player.getItemInHand().getType() == Material.FLINT) {
                             if (player.hasPermission("eq.vet")) {
@@ -590,11 +597,22 @@ public class Events1 implements Listener {
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has colic!");
                                 }
                             } else {
-                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED+ "You do not have the training to do this.");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else {
-                            collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                            if (player.isSneaking()) {
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have given this horse some pats!");
+                                World world = e.getEntity().getWorld();
+                                Location loc = e.getEntity().getLocation();
+                                int x = (int) loc.getX();
+                                int y = (int) loc.getY();
+                                int z = (int) loc.getZ();
+                                int y1 = y + 1;
+                                world.spawnParticle(Particle.HEART, x, y1, z, 5);
+                            } else {
+                                collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                            }
                         }
                     }
                 }
@@ -639,8 +657,7 @@ public class Events1 implements Listener {
                             }
                         }
                     }
-                }
-                else if (player.getItemInHand().getType() == Material.BLAZE_ROD) {
+                } else if (player.getItemInHand().getType() == Material.BLAZE_ROD) {
                     if (!e.getEntity().getScoreboardTags().contains("sbrush")) {
                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a soft brush!");
                         player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
@@ -678,7 +695,8 @@ public class Events1 implements Listener {
                             }
                         }
                     }
-                }if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
+                }
+                if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
                     if (player.hasPermission("eq.vet")) {
                         e.getEntity().addScoreboardTag("Vaxed");
                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
@@ -712,8 +730,19 @@ public class Events1 implements Listener {
                     }
 
                 } else {
-                    collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
-                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                    if (player.isSneaking()) {
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have given this horse some pats!");
+                        World world = e.getEntity().getWorld();
+                        Location loc = e.getEntity().getLocation();
+                        int x = (int) loc.getX();
+                        int y = (int) loc.getY();
+                        int z = (int) loc.getZ();
+                        int y1 = y + 1;
+                        world.spawnParticle(Particle.HEART, x, y1, z, 5);
+                    } else {
+                        collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                    }
                 }
             } else if (!e.getEntity().getScoreboardTags().contains("Public")) {
                 if (!e.getEntity().getScoreboardTags().contains("Private")) {
@@ -722,6 +751,7 @@ public class Events1 implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent unload) {
         World world = Bukkit.getWorld("Equinox");
@@ -737,18 +767,19 @@ public class Events1 implements Listener {
             }
         }
     }
+
     @EventHandler
     public void AllDamage(EntityDamageEvent d) {
         if (d.getEntityType() == EntityType.HORSE) {
             d.setCancelled(true);
         }
     }
+
     @EventHandler
     public void onMount(PlayerInteractEntityEvent e) {
         Entity h = e.getRightClicked();
         Player p = e.getPlayer();
         UUID uuid = p.getUniqueId();
-        System.out.println("Test");
         if (h.getScoreboardTags().contains("private")) {
             System.out.println("Private");
             if (!p.hasPermission("eq.staff")) {
@@ -764,11 +795,263 @@ public class Events1 implements Listener {
             }
         }
     }
+
     @EventHandler
     public void onDissconnect(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if (p.getVehicle().getType() == EntityType.HORSE) {
-            p.eject();
+        p.eject();
+    }
+
+    @EventHandler
+    public void onMove(EntityMoveEvent e) {
+        Entity h = e.getEntity();
+        if (h.getType() == EntityType.PLAYER) {
+            if (h.getVehicle() == null) {
+                return;
+            }
+            if (h.getVehicle().getType() == EntityType.HORSE) {
+                int lx = (int) h.getLocation().getX();
+                int ly = (int) h.getLocation().getY();
+                int lz = (int) h.getLocation().getZ();
+                int lz1 = (int) (lz + 1);
+                int lx1 = (int) (lx - 1);
+                int ly1 = (int) (ly - 1);
+                World world = h.getWorld();
+                Block b = world.getBlockAt(lx, ly1, lz);
+                Location loc = h.getLocation();
+
+                if (b.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                    int radius = 5;
+                    for (int x = -radius; x <= radius; x++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 1, loc.getBlockZ() + z);
+                            Block block2 = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 2, loc.getBlockZ() + z);
+                            if (block2.getType() != Material.SAND) {
+                                if (block2.getType() != Material.GRASS_BLOCK) {
+                                    if (block2.getType() != Material.DIRT) {
+                                        if (block2.getType() != Material.COARSE_DIRT) {
+                                            if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.GREEN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.MAGENTA_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.MAGENTA_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.ORANGE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BROWN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (b.getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                    int radius = 5;
+                    for (int x = -radius; x <= radius; x++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 1, loc.getBlockZ() + z);
+                            Block block2 = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 2, loc.getBlockZ() + z);
+                            if (block2.getType() != Material.SAND) {
+                                if (block2.getType() != Material.GRASS_BLOCK) {
+                                    if (block2.getType() != Material.DIRT) {
+                                        if (block2.getType() != Material.COARSE_DIRT) {
+                                            if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.GREEN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.MAGENTA_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.MAGENTA_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.ORANGE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BROWN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (b.getType() == Material.MAGENTA_STAINED_GLASS_PANE) {
+                    int radius = 5;
+                    for (int x = -radius; x <= radius; x++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 1, loc.getBlockZ() + z);
+                            Block block2 = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 2, loc.getBlockZ() + z);
+                            if (block2.getType() != Material.SAND) {
+                                if (block2.getType() != Material.GRASS_BLOCK) {
+                                    if (block2.getType() != Material.DIRT) {
+                                        if (block2.getType() != Material.COARSE_DIRT) {
+                                            if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.GREEN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.MAGENTA_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.MAGENTA_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.ORANGE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BROWN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (b.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                    int radius = 5;
+                    for (int x = -radius; x <= radius; x++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 1, loc.getBlockZ() + z);
+                            Block block2 = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 2, loc.getBlockZ() + z);
+                            if (block2.getType() != Material.SAND) {
+                                if (block2.getType() != Material.GRASS_BLOCK) {
+                                    if (block2.getType() != Material.DIRT) {
+                                        if (block2.getType() != Material.COARSE_DIRT) {
+                                            if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.GREEN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.MAGENTA_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.MAGENTA_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.ORANGE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BROWN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else if (b.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                    int radius = 5;
+                    for (int x = -radius; x <= radius; x++) {
+                        for (int z = -radius; z <= radius; z++) {
+                            Block block = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 1, loc.getBlockZ() + z);
+                            Block block2 = world.getBlockAt(loc.getBlockX() + x, loc.getBlockY() - 2, loc.getBlockZ() + z);
+                            if (block2.getType() != Material.SAND) {
+                                if (block2.getType() != Material.GRASS_BLOCK) {
+                                    if (block2.getType() != Material.DIRT) {
+                                        if (block2.getType() != Material.COARSE_DIRT) {
+                                            if (block.getType() == Material.BLUE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BLUE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.GREEN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.GREEN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.MAGENTA_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.MAGENTA_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.ORANGE_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.ORANGE_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                            if (block.getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                                                block.setType(Material.AIR);
+                                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                    block.setType(Material.BROWN_STAINED_GLASS_PANE);
+                                                }, 100);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

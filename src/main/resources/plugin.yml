@@ -5,9 +5,18 @@ api-version: 1.16
 authors: [ WildGames500 ]
 depend: [ Vault, HolographicDisplays ]
 commands:
+  cpu:
+    description: Returns pong!
+    usage: /<command> [test]
   eq:
     description: Returns pong!
     usage: /<command> [ping|tphere|tp|kill|name]
   eqa:
     description: Returns pong!
     usage: /<command> [heat]
+  rankup:
+    description: Returns pong!
+    usage: /<command> [player]
+  access:
+    description: Returns pong!
+    usage: /<command>

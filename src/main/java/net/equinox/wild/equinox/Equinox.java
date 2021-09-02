@@ -42,11 +42,13 @@ public final class Equinox extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        PeeLoop(this);
         drinkLoop(this);
         drinkLoop2(this);
         poop(this);
         eatLoop2(this);
         eatLoop3(this);
+        eatLoop4(this);
         horseRiding(this);
         hungerLoop(this);
         thirstLoop(this);
@@ -56,6 +58,10 @@ public final class Equinox extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Events1(this), this);
         getServer().getPluginManager().registerEvents(new HorseGUI(this), this);
         this.getCommand("eq").setExecutor(new Commands(this));
+        this.getCommand("eqa").setExecutor(new Commands(this));
+        this.getCommand("cpu").setExecutor(new Commands(this));
+        this.getCommand("rankup").setExecutor(new Commands(this));
+        this.getCommand("access").setExecutor(new Commands(this));
         getLogger().info(ChatColor.GREEN + "Plugin Has Been Enabled!");
         if (!setupEconomy()) {
             System.out.println("No Economy Plugin Found! Disabling Vault...");
@@ -148,7 +154,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 30000, 30000);
+        }.runTaskTimer(plugin, 20000, 20000);
     }
 
     //Loop Thirst
@@ -160,7 +166,7 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 15) {
+                        if (i <= 35) {
                             if (e.getScoreboardTags().contains("Thirst:10")) {
                                 e.removeScoreboardTag("Thirst:10");
                                 e.addScoreboardTag("Thirst:9");
@@ -227,7 +233,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 45000, 45000);
+        }.runTaskTimer(plugin, 10000, 10000);
     }
 
     public void drinkLoop2(Plugin plugin) {
@@ -798,8 +804,9 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
+                                            break;
                                         }
-                                        break;
+
                                     }
                                 }
                             }
@@ -891,7 +898,8 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
-                                        }break;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -990,7 +998,8 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
-                                        }break;
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -999,6 +1008,32 @@ public final class Equinox extends JavaPlugin {
                 }
             }
         }.runTaskTimer(plugin, 500, 500);
+    }
+    public void PeeLoop(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("Equinox");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        Random rnd = new Random();
+                        int i = rnd.nextInt(100);
+                        if (i <= 25) {
+                            Location loc = e.getLocation();
+                            int radius = 1;
+                            int x = loc.getBlockX();
+                            int y = loc.getBlockY();
+                            int z = loc.getBlockZ();
+                            int y1 = y - 1;
+                            Block b = world.getBlockAt(x, y1, z);
+                            world.playSound(loc, Sound.ENTITY_GHAST_DEATH, 1, 1);
+                            if (b.getType() == Material.YELLOW_GLAZED_TERRACOTTA) {
+                                b.setType(Material.BROWN_GLAZED_TERRACOTTA);
+                            }
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 100, 9000);
     }
 
     public void eatLoop3(Plugin plugin) {
@@ -1020,6 +1055,7 @@ public final class Equinox extends JavaPlugin {
                                             ((Horse) e).getPathfinder().findPath(loc2);
                                             for (Player p : loc2.getNearbyPlayers(5)) {
                                                 p.playSound(loc2, BLOCK_GRASS_BREAK, 1, 1);
+                                                block.setType(Material.DIRT);
                                                 break;
                                             }
                                             Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
@@ -1087,8 +1123,9 @@ public final class Equinox extends JavaPlugin {
                                                     }
                                                 }
                                             }, 100);
+                                            break;
 
-                                        } break;
+                                        }
                                     }
                                 }
                             }
@@ -1132,14 +1169,15 @@ public final class Equinox extends JavaPlugin {
                     }
                     Entity e = p.getVehicle();
                     if (e.getScoreboardTags().contains("Level:0")) {
+                        System.out.println("Test");
                         while (i <= 10) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 10) {
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 10) {
                                     e.removeScoreboardTag("Level:0");
                                     e.addScoreboardTag("Level:1");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 1!");
@@ -1153,11 +1191,11 @@ public final class Equinox extends JavaPlugin {
                         while (i <= 35) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 35) {
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 35) {
                                     e.removeScoreboardTag("Level:1");
                                     e.addScoreboardTag("Level:2");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 2!");
@@ -1171,11 +1209,11 @@ public final class Equinox extends JavaPlugin {
                         while (i <= 65) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 65) {
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 65) {
                                     e.removeScoreboardTag("Level:2");
                                     e.addScoreboardTag("Level:3");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 3!");
@@ -1189,11 +1227,11 @@ public final class Equinox extends JavaPlugin {
                         while (i <= 85) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 85) {
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 85) {
                                     e.removeScoreboardTag("Level:3");
                                     e.addScoreboardTag("Level:4");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 4!");
@@ -1207,29 +1245,11 @@ public final class Equinox extends JavaPlugin {
                         while (i <= 115) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
+                                int i2 = i + 3;
                                 e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
                                 p.giveExp(1);
-                                if (i == 115) {
-                                    e.removeScoreboardTag("Level:4");
-                                    e.addScoreboardTag("Level:5");
-                                    p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
-                                }
-                                return;
-                            } else {
-                                ++i;
-                            }
-                        }
-                    } else if (e.getScoreboardTags().contains("Level:4")) {
-                        while (i <= 145) {
-                            if (e.getScoreboardTags().contains("XP:" + i)) {
-                                e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 145) {
+                                if (i2 == 115) {
                                     e.removeScoreboardTag("Level:4");
                                     e.addScoreboardTag("Level:5");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 5!");
@@ -1240,14 +1260,14 @@ public final class Equinox extends JavaPlugin {
                             }
                         }
                     } else if (e.getScoreboardTags().contains("Level:5")) {
-                        while (i <= 195) {
+                        while (i <= 145) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 195) {
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 145) {
                                     e.removeScoreboardTag("Level:5");
                                     e.addScoreboardTag("Level:6");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 6!");
@@ -1258,17 +1278,89 @@ public final class Equinox extends JavaPlugin {
                             }
                         }
                     } else if (e.getScoreboardTags().contains("Level:6")) {
-                        while (i <= 265) {
+                        while (i <= 195) {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
-                                ++i;
-                                e.addScoreboardTag("XP:" + i);
-                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
-                                p.giveExp(1);
-                                if (i == 265) {
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 195) {
                                     e.removeScoreboardTag("Level:6");
                                     e.addScoreboardTag("Level:7");
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 7!");
+                                }
+                                return;
+                            } else {
+                                ++i;
+                            }
+                        }
+                    } else if (e.getScoreboardTags().contains("Level:7")) {
+                        while (i <= 265) {
+                            if (e.getScoreboardTags().contains("XP:" + i)) {
+                                e.removeScoreboardTag("XP:" + i);
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 265) {
+                                    e.removeScoreboardTag("Level:7");
+                                    e.addScoreboardTag("Level:8");
+                                    p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 8!");
+                                }
+                                return;
+                            } else {
+                                ++i;
+                            }
+                        }
+                    } else if (e.getScoreboardTags().contains("Level:8")) {
+                        while (i <= 565) {
+                            if (e.getScoreboardTags().contains("XP:" + i)) {
+                                e.removeScoreboardTag("XP:" + i);
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 565) {
+                                    e.removeScoreboardTag("Level:8");
+                                    e.addScoreboardTag("Level:9");
+                                    p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 9!");
+                                }
+                                return;
+                            } else {
+                                ++i;
+                            }
+                        }
+                    } else if (e.getScoreboardTags().contains("Level:9")) {
+                        while (i <= 1000) {
+                            if (e.getScoreboardTags().contains("XP:" + i)) {
+                                e.removeScoreboardTag("XP:" + i);
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 1000) {
+                                    e.removeScoreboardTag("Level:9");
+                                    e.addScoreboardTag("Level:10");
+                                    p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 10!");
+                                }
+                                return;
+                            } else {
+                                ++i;
+                            }
+                        }
+                    } else if (e.getScoreboardTags().contains("Level:11")) {
+                        while (i <= 1500) {
+                            if (e.getScoreboardTags().contains("XP:" + i)) {
+                                e.removeScoreboardTag("XP:" + i);
+                                int i2 = i + 3;
+                                e.addScoreboardTag("XP:" + i2);
+                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                p.giveExp(3);
+                                if (i2 == 1500) {
+                                    e.removeScoreboardTag("Level:11");
+                                    e.addScoreboardTag("Level:12");
+                                    p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "Your horse is now level 12!");
                                     for (String tb : getConfig().getStringList("Bad")) {
                                         if (e.getScoreboardTags().contains(tb)) {
                                             e.removeScoreboardTag("Trait:" + tb);
@@ -1291,7 +1383,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 3600, 3600);
+        }.runTaskTimer(plugin, 2600, 2600);
     }
 
 
