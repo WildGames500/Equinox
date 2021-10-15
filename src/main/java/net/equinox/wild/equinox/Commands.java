@@ -58,6 +58,16 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
+            } else if (args[0].equalsIgnoreCase("killall")) {
+                Player player = (Player) sender;
+                World world = player.getWorld();
+                if (player.hasPermission("eq.dev")) {
+                    for (Entity e : world.getEntities()) {
+                        ((Horse) e).setHealth(0);
+                    }
+                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW +  "Horses killed");
+                    return true;
+                }
             } else if (args[0].equalsIgnoreCase("doublexp")) {
                 if (args.length == 2) {
                     if (sender.hasPermission("eq.op")) {
@@ -150,21 +160,41 @@ public class Commands implements CommandExecutor {
                     }
                 }
             } else if (args[0].equalsIgnoreCase("list")) {
-                Player player = (Player) sender;
-                UUID uuid = player.getUniqueId();
-                Location loc = player.getLocation();
-                World world = player.getWorld();
-                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
-                        if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                            String hn = e.getCustomName();
-                            TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
-                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
-                            player.spigot().sendMessage(msg);
+                if (args.length >= 2) {
+                    Player player = (Player) sender;
+                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    UUID uuid2 = p2.getUniqueId();
+                    World world = player.getWorld();
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1]  + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                String hn = e.getCustomName();
+                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
+                                player.spigot().sendMessage(msg);
+                            }
                         }
                     }
-                } return true;
+                    return true;
+                } else {
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    Location loc = player.getLocation();
+                    World world = player.getWorld();
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                String hn = e.getCustomName();
+                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
+                                player.spigot().sendMessage(msg);
+                            }
+                        }
+                    }
+                    return true;
+                }
             }
             else if (args[0].equalsIgnoreCase("select")) {
                 if (args.length >= 2) {
@@ -228,6 +258,7 @@ public class Commands implements CommandExecutor {
                     UUID uuid = player.getUniqueId();
                     UUID euid = collection.get(uuid2);
                     World world = player.getWorld();
+                    String name = sender.getName();
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse) {
                             UUID h = e.getUniqueId();
@@ -236,7 +267,7 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                     e.addScoreboardTag("Owner:" + uuid);
                                     e.removeScoreboardTag("Owner:" + uuid2);
-                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + sender + " has accepted your request!");
+                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the owner of " + n + "!");
                                     return true;
                                 }
@@ -251,6 +282,7 @@ public class Commands implements CommandExecutor {
                     Player player = (Player) sender;
                     String name = sender.getName();
                     UUID uuid = player.getUniqueId();
+                    UUID uuid2 = p2.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     for (Entity e : world.getEntities()) {
@@ -264,7 +296,7 @@ public class Commands implements CommandExecutor {
                                     TextComponent msg2 = new TextComponent(ChatColor.GRAY + "[" + ChatColor.RED + "Deny" + ChatColor.GRAY + "]");
                                     msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq accept " + name));
                                     msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq deny"));
-                                    player.spigot().sendMessage(msg, msg2);
+                                    p2.spigot().sendMessage(msg, msg2);
                                     return true;
                                 }
                             }
@@ -2289,11 +2321,11 @@ public class Commands implements CommandExecutor {
                                 e.addScoreboardTag("uill1");
                                 return true;
                             }
-                            if (i >= 90) {
+                            if (i >= 50) {
                                 e.addScoreboardTag("uill2");
                                 return true;
                             }
-                            if (i <= 10) {
+                            if (i >= 20) {
                                 e.addScoreboardTag("uill3");
                                 return true;
                             }
