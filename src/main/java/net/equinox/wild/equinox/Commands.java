@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
@@ -162,7 +163,7 @@ public class Commands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("list")) {
                 if (args.length >= 2) {
                     Player player = (Player) sender;
-                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[1]);
                     UUID uuid2 = p2.getUniqueId();
                     World world = player.getWorld();
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1]  + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
