@@ -755,6 +755,7 @@ public class Events1 implements Listener {
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent unload) {
         World world = Bukkit.getWorld("Equinox");
+        World world2 = Bukkit.getWorld("Flat");
         Chunk chunk = unload.getChunk();
         for (Entity e : world.getEntities()) {
             if (e instanceof Horse) {
@@ -764,6 +765,15 @@ public class Events1 implements Listener {
                 int z = chunk1.getZ();
                 Bukkit.getServer().getWorld("Equinox").loadChunk(x, z);
                 Bukkit.getServer().getWorld("Equinox").setChunkForceLoaded(x, z, true);
+            }
+        } for (Entity e : world2.getEntities()) {
+            if (e instanceof Horse) {
+                Chunk chunk1 = e.getChunk();
+                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                int x = chunk1.getX();
+                int z = chunk1.getZ();
+                Bukkit.getServer().getWorld("Flat").loadChunk(x, z);
+                Bukkit.getServer().getWorld("Flat").setChunkForceLoaded(x, z, true);
             }
         }
     }
