@@ -44,6 +44,24 @@ public class HorseGUI implements Listener {
         if (e.getView().getTitle().equals("§0Menu")) {
             e.setCancelled(true);
             UUID uuid = p.getUniqueId();
+            if (breedname.get(uuid) ==  null) {
+                breedname.put(uuid, "§bBreeds");
+            }
+            if (gendername.get(uuid) ==  null) {
+                gendername.put(uuid, "§bGender");
+            }
+            if (coatcolor.get(uuid) ==  null) {
+                coatcolor.put(uuid, "§bCoat Color");
+            }
+            if (coatcolor.get(uuid) ==  null) {
+                coatcolor.put(uuid, "§bCoat Color");
+            }
+            if (coatstyle.get(uuid) ==  null) {
+                coatstyle.put(uuid, "§bCoat Pattern");
+            }
+            if (speeds.get(uuid) ==  null) {
+                speeds.put(uuid, "§bSpeed");
+            }
             String breed = breedname.get(uuid);
             String gender = gendername.get(uuid);
             String coat = coatcolor.get(uuid);
@@ -128,6 +146,11 @@ public class HorseGUI implements Listener {
                 }
                 if (!speeds.isEmpty()) {
                     metaref6.setDisplayName(speed);
+                    if (speed == null) {
+                        metaref6.setDisplayName("§bSpeed");
+                    }
+                } if (speeds == null){
+                    metaref6.setDisplayName("§bSpeed");
                 } else {
                     metaref6.setDisplayName("§bSpeed");
                 }
@@ -239,7 +262,7 @@ public class HorseGUI implements Listener {
                             purchase.put(p.getUniqueId(), buy65);
                             metaref8.setDisplayName(String.valueOf(buy65));
                         }
-                    } else if (speed.equals(null)){
+                    } else if (speed == null){
                         purchase.put(p.getUniqueId(), 0);
                         metaref8.setDisplayName(String.valueOf(0));
                     } else {
@@ -476,9 +499,7 @@ public class HorseGUI implements Listener {
                 metaref3.setDisplayName("3ft");
                 metaref4.setDisplayName("4ft");
                 metaref5.setDisplayName("5ft");
-                if (p.hasPermission("eq.op")) {
-                    metaref6.setDisplayName("6ft");
-                }
+                metaref6.setDisplayName("6ft");
                 ref1.setItemMeta(metaref1);
                 ref2.setItemMeta(metaref2);
                 ref3.setItemMeta(metaref3);
@@ -490,7 +511,9 @@ public class HorseGUI implements Listener {
                 sp.setItem(2, ref3);
                 sp.setItem(3, ref4);
                 sp.setItem(4, ref5);
-                sp.setItem(5, ref6);
+                if (p.hasPermission("eq.op")) {
+                    sp.setItem(5, ref6);
+                }
                 p.openInventory(sp);
             } else if (e.getSlot() == 25) {
                 Location loc = p.getLocation();
@@ -502,6 +525,8 @@ public class HorseGUI implements Listener {
                 String coats = coatstyle.get(uuid);
                 String speed = speeds.get(uuid);
                 String jump = jumpheight.get(uuid);
+
+//                System.out.printf("THIS SHOULD NOT BE NULL: { Purchase: %s , UUID: %s }", purchase, uuid);
                 int cost = purchase.get(uuid);
                 PlayerInventory menu = p.getInventory();
                 Random r = new Random();
@@ -598,6 +623,8 @@ public class HorseGUI implements Listener {
                         } else if (speed.equals("Tier 1")) {
                             h.addScoreboardTag("Speed:T1");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                        }else if (speed.equals(null)) {
+                            System.out.println("nulled");
                         }
                         if (jump.equals("1ft")) {
                             h.addScoreboardTag("1ft");
@@ -610,13 +637,13 @@ public class HorseGUI implements Listener {
                             h.setJumpStrength(.717);
                         } else if (jump.equals("4ft")) {
                             h.addScoreboardTag("4ft");
-                            h.setJumpStrength(.817);
+                            h.setJumpStrength(.917);
                         } else if (jump.equals("5ft")) {
                             h.addScoreboardTag("5ft");
-                            h.setJumpStrength(.917);
+                            h.setJumpStrength(1.017);
                         } else if (jump.equals("6ft")) {
                             h.addScoreboardTag("6ft");
-                            h.setJumpStrength(1.017);
+                            h.setJumpStrength(1.117);
                         }
                     } else {
                         menu.close();
@@ -680,6 +707,9 @@ public class HorseGUI implements Listener {
                     metaref4.setDisplayName("§bCoat Pattern");
                 }
                 if (!speeds.isEmpty()) {
+                    if (speeds.equals(null)) {
+                        metaref6.setDisplayName("§bSpeed");
+                    }
                     metaref6.setDisplayName(speed);
                 } else {
                     metaref6.setDisplayName("§bSpeed");
@@ -1144,7 +1174,7 @@ public class HorseGUI implements Listener {
                     } else if (sln.equals("4ft")) {
                         purchase.put(p.getUniqueId(), buy14);
                         metaref8.setDisplayName("$" + (buy14));
-                    }else if (sln.equals("5ft")) {
+                    } else if (sln.equals("5ft")) {
                         purchase.put(p.getUniqueId(), buy15);
                         metaref8.setDisplayName("$" + (buy15));
                     }
@@ -1233,9 +1263,10 @@ public class HorseGUI implements Listener {
                         purchase.put(p.getUniqueId(), buy65);
                         metaref8.setDisplayName("$" + (buy65));
                     }
-                } else if (speed.equals(null)){
+                } else if (speed == null){
                     purchase.put(p.getUniqueId(), 0);
                     metaref8.setDisplayName("$0");
+                    System.out.println("nulled");
                 } else {
                     purchase.put(p.getUniqueId(), 0);
                     metaref8.setDisplayName("$0");

@@ -4,7 +4,9 @@ import dev.dbassett.skullcreator.SkullCreator;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Levelled;
@@ -31,17 +33,22 @@ import static org.bukkit.Sound.BLOCK_GRASS_BREAK;
 @SuppressWarnings("all")
 public final class Equinox extends JavaPlugin {
     private static Economy econ = null;
+    private static Permission perms = null;
+    private static Chat chat = null;
     private File breedsConfigFile;
+    private File homesConfigFile;
     private File traitConfigFile;
     private File coatConfigFile;
     private FileConfiguration breedsConfig;
     private FileConfiguration traitConfig;
     private FileConfiguration coatConfig;
+    private FileConfiguration homesConfig;
     private boolean useHolographicDisplays;
 
 
     @Override
     public void onEnable() {
+        babyLoop(this);
         PeeLoop(this);
         drinkLoop(this);
         drinkLoop2(this);
@@ -62,6 +69,11 @@ public final class Equinox extends JavaPlugin {
         this.getCommand("cpu").setExecutor(new Commands(this));
         this.getCommand("rankup").setExecutor(new Commands(this));
         this.getCommand("access").setExecutor(new Commands(this));
+        this.getCommand("star").setExecutor(new Commands(this));
+        this.getCommand("diamond").setExecutor(new Commands(this));
+        this.getCommand("heart").setExecutor(new Commands(this));
+        this.getCommand("flower").setExecutor(new Commands(this));
+        this.saveDefaultConfig();
         getLogger().info(ChatColor.GREEN + "Plugin Has Been Enabled!");
         if (!setupEconomy()) {
             System.out.println("No Economy Plugin Found! Disabling Vault...");
@@ -88,66 +100,68 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 10) {
-                            if (e.getScoreboardTags().contains("Hunger:10")) {
-                                e.removeScoreboardTag("Hunger:10");
-                                e.addScoreboardTag("Hunger:9");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:9")) {
-                                e.removeScoreboardTag("Hunger:9");
-                                e.addScoreboardTag("Hunger:8");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:8")) {
-                                e.removeScoreboardTag("Hunger:8");
-                                e.addScoreboardTag("Hunger:7");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:7")) {
-                                e.removeScoreboardTag("Hunger:7");
-                                e.addScoreboardTag("Hunger:6");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:6")) {
-                                e.removeScoreboardTag("Hunger:6");
-                                e.addScoreboardTag("Hunger:5");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:5")) {
-                                e.removeScoreboardTag("Hunger:5");
-                                e.addScoreboardTag("Hunger:4");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:4")) {
-                                e.removeScoreboardTag("Hunger:4");
-                                e.addScoreboardTag("Hunger:3");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:3")) {
-                                e.removeScoreboardTag("Hunger:3");
-                                e.addScoreboardTag("Hunger:2");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:2")) {
-                                e.removeScoreboardTag("Hunger:2");
-                                e.addScoreboardTag("Hunger:1");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:1")) {
-                                e.removeScoreboardTag("Hunger:1");
-                                e.addScoreboardTag("Hunger:0");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
+                        if (!e.getScoreboardTags().contains("Invulnerable")) {
+                            if (i <= 10) {
+                                if (e.getScoreboardTags().contains("Hunger:10")) {
+                                    e.removeScoreboardTag("Hunger:10");
+                                    e.addScoreboardTag("Hunger:9");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:9")) {
+                                    e.removeScoreboardTag("Hunger:9");
+                                    e.addScoreboardTag("Hunger:8");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                    e.removeScoreboardTag("Hunger:8");
+                                    e.addScoreboardTag("Hunger:7");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                    e.removeScoreboardTag("Hunger:7");
+                                    e.addScoreboardTag("Hunger:6");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                    e.removeScoreboardTag("Hunger:6");
+                                    e.addScoreboardTag("Hunger:5");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                    e.removeScoreboardTag("Hunger:5");
+                                    e.addScoreboardTag("Hunger:4");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                    e.removeScoreboardTag("Hunger:4");
+                                    e.addScoreboardTag("Hunger:3");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                    e.removeScoreboardTag("Hunger:3");
+                                    e.addScoreboardTag("Hunger:2");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                    e.removeScoreboardTag("Hunger:2");
+                                    e.addScoreboardTag("Hunger:1");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                    e.removeScoreboardTag("Hunger:1");
+                                    e.addScoreboardTag("Hunger:0");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
                                 }
                             }
                         }
@@ -157,76 +171,94 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 10) {
-                            if (e.getScoreboardTags().contains("Hunger:10")) {
-                                e.removeScoreboardTag("Hunger:10");
-                                e.addScoreboardTag("Hunger:9");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:9")) {
-                                e.removeScoreboardTag("Hunger:9");
-                                e.addScoreboardTag("Hunger:8");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:8")) {
-                                e.removeScoreboardTag("Hunger:8");
-                                e.addScoreboardTag("Hunger:7");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:7")) {
-                                e.removeScoreboardTag("Hunger:7");
-                                e.addScoreboardTag("Hunger:6");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:6")) {
-                                e.removeScoreboardTag("Hunger:6");
-                                e.addScoreboardTag("Hunger:5");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:5")) {
-                                e.removeScoreboardTag("Hunger:5");
-                                e.addScoreboardTag("Hunger:4");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:4")) {
-                                e.removeScoreboardTag("Hunger:4");
-                                e.addScoreboardTag("Hunger:3");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:3")) {
-                                e.removeScoreboardTag("Hunger:3");
-                                e.addScoreboardTag("Hunger:2");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:2")) {
-                                e.removeScoreboardTag("Hunger:2");
-                                e.addScoreboardTag("Hunger:1");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
-                                }
-                            } else if (e.getScoreboardTags().contains("Hunger:1")) {
-                                e.removeScoreboardTag("Hunger:1");
-                                e.addScoreboardTag("Hunger:0");
-                                if (!e.getScoreboardTags().contains("Hunger")) {
-                                    e.addScoreboardTag("Hunger");
+                        if (!e.getScoreboardTags().contains("Invulnerable")) {
+                            if (i <= 10) {
+                                if (e.getScoreboardTags().contains("Hunger:10")) {
+                                    e.removeScoreboardTag("Hunger:10");
+                                    e.addScoreboardTag("Hunger:9");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:9")) {
+                                    e.removeScoreboardTag("Hunger:9");
+                                    e.addScoreboardTag("Hunger:8");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:8")) {
+                                    e.removeScoreboardTag("Hunger:8");
+                                    e.addScoreboardTag("Hunger:7");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:7")) {
+                                    e.removeScoreboardTag("Hunger:7");
+                                    e.addScoreboardTag("Hunger:6");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:6")) {
+                                    e.removeScoreboardTag("Hunger:6");
+                                    e.addScoreboardTag("Hunger:5");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:5")) {
+                                    e.removeScoreboardTag("Hunger:5");
+                                    e.addScoreboardTag("Hunger:4");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:4")) {
+                                    e.removeScoreboardTag("Hunger:4");
+                                    e.addScoreboardTag("Hunger:3");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                    e.removeScoreboardTag("Hunger:3");
+                                    e.addScoreboardTag("Hunger:2");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:2")) {
+                                    e.removeScoreboardTag("Hunger:2");
+                                    e.addScoreboardTag("Hunger:1");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Hunger:1")) {
+                                    e.removeScoreboardTag("Hunger:1");
+                                    e.addScoreboardTag("Hunger:0");
+                                    if (!e.getScoreboardTags().contains("Hunger")) {
+                                        e.addScoreboardTag("Hunger");
+                                    }
                                 }
                             }
-                        }
 
+                        }
                     }
                 }
             }
         }.runTaskTimer(plugin, 20000, 20000);
     }
-
+    public void babyLoop(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                World world = getServer().getWorld("Equinox");
+                World world2 = getServer().getWorld("Flat");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("Age:0")) {
+                            ((Horse) e).setAge(-25000);
+                        }if (e.getScoreboardTags().contains("Age:1")) {
+                            ((Horse) e).setAge(-25000);
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 10000, 10000);
+    }
     //Loop Thirst
     public void thirstLoop(Plugin plugin) {
         new BukkitRunnable() {
@@ -237,135 +269,139 @@ public final class Equinox extends JavaPlugin {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
-                        if (i <= 35) {
-                            if (e.getScoreboardTags().contains("Thirst:10")) {
-                                e.removeScoreboardTag("Thirst:10");
-                                e.addScoreboardTag("Thirst:9");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:9")) {
-                                e.removeScoreboardTag("Thirst:9");
-                                e.addScoreboardTag("Thirst:8");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:8")) {
-                                e.removeScoreboardTag("Thirst:8");
-                                e.addScoreboardTag("Thirst:7");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:7")) {
-                                e.removeScoreboardTag("Thirst:7");
-                                e.addScoreboardTag("Thirst:6");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:6")) {
-                                e.removeScoreboardTag("Thirst:6");
-                                e.addScoreboardTag("Thirst:5");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:5")) {
-                                e.removeScoreboardTag("Thirst:5");
-                                e.addScoreboardTag("Thirst:4");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:4")) {
-                                e.removeScoreboardTag("Thirst:4");
-                                e.addScoreboardTag("Thirst:3");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:3")) {
-                                e.removeScoreboardTag("Thirst:3");
-                                e.addScoreboardTag("Thirst:2");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:2")) {
-                                e.removeScoreboardTag("Thirst:2");
-                                e.addScoreboardTag("Thirst:1");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:1")) {
-                                e.removeScoreboardTag("Thirst:1");
-                                e.addScoreboardTag("Thirst:0");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
+                        if (!e.getScoreboardTags().contains("Invulnerable")) {
+                            if (i <= 35) {
+                                if (e.getScoreboardTags().contains("Thirst:10")) {
+                                    e.removeScoreboardTag("Thirst:10");
+                                    e.addScoreboardTag("Thirst:9");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:9")) {
+                                    e.removeScoreboardTag("Thirst:9");
+                                    e.addScoreboardTag("Thirst:8");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:8")) {
+                                    e.removeScoreboardTag("Thirst:8");
+                                    e.addScoreboardTag("Thirst:7");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:7")) {
+                                    e.removeScoreboardTag("Thirst:7");
+                                    e.addScoreboardTag("Thirst:6");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:6")) {
+                                    e.removeScoreboardTag("Thirst:6");
+                                    e.addScoreboardTag("Thirst:5");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:5")) {
+                                    e.removeScoreboardTag("Thirst:5");
+                                    e.addScoreboardTag("Thirst:4");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:4")) {
+                                    e.removeScoreboardTag("Thirst:4");
+                                    e.addScoreboardTag("Thirst:3");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:3")) {
+                                    e.removeScoreboardTag("Thirst:3");
+                                    e.addScoreboardTag("Thirst:2");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:2")) {
+                                    e.removeScoreboardTag("Thirst:2");
+                                    e.addScoreboardTag("Thirst:1");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:1")) {
+                                    e.removeScoreboardTag("Thirst:1");
+                                    e.addScoreboardTag("Thirst:0");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
                                 }
                             }
-                        }
 
+                        }
                     }
                 } for (Entity e : world2.getEntities()) {
                     Random rnd = new Random();
                     int i = rnd.nextInt(100);
                     if (e instanceof Horse) {
                         if (i <= 35) {
-                            if (e.getScoreboardTags().contains("Thirst:10")) {
-                                e.removeScoreboardTag("Thirst:10");
-                                e.addScoreboardTag("Thirst:9");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:9")) {
-                                e.removeScoreboardTag("Thirst:9");
-                                e.addScoreboardTag("Thirst:8");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:8")) {
-                                e.removeScoreboardTag("Thirst:8");
-                                e.addScoreboardTag("Thirst:7");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:7")) {
-                                e.removeScoreboardTag("Thirst:7");
-                                e.addScoreboardTag("Thirst:6");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:6")) {
-                                e.removeScoreboardTag("Thirst:6");
-                                e.addScoreboardTag("Thirst:5");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:5")) {
-                                e.removeScoreboardTag("Thirst:5");
-                                e.addScoreboardTag("Thirst:4");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:4")) {
-                                e.removeScoreboardTag("Thirst:4");
-                                e.addScoreboardTag("Thirst:3");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:3")) {
-                                e.removeScoreboardTag("Thirst:3");
-                                e.addScoreboardTag("Thirst:2");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:2")) {
-                                e.removeScoreboardTag("Thirst:2");
-                                e.addScoreboardTag("Thirst:1");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
-                                }
-                            } else if (e.getScoreboardTags().contains("Thirst:1")) {
-                                e.removeScoreboardTag("Thirst:1");
-                                e.addScoreboardTag("Thirst:0");
-                                if (!e.getScoreboardTags().contains("Thirst")) {
-                                    e.addScoreboardTag("Thirst");
+                            if (!e.getScoreboardTags().contains("Invulnerable")) {
+                                if (e.getScoreboardTags().contains("Thirst:10")) {
+                                    e.removeScoreboardTag("Thirst:10");
+                                    e.addScoreboardTag("Thirst:9");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:9")) {
+                                    e.removeScoreboardTag("Thirst:9");
+                                    e.addScoreboardTag("Thirst:8");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:8")) {
+                                    e.removeScoreboardTag("Thirst:8");
+                                    e.addScoreboardTag("Thirst:7");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:7")) {
+                                    e.removeScoreboardTag("Thirst:7");
+                                    e.addScoreboardTag("Thirst:6");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:6")) {
+                                    e.removeScoreboardTag("Thirst:6");
+                                    e.addScoreboardTag("Thirst:5");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:5")) {
+                                    e.removeScoreboardTag("Thirst:5");
+                                    e.addScoreboardTag("Thirst:4");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:4")) {
+                                    e.removeScoreboardTag("Thirst:4");
+                                    e.addScoreboardTag("Thirst:3");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:3")) {
+                                    e.removeScoreboardTag("Thirst:3");
+                                    e.addScoreboardTag("Thirst:2");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:2")) {
+                                    e.removeScoreboardTag("Thirst:2");
+                                    e.addScoreboardTag("Thirst:1");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
+                                } else if (e.getScoreboardTags().contains("Thirst:1")) {
+                                    e.removeScoreboardTag("Thirst:1");
+                                    e.addScoreboardTag("Thirst:0");
+                                    if (!e.getScoreboardTags().contains("Thirst")) {
+                                        e.addScoreboardTag("Thirst");
+                                    }
                                 }
                             }
                         }
@@ -2169,7 +2205,7 @@ public final class Equinox extends JavaPlugin {
                             if (e.getScoreboardTags().contains("XP:" + i)) {
                                 e.removeScoreboardTag("XP:" + i);
                                 int i2 = i + 3;
-                                e.addScoreboardTag("XP:" + i);
+                                e.addScoreboardTag("XP:" + i2);
                                 p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
                                 p.giveExp(1);
                                 if (i2 >= 255) {
@@ -2787,6 +2823,9 @@ public final class Equinox extends JavaPlugin {
     public FileConfiguration getBreedsConfig() {
         return this.breedsConfig;
     }
+    public FileConfiguration getHomesConfig() {
+        return this.homesConfig;
+    }
     public FileConfiguration getTraitConfig() {
         return this.traitConfig;
     }
@@ -2797,6 +2836,11 @@ public final class Equinox extends JavaPlugin {
         breedsConfigFile = new File(getDataFolder(), "Breeds.yml");
         traitConfigFile = new File(getDataFolder(), "Traits.yml");
         coatConfigFile = new File(getDataFolder(), "Coat.yml");
+        homesConfigFile = new File(getDataFolder(), "homes.yml");
+        if (!homesConfigFile.exists()) {
+            homesConfigFile.getParentFile().mkdirs();
+            saveResource("homes.yml", false);
+        }
         if (!breedsConfigFile.exists()) {
             breedsConfigFile.getParentFile().mkdirs();
             saveResource("Breeds.yml", false);
@@ -2825,7 +2869,23 @@ public final class Equinox extends JavaPlugin {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
+        homesConfig = new YamlConfiguration();
+        try {
+            homesConfig.load(homesConfigFile);
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
 
+    }
+    private boolean setupChat() {
+        RegisteredServiceProvider<Chat> rsp = getServer().getServicesManager().getRegistration(Chat.class);
+        chat = rsp.getProvider();
+        return chat != null;
+    }
+    private boolean setupPermissions() {
+        RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+        perms = rsp.getProvider();
+        return perms != null;
     }
 
     private boolean setupEconomy() {
@@ -2843,6 +2903,13 @@ public final class Equinox extends JavaPlugin {
     public static Economy getEconomy() {
         return econ;
     }
+    public static Permission getPermissions() {
+        return perms;
+    }
+    public static Chat getChat() {
+        return chat;
+    }
+
 
     @Override
     public void onDisable() {

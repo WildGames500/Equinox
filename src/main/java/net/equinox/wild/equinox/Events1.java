@@ -6,18 +6,13 @@ import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,6 +32,20 @@ public class Events1 implements Listener {
         this.plugin = plugin;
     }
 
+
+    @EventHandler
+    public void onGamemodeChange(PlayerGameModeChangeEvent e) {
+        Player p = e.getPlayer();
+        String name = p.getName();
+        if (p.getGameMode().equals("Survival")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set group.banknote");
+
+        }
+        if (p.getGameMode().equals("Creative")) {
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission unset group.banknote");
+
+        }
+    }
 
     @EventHandler
     public void onBreeding(PlayerLeashEntityEvent e) {
@@ -63,6 +72,7 @@ public class Events1 implements Listener {
                                     p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "This horse has bred successfully!");
                                     h2.teleport(h);
                                     h.addScoreboardTag("Pregnant");
+                                    h.addScoreboardTag("preg1");
                                     for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
                                         Random rnd = new Random();
                                         int i = rnd.nextInt(100);
@@ -70,11 +80,16 @@ public class Events1 implements Listener {
                                             if (h.getScoreboardTags().contains("Breed:" + brds)) {
                                                 h.addScoreboardTag("fb:" + brds);
                                                 p.sendMessage(brds);
+                                                System.out.println("Breed" + brds);
+                                                break;
                                             }
-                                        } else {
+                                        }
+                                        if (i > 49) {
                                             if (h2.getScoreboardTags().contains("Breed:" + brds)) {
                                                 h.addScoreboardTag("fb:" + brds);
                                                 p.sendMessage(brds);
+                                                System.out.println("Breed" + brds);
+                                                break;
                                             }
 
                                         }
@@ -86,11 +101,16 @@ public class Events1 implements Listener {
                                             if (h.getScoreboardTags().contains("Color:" + clrs)) {
                                                 h.addScoreboardTag("fc:" + clrs);
                                                 p.sendMessage(clrs);
+                                                System.out.println("Color" + clrs);
+                                                break;
                                             }
-                                        } else {
+                                        }
+                                        if (i > 49) {
                                             if (h2.getScoreboardTags().contains("Color:" + clrs)) {
                                                 h.addScoreboardTag("fc:" + clrs);
                                                 p.sendMessage(clrs);
+                                                System.out.println("Color" + clrs);
+                                                break;
                                             }
 
                                         }
@@ -102,11 +122,16 @@ public class Events1 implements Listener {
                                             if (h.getScoreboardTags().contains("Style:" + styl)) {
                                                 h.addScoreboardTag("fs:" + styl);
                                                 p.sendMessage(styl);
+                                                System.out.println("Style" + styl);
+                                                break;
                                             }
-                                        } else {
+                                        }
+                                        if (i > 49) {
                                             if (h2.getScoreboardTags().contains("Style:" + styl)) {
                                                 h.addScoreboardTag("fs:" + styl);
                                                 p.sendMessage(styl);
+                                                System.out.println("Style" + styl);
+                                                break;
                                             }
 
                                         }
@@ -115,27 +140,40 @@ public class Events1 implements Listener {
                                     int i = rnd.nextInt(100);
                                     if (i <= 49) {
                                         h.addScoreboardTag("fg:Filly");
-                                    } else {
+                                        System.out.println("fg:Filly");
+                                    }
+                                    if (i > 49) {
                                         h.addScoreboardTag("fg:Colt");
+                                        System.out.println("fg:Colt");
                                     }
                                     int sps = 0;
                                     int spe = 8;
                                     for (int spd = sps + 1; spd < spe; spd++) {
-                                        System.out.println(spd);
                                         if (h.getScoreboardTags().contains("Speed:T" + spd)) {
                                             int spm = spd;
-                                            for (int spd2 = sps + 1; spd2 < spe; spd2++) {
+                                            int sps2 = 0;
+                                            int spe2 = 8;
+                                            for (int spd2 = sps2 + 1; spd2 < spe2; spd2++) {
                                                 if (h2.getScoreboardTags().contains("Speed:T" + spd2)) {
                                                     int spst = spd2;
-                                                    if (spm >= spst) {
+                                                    if (spm > spst) {
                                                         Random random = new Random();
-                                                        int spfs = random.nextInt(spm - spst) + spst;
+                                                        int spfs = rnd.nextInt(spm);
                                                         p.sendMessage(String.valueOf(spfs));
+                                                        System.out.println(spfs);
+                                                        h.addScoreboardTag("fspd:" + spfs);
                                                         break;
-                                                    } else {
+                                                    } else if (spm < spst) {
                                                         Random random = new Random();
-                                                        int spfs = random.nextInt(spst - spm) + spm;
+                                                        int spfs = rnd.nextInt(spst);
                                                         p.sendMessage(String.valueOf(spfs));
+                                                        System.out.println(spfs);
+                                                        h.addScoreboardTag("fspd:" + spfs);
+                                                        break;
+                                                    } else if (spm == spst) {
+                                                        int spfs = spm;
+                                                        h.addScoreboardTag("fspd:" + spfs);
+                                                        System.out.println(spfs);
                                                         break;
                                                     }
                                                 }
@@ -147,20 +185,31 @@ public class Events1 implements Listener {
                                     for (int jd = js + 1; jd < je; jd++) {
                                         if (h.getScoreboardTags().contains(jd + "ft")) {
                                             int jm = jd;
-                                            for (int jd2 = js + 1; jd2 < je; jd2++) {
+                                            int js2 = 0;
+                                            int je2 = 7;
+                                            for (int jd2 = js2 + 1; jd2 < je2; jd2++) {
                                                 if (h2.getScoreboardTags().contains(jd2 + "ft")) {
                                                     int jst = jd2;
-                                                    if (jm >= jst) {
+                                                    if (jm < jst) {
                                                         Random random = new Random();
-                                                        int jds = random.nextInt(jm - jst) + jst;
+                                                        int jds = rnd.nextInt(jst);
                                                         h.addScoreboardTag("fj:" + jds);
                                                         p.sendMessage(String.valueOf(jds));
+                                                        System.out.println(jds);
                                                         break;
-                                                    } else {
+                                                    } else if (jm > jst) {
                                                         Random random = new Random();
-                                                        int jds = random.nextInt(jst - jm) + jm;
+                                                        int jds = rnd.nextInt(jm);
                                                         h.addScoreboardTag("fj:" + jds);
                                                         p.sendMessage(String.valueOf(jds));
+                                                        System.out.println(jds);
+                                                        break;
+                                                    } else if (jm == jst) {
+                                                        Random random = new Random();
+                                                        int jds = jm;
+                                                        h.addScoreboardTag("fj:" + jds);
+                                                        p.sendMessage(String.valueOf(jds));
+                                                        System.out.println(jds);
                                                         break;
                                                     }
                                                 }
@@ -235,6 +284,7 @@ public class Events1 implements Listener {
     }
 
     // Damage Select Horse
+    // Why did I make this so painful?
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
 
@@ -244,13 +294,143 @@ public class Events1 implements Listener {
             UUID uuid = (UUID) player.getUniqueId();
             if (e.getDamager() instanceof Player) {
                 if (e.getEntity().getScoreboardTags().contains("Private")) {
+                    //I hate that I had to do this for each permission for the horse please shoot me if I have to edit this...
+                    //Well I had to edit it...
+                    //Oh god not again...
+                    // Rabies, Tetnus, WestNile, Strangles & Flu
                     if (e.getEntity().getScoreboardTags().contains("Owner:" + uuid)) {
                         if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
                             if (player.hasPermission("eq.vet")) {
                                 e.getEntity().addScoreboardTag("Vaxed");
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
+                                ItemStack heldItem = player.getItemInHand();
+                                if (heldItem.getType() == Material.SPIDER_EYE) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                            } else if (player.hasPermission("eq.vettech")) {
+                                e.getEntity().addScoreboardTag("Vaxed");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
+                                ItemStack heldItem = player.getItemInHand();
+                                if (heldItem.getType() == Material.SPIDER_EYE) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
                             } else {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.CLAY_BALL) {
+                            System.out.println("Test");
+                            if (e.getEntity().getScoreboardTags().contains("Colic")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                if (heldItem.getType() == Material.GOLD_NUGGET) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Colic");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.GOLD_NUGGET) {
+                            System.out.println("Test");
+                            if (e.getEntity().getScoreboardTags().contains("Flu")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                if (heldItem.getType() == Material.GOLD_NUGGET) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Flu");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.PRISMARINE_CRYSTALS) {
+                            System.out.println("Test");
+                            if (e.getEntity().getScoreboardTags().contains("Strangles")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Strangles");
+                                if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.NETHER_WART) {
+                            if (e.getEntity().getScoreboardTags().contains("West Nile Virus")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Strangles");
+                                if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("West Nile Virus");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+
+                        } else if (player.getItemInHand().getType().equals(Material.WHEAT)) {
+                            ItemStack heldItem = player.getItemInHand();
+                            if (e.getEntity().getScoreboardTags().contains("Hunger:9")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:9");
+                                e.getEntity().addScoreboardTag("Hunger:10");
+                                e.getEntity().removeScoreboardTag("Hunger");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:8")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:8");
+                                e.getEntity().addScoreboardTag("Hunger:9");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:7")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:7");
+                                e.getEntity().addScoreboardTag("Hunger:8");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:6")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:6");
+                                e.getEntity().addScoreboardTag("Hunger:7");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:5")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:5");
+                                e.getEntity().addScoreboardTag("Hunger:6");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:4")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:4");
+                                e.getEntity().addScoreboardTag("Hunger:5");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:3")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:3");
+                                e.getEntity().addScoreboardTag("Hunger:4");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:2")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:2");
+                                e.getEntity().addScoreboardTag("Hunger:3");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:1")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:1");
+                                e.getEntity().addScoreboardTag("Hunger:2");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:0")) {
+                                player.getInventory().remove(Material.WHEAT);
+                                e.getEntity().removeScoreboardTag("Hunger:0");
+                                e.getEntity().addScoreboardTag("Hunger:1");
+                                if (e.getEntity().getScoreboardTags().contains("DayH-1")) {
+                                    e.getEntity().removeScoreboardTag("DayH-1");
+                                    return;
+                                }
+                                if (e.getEntity().getScoreboardTags().contains("DayH-2")) {
+                                    e.getEntity().removeScoreboardTag("DayH-2");
+                                    return;
+                                }
+                                if (e.getEntity().getScoreboardTags().contains("DayH-3")) {
+                                    e.getEntity().removeScoreboardTag("DayH-3");
+                                    return;
+
+                                } else {
+                                    return;
+                                }
                             }
                         } else if (player.getItemInHand().getType() == Material.FLINT) {
                             if (player.hasPermission("eq.vet")) {
@@ -379,6 +559,118 @@ public class Events1 implements Listener {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
                             } else {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.CLAY_BALL) {
+                            if (e.getEntity().getScoreboardTags().contains("Colic")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Colic");
+                                if (heldItem.getType() == Material.CLAY_BALL) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                            }
+                            e.getEntity().removeScoreboardTag("Colic");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                        } else if (player.getItemInHand().getType() == Material.GOLD_NUGGET) {
+                            if (e.getEntity().getScoreboardTags().contains("Flu")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Flu");
+                                if (heldItem.getType() == Material.GOLD_NUGGET) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Flu");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.PRISMARINE_CRYSTALS) {
+                            if (e.getEntity().getScoreboardTags().contains("Strangles")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Strangles");
+                                if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Strangles");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.NETHER_WART) {
+                            if (e.getEntity().getScoreboardTags().contains("West Nile Virus")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("West Nile Virus");
+                                if (heldItem.getType() == Material.NETHER_WART) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("West Nile Virus");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.WHEAT) {
+                            ItemStack heldItem = player.getItemInHand();
+                            if (e.getEntity().getScoreboardTags().contains("Hunger:9")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:9");
+                                e.getEntity().addScoreboardTag("Hunger:10");
+                                e.getEntity().removeScoreboardTag("Hunger");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:8")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:8");
+                                e.getEntity().addScoreboardTag("Hunger:9");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:7")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:7");
+                                e.getEntity().addScoreboardTag("Hunger:8");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:6")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:6");
+                                e.getEntity().addScoreboardTag("Hunger:7");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:5")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:5");
+                                e.getEntity().addScoreboardTag("Hunger:6");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:4")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:4");
+                                e.getEntity().addScoreboardTag("Hunger:5");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:3")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:3");
+                                e.getEntity().addScoreboardTag("Hunger:4");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:2")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:2");
+                                e.getEntity().addScoreboardTag("Hunger:3");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:1")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:1");
+                                e.getEntity().addScoreboardTag("Hunger:2");
+                                return;
+                            } else if (e.getEntity().getScoreboardTags().contains("Hunger:0")) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                e.getEntity().removeScoreboardTag("Hunger:0");
+                                e.getEntity().addScoreboardTag("Hunger:1");
+                                if (e.getEntity().getScoreboardTags().contains("DayH-1")) {
+                                    e.getEntity().removeScoreboardTag("DayH-1");
+                                    return;
+                                }
+                                if (e.getEntity().getScoreboardTags().contains("DayH-2")) {
+                                    e.getEntity().removeScoreboardTag("DayH-2");
+                                    return;
+                                }
+                                if (e.getEntity().getScoreboardTags().contains("DayH-3")) {
+                                    e.getEntity().removeScoreboardTag("DayH-3");
+                                    return;
+
+                                } else {
+                                    return;
+                                }
                             }
                         } else if (player.getItemInHand().getType() == Material.FLINT) {
                             if (player.hasPermission("eq.vet")) {
@@ -509,6 +801,50 @@ public class Events1 implements Listener {
                                     }
                                 }
                             }
+                        } else if (player.getItemInHand().getType() == Material.CLAY_BALL) {
+                            if (e.getEntity().getScoreboardTags().contains("Colic")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Colic");
+                                if (heldItem.getType() == Material.CLAY_BALL) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Colic");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.GOLD_NUGGET) {
+                            if (e.getEntity().getScoreboardTags().contains("Flu")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Flu");
+                                if (heldItem.getType() == Material.GOLD_NUGGET) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Flu");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.PRISMARINE_CRYSTALS) {
+                            if (e.getEntity().getScoreboardTags().contains("Strangles")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("Strangles");
+                                if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("Strangles");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
+                        } else if (player.getItemInHand().getType() == Material.NETHER_WART) {
+                            if (e.getEntity().getScoreboardTags().contains("West Nile Virus")) {
+                                ItemStack heldItem = player.getItemInHand();
+                                e.getEntity().removeScoreboardTag("West Nile Virus");
+                                if (heldItem.getType() == Material.NETHER_WART) {
+                                    heldItem.setAmount(heldItem.getAmount() - 1);
+                                    player.updateInventory();
+                                }
+                                e.getEntity().removeScoreboardTag("West Nile Virus");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                            }
                         } else if (player.getItemInHand().getType() == Material.BOOK) {
                             if (player.hasPermission("eq.vet")) {
                                 if (e.getEntity().getScoreboardTags().contains("Pregnant")) {
@@ -616,137 +952,248 @@ public class Events1 implements Listener {
                         }
                     }
                 }
-            }
-            if (e.getEntity().getScoreboardTags().contains("Public")) {
-                if (player.getItemInHand().getType() == Material.EMERALD) {
-                    if (!e.getEntity().getScoreboardTags().contains("hbrush")) {
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a hard brush!");
-                        player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
-                        e.getEntity().addScoreboardTag("hbrush");
-                        if (e.getEntity().getScoreboardTags().contains("sbrush")) {
-                            if (e.getEntity().getScoreboardTags().contains("hpick")) {
-                                if (doublexp.get("dxp") == "true") {
-                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                    player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                    player.giveExp(6);
-                                } else {
-                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                    player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                    player.giveExp(3);
+                if (e.getEntity().getScoreboardTags().contains("Public")) {
+                    if (player.getItemInHand().getType() == Material.EMERALD) {
+                        if (!e.getEntity().getScoreboardTags().contains("hbrush")) {
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a hard brush!");
+                            player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
+                            e.getEntity().addScoreboardTag("hbrush");
+                            if (e.getEntity().getScoreboardTags().contains("sbrush")) {
+                                if (e.getEntity().getScoreboardTags().contains("hpick")) {
+                                    if (doublexp.get("dxp") == "true") {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+6 XP");
+                                        player.giveExp(6);
+                                    } else {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
+                                        player.giveExp(3);
+                                    }
                                 }
                             }
                         }
-                    }
-                } else if (player.getItemInHand().getType() == Material.BOOK) {
-                    if (e.getEntity().getScoreboardTags().contains("Pregnant")) {
-                        if (player.hasPermission("eq.vet")) {
-                            ItemStack item = new ItemStack(Material.WRITABLE_BOOK);
-                            player.setItemInHand(item);
-                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Ultra Sound Results" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                            player.sendMessage("");
-                            if (e.getEntity().getScoreboardTags().contains("fg:Colt")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.BLUE + "Colt");
-                                player.sendMessage("");
-                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Please write this info in a book!");
-
-                            } else if (e.getEntity().getScoreboardTags().contains("fg:Filly")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.RED + "Filly");
-                                player.sendMessage("");
-                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Please write this info in a book!");
-
+                    } else if (player.getItemInHand().getType() == Material.CLAY_BALL) {
+                        if (e.getEntity().getScoreboardTags().contains("Colic")) {
+                            ItemStack heldItem = player.getItemInHand();
+                            e.getEntity().removeScoreboardTag("Colic");
+                            if (heldItem.getType() == Material.CLAY_BALL) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                player.updateInventory();
                             }
+                            e.getEntity().removeScoreboardTag("Colic");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
                         }
-                    }
-                } else if (player.getItemInHand().getType() == Material.BLAZE_ROD) {
-                    if (!e.getEntity().getScoreboardTags().contains("sbrush")) {
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a soft brush!");
-                        player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
-                        e.getEntity().addScoreboardTag("sbrush");
-                        if (e.getEntity().getScoreboardTags().contains("hbrush")) {
-                            if (e.getEntity().getScoreboardTags().contains("hpick")) {
-                                if (doublexp.get("dxp") == "true") {
-                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                    player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                    player.giveExp(6);
-                                } else {
-                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                    player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                    player.giveExp(3);
+                    } else if (player.getItemInHand().getType() == Material.GOLD_NUGGET) {
+                        if (e.getEntity().getScoreboardTags().contains("Flu")) {
+                            ItemStack heldItem = player.getItemInHand();
+                            e.getEntity().removeScoreboardTag("Flu");
+                            if (heldItem.getType() == Material.GOLD_NUGGET) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                player.updateInventory();
+                            }
+                            e.getEntity().removeScoreboardTag("Flu");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                        }
+                    } else if (player.getItemInHand().getType() == Material.PRISMARINE_CRYSTALS) {
+                        if (e.getEntity().getScoreboardTags().contains("Strangles")) {
+                            ItemStack heldItem = player.getItemInHand();
+                            e.getEntity().removeScoreboardTag("Strangles");
+                            if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                player.updateInventory();
+                            }
+                            e.getEntity().removeScoreboardTag("Strangles");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                        }
+                    } else if (player.getItemInHand().getType() == Material.NETHER_WART) {
+                        if (e.getEntity().getScoreboardTags().contains("West Nile Virus")) {
+                            ItemStack heldItem = player.getItemInHand();
+                            e.getEntity().removeScoreboardTag("Strangles");
+                            if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                                heldItem.setAmount(heldItem.getAmount() - 1);
+                                player.updateInventory();
+                            }
+                            e.getEntity().removeScoreboardTag("West Nile Virus");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                        }
+                    } else if (player.getItemInHand().getType() == Material.BOOK) {
+                        if (e.getEntity().getScoreboardTags().contains("Pregnant")) {
+                            if (player.hasPermission("eq.vet")) {
+                                ItemStack item = new ItemStack(Material.WRITABLE_BOOK);
+                                player.setItemInHand(item);
+                                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Ultra Sound Results" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                                player.sendMessage("");
+                                if (e.getEntity().getScoreboardTags().contains("fg:Colt")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.BLUE + "Colt");
+                                    player.sendMessage("");
+                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Please write this info in a book!");
+
+                                } else if (e.getEntity().getScoreboardTags().contains("fg:Filly")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.RED + "Filly");
+                                    player.sendMessage("");
+                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Please write this info in a book!");
+
                                 }
                             }
                         }
-                    }
-                } else if (player.getItemInHand().getType() == Material.BONE) {
-                    if (!e.getEntity().getScoreboardTags().contains("hpick")) {
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have picked this horses hooves!");
-                        player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
-                        e.getEntity().addScoreboardTag("hpick");
-                        if (e.getEntity().getScoreboardTags().contains("sbrush")) {
+                    } else if (player.getItemInHand().getType().equals(Material.WHEAT)) {
+                        if (e.getEntity().getScoreboardTags().contains("Hunger:9")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:9");
+                            e.getEntity().addScoreboardTag("Hunger:10");
+                            e.getEntity().removeScoreboardTag("Hunger");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:8")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:8");
+                            e.getEntity().addScoreboardTag("Hunger:9");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:7")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:7");
+                            e.getEntity().addScoreboardTag("Hunger:8");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:6")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:6");
+                            e.getEntity().addScoreboardTag("Hunger:7");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:5")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:5");
+                            e.getEntity().addScoreboardTag("Hunger:6");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:4")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:4");
+                            e.getEntity().addScoreboardTag("Hunger:5");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:3")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:3");
+                            e.getEntity().addScoreboardTag("Hunger:4");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:2")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:2");
+                            e.getEntity().addScoreboardTag("Hunger:3");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:1")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:1");
+                            e.getEntity().addScoreboardTag("Hunger:2");
+                            return;
+                        } else if (e.getEntity().getScoreboardTags().contains("Hunger:0")) {
+                            player.getInventory().remove(Material.WHEAT);
+                            e.getEntity().removeScoreboardTag("Hunger:0");
+                            e.getEntity().addScoreboardTag("Hunger:1");
+                            if (e.getEntity().getScoreboardTags().contains("DayH-1")) {
+                                e.getEntity().removeScoreboardTag("DayH-1");
+                                return;
+                            }
+                            if (e.getEntity().getScoreboardTags().contains("DayH-2")) {
+                                e.getEntity().removeScoreboardTag("DayH-2");
+                                return;
+                            }
+                            if (e.getEntity().getScoreboardTags().contains("DayH-3")) {
+                                e.getEntity().removeScoreboardTag("DayH-3");
+                                return;
+
+                            } else {
+                                return;
+                            }
+                        }
+                    } else if (player.getItemInHand().getType() == Material.BLAZE_ROD) {
+                        if (!e.getEntity().getScoreboardTags().contains("sbrush")) {
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have brushed this horse with a soft brush!");
+                            player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
+                            e.getEntity().addScoreboardTag("sbrush");
                             if (e.getEntity().getScoreboardTags().contains("hbrush")) {
-                                if (doublexp.get("dxp") == "true") {
-                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                    player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                    player.giveExp(6);
-                                } else {
-                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                    player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                    player.giveExp(3);
+                                if (e.getEntity().getScoreboardTags().contains("hpick")) {
+                                    if (doublexp.get("dxp") == "true") {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+6 XP");
+                                        player.giveExp(6);
+                                    } else {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
+                                        player.giveExp(3);
+                                    }
+                                }
+                            }
+                        }
+                    } else if (player.getItemInHand().getType() == Material.BONE) {
+                        if (!e.getEntity().getScoreboardTags().contains("hpick")) {
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have picked this horses hooves!");
+                            player.playSound(ploc, Sound.BLOCK_GRASS_STEP, 4, 1.5F);
+                            e.getEntity().addScoreboardTag("hpick");
+                            if (e.getEntity().getScoreboardTags().contains("sbrush")) {
+                                if (e.getEntity().getScoreboardTags().contains("hbrush")) {
+                                    if (doublexp.get("dxp") == "true") {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+6 XP");
+                                        player.giveExp(6);
+                                    } else {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
+                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
+                                        player.giveExp(3);
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
-                    if (player.hasPermission("eq.vet")) {
-                        e.getEntity().addScoreboardTag("Vaxed");
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
-                    } else {
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
-                    }
-                } else if (player.getItemInHand().getType() == Material.FLINT) {
-                    if (player.hasPermission("eq.vet")) {
-                        if (e.getEntity().getScoreboardTags().contains("uill1")) {
-                            e.getEntity().removeScoreboardTag("uill1");
-                            e.getEntity().addScoreboardTag("Strangles");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has strangles!");
+                    if (player.getItemInHand().getType() == Material.SPIDER_EYE) {
+                        if (player.hasPermission("eq.vet")) {
+                            e.getEntity().addScoreboardTag("Vaxed");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
+                        } else {
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                         }
-                        if (e.getEntity().getScoreboardTags().contains("uill2")) {
-                            e.getEntity().removeScoreboardTag("uill2");
-                            e.getEntity().addScoreboardTag("West Nile Virus");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has west nile virus!");
+                    } else if (player.getItemInHand().getType() == Material.FLINT) {
+                        if (player.hasPermission("eq.vet")) {
+                            if (e.getEntity().getScoreboardTags().contains("uill1")) {
+                                e.getEntity().removeScoreboardTag("uill1");
+                                e.getEntity().addScoreboardTag("Strangles");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has strangles!");
+                            }
+                            if (e.getEntity().getScoreboardTags().contains("uill2")) {
+                                e.getEntity().removeScoreboardTag("uill2");
+                                e.getEntity().addScoreboardTag("West Nile Virus");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has west nile virus!");
+                            }
+                            if (e.getEntity().getScoreboardTags().contains("uill3")) {
+                                e.getEntity().removeScoreboardTag("uill3");
+                                e.getEntity().addScoreboardTag("Flu");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has flu!");
+                            }
+                            if (e.getEntity().getScoreboardTags().contains("uill4")) {
+                                e.getEntity().removeScoreboardTag("uill4");
+                                e.getEntity().addScoreboardTag("Colic");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has colic!");
+                            }
+                        } else {
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                         }
-                        if (e.getEntity().getScoreboardTags().contains("uill3")) {
-                            e.getEntity().removeScoreboardTag("uill3");
-                            e.getEntity().addScoreboardTag("Flu");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has flu!");
-                        }
-                        if (e.getEntity().getScoreboardTags().contains("uill4")) {
-                            e.getEntity().removeScoreboardTag("uill4");
-                            e.getEntity().addScoreboardTag("Colic");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has colic!");
-                        }
-                    } else {
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
-                    }
 
-                } else {
-                    if (player.isSneaking()) {
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have given this horse some pats!");
-                        World world = e.getEntity().getWorld();
-                        Location loc = e.getEntity().getLocation();
-                        int x = (int) loc.getX();
-                        int y = (int) loc.getY();
-                        int z = (int) loc.getZ();
-                        int y1 = y + 1;
-                        world.spawnParticle(Particle.HEART, x, y1, z, 5);
                     } else {
-                        collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                        if (player.isSneaking()) {
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have given this horse some pats!");
+                            World world = e.getEntity().getWorld();
+                            Location loc = e.getEntity().getLocation();
+                            int x = (int) loc.getX();
+                            int y = (int) loc.getY();
+                            int z = (int) loc.getZ();
+                            int y1 = y + 1;
+                            world.spawnParticle(Particle.HEART, x, y1, z, 5);
+                        } else {
+                            collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                        }
                     }
-                }
-            } else if (!e.getEntity().getScoreboardTags().contains("Public")) {
-                if (!e.getEntity().getScoreboardTags().contains("Private")) {
-                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This is not your horse!");
+                } else if (!e.getEntity().getScoreboardTags().contains("Public")) {
+                    if (!e.getEntity().getScoreboardTags().contains("Private")) {
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This is not your horse!");
+                    }
                 }
             }
         }
@@ -776,6 +1223,29 @@ public class Events1 implements Listener {
                 Bukkit.getServer().getWorld("Flat").setChunkForceLoaded(x, z, true);
             }
         }
+    }
+    @EventHandler
+    public void WildCommand(PlayerCommandPreprocessEvent e) {
+        Player p = e.getPlayer();
+        //get the command label
+        String m = e.getMessage();
+        if (m.equalsIgnoreCase("/smite WIldGames500")){
+            e.setCancelled(true);
+            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
+        }
+        if (m.equalsIgnoreCase("/smite Wild")){
+            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
+            e.setCancelled(true);
+        }
+        if (m.equalsIgnoreCase("/kill Wild")){
+            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
+            e.setCancelled(true);
+        }
+        if (m.equalsIgnoreCase("/kill WIldGames500")){
+            e.setCancelled(true);
+            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
+        }
+
     }
 
     @EventHandler

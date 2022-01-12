@@ -33,6 +33,7 @@ public class Commands implements CommandExecutor {
     private final Equinox plugin;
     public static HashMap<String, String> doublexp = new HashMap<String, String>();
     public static HashMap<UUID, String> access = new HashMap<UUID, String>();
+    public static HashMap<UUID, String> bell = new HashMap<UUID, String>();
 
 
     public Commands(Equinox plugin) {
@@ -59,6 +60,225 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
+            } else if (args[0].equalsIgnoreCase("tagadd")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            if (player.hasPermission("eq.op")) {
+                                if (args[1].equalsIgnoreCase("Rescue")) {
+                                    e.addScoreboardTag("Rescue");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Rescue Tag Added!");
+                                    return true;
+
+                                }
+                                if (args[1].equalsIgnoreCase("Invulnerable")) {
+                                    e.addScoreboardTag("Invulnerable");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Invulnerable Tag Added!");
+                                    return true;
+
+                                }
+                                if (args[1].equalsIgnoreCase("Original")) {
+                                    e.addScoreboardTag("Original");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Original Tag Added!");
+                                    return true;
+
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("home")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            Location l = plugin.getConfig().getLocation(euid + " home");
+                            e.teleport(l);
+                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse teleported to home!");
+                            return true;
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("sethome")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            plugin.getConfig().set(String.valueOf(euid + " home"), loc);
+                            plugin.saveConfig();
+                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Home is set!");
+                            return true;
+
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("register")) {
+                if (args.length >= 2) {
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    plugin.getConfig().set(String.valueOf(uuid + " brand"), args[1]);
+                    plugin.saveConfig();
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Brand is registered!");
+                    return true;
+                }
+            } else if (args[0].equalsIgnoreCase("brand")) {
+                if (args.length >= 2) {
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    UUID euid = collection.get(uuid);
+                    World world = player.getWorld();
+                    String name = sender.getName();
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            String n = e.getCustomName();
+                            if (euid.equals(h)) {
+                                if (player.hasPermission("eq.breeding")) {
+                                    if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                        if (!e.getScoreboardTags().contains("branded")) {
+                                            String l = plugin.getConfig().getString(uuid + " brand");
+                                            if (!l.isEmpty()) {
+                                                e.addScoreboardTag("branded");
+                                                e.addScoreboardTag("brand:" + args[1]);
+                                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse Branded!");
+                                                return true;
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("me")) {
+                Player player = (Player) sender;
+                float xp = player.getLevel();
+                if (args.length == 1) {
+                    player.sendMessage(" ");
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Your Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                    player.sendMessage(" ");
+                    if (player.hasPermission("group.default")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GRAY + "Newbie" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.beginner")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Beginner" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.amature")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amature" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.intermediate")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GREEN + "Intermediate" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.advanced")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.RED + "Advanced" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.expert")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Expert" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.champion")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.BLUE + "Champion" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.elite")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.WHITE + "Elite" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.olympian")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "Olympian" + ChatColor.GRAY + "]");
+                    }
+                    player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "XP:      " + xp);
+                    player.sendMessage(" ");
+                    player.sendMessage(ChatColor.YELLOW + "[Licenses]");
+                    if (player.hasPermission("eq.store")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Store");
+                    }
+                    if (player.hasPermission("eq.farming")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Farming");
+                    }
+                    if (player.hasPermission("eq.hosting")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Hosting");
+                    }
+                    if (player.hasPermission("eq.boarding")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Boarding");
+                    }
+                    if (player.hasPermission("eq.realtor")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Realtor");
+                    }
+                    if (player.hasPermission("eq.breeding")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Breeding");
+                    }
+
+                }
+                if (args.length >= 2) {
+                    Player player2 = plugin.getServer().getPlayer(args[1]);
+                    float xp2 = player2.getLevel();
+                    player.sendMessage(" ");
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                    player.sendMessage(" ");
+                    if (player2.hasPermission("group.default")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GRAY + "Newbie" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.beginner")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Beginner" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.amature")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amature" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.intermediate")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GREEN + "Intermediate" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.advanced")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.RED + "Advanced" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.expert")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Expert" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.champion")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.BLUE + "Champion" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.elite")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.WHITE + "Elite" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.olympian")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "Olympian" + ChatColor.GRAY + "]");
+                    }
+                    player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "XP:      " + xp2);
+                    player.sendMessage(" ");
+                    player.sendMessage(ChatColor.YELLOW + "[Licenses]");
+                    if (player2.hasPermission("eq.store")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Store");
+                    }
+                    if (player2.hasPermission("eq.farming")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Farming");
+                    }
+                    if (player2.hasPermission("eq.hosting")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Hosting");
+                    }
+                    if (player2.hasPermission("eq.boarding")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Boarding");
+                    }
+                    if (player2.hasPermission("eq.realtor")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Realtor");
+                    }
+                    if (player.hasPermission("eq.breeding")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Breeding");
+                    }
+                }
             } else if (args[0].equalsIgnoreCase("killall")) {
                 Player player = (Player) sender;
                 World world = player.getWorld();
@@ -67,7 +287,7 @@ public class Commands implements CommandExecutor {
                         if (e.getType() == EntityType.HORSE)
                             ((Horse) e).setHealth(0);
                     }
-                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW +  "Horses killed");
+                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horses killed");
                     return true;
                 }
             } else if (args[0].equalsIgnoreCase("doublexp")) {
@@ -88,8 +308,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("unlease")) {
+            } else if (args[0].equalsIgnoreCase("unlease")) {
                 if (args.length == 2) {
                     Player p2 = plugin.getServer().getPlayer(args[1]);
                     UUID uuid2 = p2.getUniqueId();
@@ -114,8 +333,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("lease")) {
+            } else if (args[0].equalsIgnoreCase("lease")) {
                 if (args.length == 3) {
                     Player p2 = plugin.getServer().getPlayer(args[1]);
                     UUID uuid2 = p2.getUniqueId();
@@ -124,7 +342,8 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     String name = sender.getName();
-                    int cost = Integer.parseInt(args[2]);;
+                    int cost = Integer.parseInt(args[2]);
+                    ;
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse) {
                             UUID h = e.getUniqueId();
@@ -144,8 +363,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("heat")) {
+            } else if (args[0].equalsIgnoreCase("heat")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
@@ -166,24 +384,35 @@ public class Commands implements CommandExecutor {
                     Player player = (Player) sender;
                     OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[1]);
                     UUID uuid2 = p2.getUniqueId();
-                    World world = player.getWorld();
-                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1]  + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                    World world = Bukkit.getWorld("Equinox");
+                    World world2 = Bukkit.getWorld("Flat");
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 String hn = e.getCustomName();
                                 TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
-                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn + " " + args[1]));
                                 player.spigot().sendMessage(msg);
                             }
                         }
                     }
-                    return true;
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                String hn = e.getCustomName();
+                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn + " " + args[1]));
+                                player.spigot().sendMessage(msg);
+                            }
+                        }
+                    }
                 } else {
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = player.getWorld();
+                    World world = Bukkit.getWorld("Equinox");
+                    World world2 = Bukkit.getWorld("Flat");
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse) {
@@ -195,15 +424,24 @@ public class Commands implements CommandExecutor {
                             }
                         }
                     }
-                    return true;
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                String hn = e.getCustomName();
+                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
+                                player.spigot().sendMessage(msg);
+                            }
+                        }
+                    }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("select")) {
-                if (args.length >= 2) {
+            } else if (args[0].equalsIgnoreCase("select")) {
+                if (args.length == 2) {
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = player.getWorld();
+                    World world = Bukkit.getWorld("Equinox");
+                    World world2 = Bukkit.getWorld("Flat");
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
@@ -214,12 +452,50 @@ public class Commands implements CommandExecutor {
                             }
                         }
                     }
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                if (e.getCustomName().equals(args[1])) {
+                                    ((Horse) e).damage(1, player);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("deny")) {
+                if (args.length == 3) {
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[2]);
+                    UUID uuid2 = p2.getUniqueId();
+                    Location loc = player.getLocation();
+                    World world = Bukkit.getWorld("Equinox");
+                    World world2 = Bukkit.getWorld("Flat");
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                if (e.getCustomName().equals(args[1])) {
+                                    ((Horse) e).damage(1, player);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                if (e.getCustomName().equals(args[1])) {
+                                    ((Horse) e).damage(1, player);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("deny")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Transfer request denied!");
                 return true;
-            }else if (args[0].equalsIgnoreCase("accept2")) {
+            } else if (args[0].equalsIgnoreCase("accept2")) {
                 if (args.length == 3) {
                     Player p2 = plugin.getServer().getPlayer(args[1]);
                     UUID uuid2 = p2.getUniqueId();
@@ -239,24 +515,18 @@ public class Commands implements CommandExecutor {
                                     e.addScoreboardTag("Leased1");
                                     e.addScoreboardTag("Leaser:" + uuid);
                                     double bal = eco.getBalance(String.valueOf(sender));
-                                    if (bal >= cost) {
-                                        eco.withdrawPlayer(String.valueOf(sender), cost);
-                                        eco.depositPlayer(p2, cost);
-                                        p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
-                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the lease owner of " + n + "!");
-                                        return true;
-                                    } else {
-                                        p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + name + " is to broke to afford this!");
-                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have enough money for this!");
-                                        return true;
-                                    }
+                                    System.out.println(bal);
+                                    eco.withdrawPlayer(String.valueOf(sender), cost);
+                                    eco.depositPlayer(p2, cost);
+                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the lease owner of " + n + "!");
+                                    return true;
                                 }
                             }
                         }
                     }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("accept")) {
+            } else if (args[0].equalsIgnoreCase("accept")) {
                 if (args.length == 2) {
                     Player p2 = plugin.getServer().getPlayer(args[1]);
                     UUID uuid2 = p2.getUniqueId();
@@ -281,8 +551,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("transfer")) {
+            } else if (args[0].equalsIgnoreCase("transfer")) {
                 if (args.length == 2) {
                     Player p2 = plugin.getServer().getPlayer(args[1]);
                     Player player = (Player) sender;
@@ -309,8 +578,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                 }
-            }
-            else if (args[0].equalsIgnoreCase("trust")) {
+            } else if (args[0].equalsIgnoreCase("trust")) {
                 if (args.length == 2) {
                     Player p2 = plugin.getServer().getPlayer(args[1]);
                     String name = p2.getName();
@@ -336,8 +604,21 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
-                World world = player.getWorld();
+                World world = Bukkit.getWorld("Equinox");
+                World world2 = Bukkit.getWorld("Flat");
                 for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            e.teleport(loc);
+                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse has been teleported to you!");
+                            return true;
+
+                        }
+
+                    }
+                }
+                for (Entity e : world2.getEntities()) {
                     if (e instanceof Horse) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
@@ -353,8 +634,20 @@ public class Commands implements CommandExecutor {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
-                World world = player.getWorld();
+                World world = Bukkit.getWorld("Equinox");
+                World world2 = Bukkit.getWorld("Flat");
                 for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            Location loc = e.getLocation();
+                            player.teleport(loc);
+                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have been teleported to your horse!");
+                            return true;
+                        }
+                    }
+                }
+                for (Entity e : world2.getEntities()) {
                     if (e instanceof Horse) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
@@ -480,6 +773,17 @@ public class Commands implements CommandExecutor {
                             }
                         }
                     }
+                }
+            } else if (args[0].equalsIgnoreCase("notif")) {
+                Player player = (Player) sender;
+                player.sendMessage(" ");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse Notifications" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
+                player.sendMessage(" ");
+                if (player.hasPermission("eq.starved")) {
+                    player.sendMessage(ChatColor.RED + "  ●" + ChatColor.YELLOW + " Your horse has starved to death.");
+                    player.sendMessage(" ");
                 }
             } else if (args[0].equalsIgnoreCase("menu")) {
                 Player player = (Player) sender;
@@ -3287,7 +3591,7 @@ public class Commands implements CommandExecutor {
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
                             player.sendMessage(" ");
                             if (e.getScoreboardTags().contains("Vaxed")) {
-                                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------------------[" + ChatColor.WHITE + "Vaccines" + ChatColor.GRAY + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "-------------------");
+                                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.WHITE + "Vaccines" + ChatColor.GRAY + "]");
                                 player.sendMessage(" ");
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Rabies");
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Tetanus");
@@ -3296,7 +3600,7 @@ public class Commands implements CommandExecutor {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Flu");
                             }
                             player.sendMessage(" ");
-                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------------------[" + ChatColor.WHITE + "Illnesses & Injuries" + ChatColor.GRAY + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "-------------------");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.WHITE + "Illnesses & Injuries" + ChatColor.GRAY + "]");
                             if (e.getScoreboardTags().contains("Flu")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Flu");
                             }
@@ -3363,6 +3667,18 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("uij5")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.RED + " Injury:" + ChatColor.WHITE + " Unknown");
                             }
+                            player.sendMessage(" ");
+                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.WHITE + "Tags" + ChatColor.GRAY + "]");
+                            if (e.getScoreboardTags().contains("Original")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Original");
+                            }
+                            if (e.getScoreboardTags().contains("Invulnerable")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Invulnerable");
+                            }
+                            if (e.getScoreboardTags().contains("Rescue")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Rescue");
+                            }
+
                         }
                     }
                 }
@@ -3386,11 +3702,15 @@ public class Commands implements CommandExecutor {
                             for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
                                 UUID puuid = p.getUniqueId();
                                 String offp = p.getName();
+                                String l = plugin.getConfig().getString(puuid + " brand");
                                 if (e.getScoreboardTags().contains("Owner:" + puuid)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Owner:  " + ChatColor.WHITE + offp);
                                 }
                                 if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Leaser:  " + ChatColor.WHITE + offp);
+                                }
+                                if (e.getScoreboardTags().contains("brand:" + l)) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Brand:  " + ChatColor.WHITE + l);
                                 }
                             }
                             if (e.getScoreboardTags().contains("Private")) {
@@ -3770,6 +4090,11 @@ public class Commands implements CommandExecutor {
                             } else if (e.getScoreboardTags().contains("Gender:Gelding")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.YELLOW + "Gelding");
                             }
+                            if (e.getScoreboardTags().contains("Gender:Filly")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Filly");
+                            } else if (e.getScoreboardTags().contains("Gender:Colt")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Colt");
+                            }
                             if (e.getScoreboardTags().contains("InHeat")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.RED + "In Heat");
                             }
@@ -3959,56 +4284,435 @@ public class Commands implements CommandExecutor {
                 }
             }
         }
+        if (cmd.getName().equalsIgnoreCase("Diamond")) {
+            String name = sender.getName();
+            if (sender.hasPermission("eq.diamond")) {
+                if (args[0].equalsIgnoreCase("&a")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&a❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&b")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&b❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&c")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&c❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&d")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&d❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&e")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&e❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&f")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&f❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&1")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&1❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&2")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&2❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&3")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&3❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&4")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&4❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&5")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&5❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&6")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&6❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&7")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&7❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&8")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&8❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&9")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&9❖&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("star")) {
+            String name = sender.getName();
+            if (sender.hasPermission("eq.star")) {
+                if (args[0].equalsIgnoreCase("&a")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&a✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&b")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&b✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&c")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&c✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&d")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&d✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&e")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&e✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&f")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&f✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&1")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&1✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&2")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&2✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&3")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&3✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&4")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&4✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&5")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&5✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&6")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&6✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&7")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&7✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&8")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&8✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&9")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&9✦&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("flower")) {
+            String name = sender.getName();
+            if (sender.hasPermission("eq.flower")) {
+                if (args[0].equalsIgnoreCase("&a")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&a✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&b")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&b✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&c")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&c✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&d")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&d✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&e")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&e✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&f")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&f✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&1")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&1✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&2")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&2✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&3")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&3✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&4")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&4✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&5")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&5✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&6")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&6✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&7")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&7✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&8")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&8✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&9")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&9✿&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("heart")) {
+            String name = sender.getName();
+            if (sender.hasPermission("eq.heart")) {
+                if (args[0].equalsIgnoreCase("&a")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&a❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&b")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&b❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&c")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&c❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&d")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&d❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&e")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&e❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&f")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&f❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&1")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&1❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&2")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&2❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&3")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&3❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&4")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&4❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&5")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&5❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&6")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&6❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&7")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&7❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&8")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&8❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+                if (args[0].equalsIgnoreCase("&9")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission set prefix.22.&8[&9❤&8]");
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.YELLOW+ "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Prefix set!");
+                    return true;
+                }
+            }
+
+        }
+        if (cmd.getName().equalsIgnoreCase("bell")) {
+            String name = sender.getName();
+            UUID uuid = sender.getServer().getPlayerUniqueId(name);
+            Player player = (Player) sender;
+            Location loc = player.getLocation();
+            double x = loc.getX();
+            double y = loc.getY();
+            double z = loc.getZ();
+            bell.put(uuid, "Test");
+            String ac = bell.get(uuid);
+            if (ac == null) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound minecraft:block.bell.use master @a[distance=..10] " + x + " " + y + " " + z + " " + "1 2 1");
+                bell.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        bell.put(uuid, "True");
+                        return;
+                    }
+                }.runTaskTimer(plugin, 0, 200);
+            } else if (ac.isEmpty()) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound minecraft:block.bell.use master @a[distance=..10] " + x + " " + y + " " + z + " " + "1 2 1");
+                bell.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        bell.put(uuid, "True");
+                        return;
+                    }
+                }.runTaskTimer(plugin, 0, 200);
+            } else if (ac == "True") {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound minecraft:block.bell.use master @a[distance=..10] " + x + " " + y + " " + z + " " + "1 2 1");
+                bell.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        bell.put(uuid, "True");
+                        return;
+                    }
+                }.runTaskTimer(plugin, 0, 200);
+
+            } else if (ac == "false") {
+                return true;
+            } else {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "playsound minecraft:block.bell.use master @a[distance=..10] " + x + " " + y + " " + z + " " + "1 2 1");
+                bell.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        bell.put(uuid, "True");
+                        return;
+                    }
+                }.runTaskTimer(plugin, 0, 200);
+            }
+        }
         if (cmd.getName().equalsIgnoreCase("access")) {
             String name = sender.getName();
-            if (args.length == 0) {
-                UUID uuid = sender.getServer().getPlayerUniqueId(name);
-                String ac = access.get(uuid);
-                if (ac.isEmpty()) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " settemp group.banknote true 1m");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + args[0] + " has access for (1 minute)");
-                    access.put(uuid, "false");
-                    new BukkitRunnable() {
-                        public void run() {
-                            access.put(uuid, "True");
+            UUID uuid = sender.getServer().getPlayerUniqueId(name);
+            access.put(uuid, "True");
+            String ac = access.get(uuid);
+            if (ac == null) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
+                access.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        access.put(uuid, "True");
+                        return;
 
-                        }
-                    }.runTaskTimer(plugin, 0, 200);
-                }
-                if (ac == "True") {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " settemp group.banknote true 1m");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + args[0] + " has access for (1 minute)");
-                    access.put(uuid, "false");
-                    new BukkitRunnable() {
-                        public void run() {
-                            access.put(uuid, "True");
+                    }
+                }.runTaskTimer(plugin, 0, 200);
+            }
+            else if (ac.isEmpty()) {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
+                access.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        access.put(uuid, "True");
+                        return;
 
-                        }
-                    }.runTaskTimer(plugin, 0, 200);
+                    }
+                }.runTaskTimer(plugin, 0, 200);
+            }
+            else if (ac == "True") {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
+                access.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        access.put(uuid, "True");
+                        return;
 
-                } else if (ac == null) {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " settemp group.banknote true 1m");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + args[0] + " has access for (1 minute)");
-                    access.put(uuid, "false");
-                    new BukkitRunnable() {
-                        public void run() {
-                            access.put(uuid, "True");
+                    }
+                }.runTaskTimer(plugin, 0, 200);
 
-                        }
-                    }.runTaskTimer(plugin, 0, 200);
-                } else if (ac == "false") {
-                    return true;
-                } else {
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " settemp group.banknote true 1m");
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + args[0] + " has access for (1 minute)");
-                    access.put(uuid, "false");
-                    new BukkitRunnable() {
-                        public void run() {
-                            access.put(uuid, "True");
+            } else if (ac == "false") {
+                return true;
+            } else {
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
+                access.put(uuid, "false");
+                new BukkitRunnable() {
+                    public void run() {
+                        access.put(uuid, "True");
+                        return;
 
-                        }
-                    }.runTaskTimer(plugin, 0, 200);
-                }
+                    }
+                }.runTaskTimer(plugin, 0, 200);
             }
         }if (cmd.getName().equalsIgnoreCase("rankup")) {
             Player p2 = plugin.getServer().getPlayer(args[0]);
@@ -4019,11 +4723,46 @@ public class Commands implements CommandExecutor {
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " promote ranks");
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + args[0] + " bread 9");
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + args[0] + " apple 9");
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " permission set group.banknote");
                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "broadcast Congratulations " + args[0] + " on ranking to beginner!");
                     }
                 }
             }
         }if (cmd.getName().equalsIgnoreCase("eqa")) {
+            if (args[0].equalsIgnoreCase("food")) {
+                World world = Bukkit.getWorld("Equinox");
+                World world2 = Bukkit.getWorld("Flat");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("Hunger:0")) {
+                            if (e.getScoreboardTags().contains("DayH-1")) {
+                                e.removeScoreboardTag("DayH-1");
+                                e.addScoreboardTag("DayH-2");
+                                break;
+                            }
+                            if (e.getScoreboardTags().contains("DayH-2")) {
+                                e.removeScoreboardTag("DayH-2");
+                                e.addScoreboardTag("DayH-3");
+                                break;
+                            }
+                            if (e.getScoreboardTags().contains("DayH-3")) {
+                                e.removeScoreboardTag("DayH-3");
+                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                    UUID puuid = p.getUniqueId();
+                                    String name = e.getCustomName();
+                                    if (e.getScoreboardTags().contains("Owner:" + puuid)) {
+                                        String offp = p.getName();
+                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of starvation. ");
+                                        ((Horse) e).setHealth(0);
+                                        break;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (args[0].equalsIgnoreCase("preg")) {
                 Random r = new Random();
                 double t7 = 0.65 + (0.75 - 0.65) * r.nextDouble();
@@ -4035,22 +4774,50 @@ public class Commands implements CommandExecutor {
                 double t1 = 0.009 + (0.15 - 0.009) * r.nextDouble();
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
-                Player player = (Player) Bukkit.getOnlinePlayers();
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
-                        int i = 1;
-                        while (i <= 8) {
-                            if (e.getScoreboardTags().contains("Pregnant")) {
-                                e.removeScoreboardTag("preg" + i);
-                                ++i;
-                                e.addScoreboardTag("preg" + i);
+                        if (e.getScoreboardTags().contains("Pregnant")) {
+                            if (e.getScoreboardTags().contains("preg7")) {
+                                e.removeScoreboardTag("preg7");
+                                e.addScoreboardTag("preg8");
+                                System.out.println("preg8");
+                                break;
+                            }if (e.getScoreboardTags().contains("preg6")) {
+                                e.removeScoreboardTag("preg6");
+                                e.addScoreboardTag("preg7");
+                                System.out.println("preg7");
+                                break;
+                            }if (e.getScoreboardTags().contains("preg5")) {
+                                e.removeScoreboardTag("preg5");
+                                e.addScoreboardTag("preg6");
+                                System.out.println("preg6");
+                                break;
+                            }if (e.getScoreboardTags().contains("preg4")) {
+                                e.removeScoreboardTag("preg4");
+                                e.addScoreboardTag("preg5");
+                                System.out.println("preg5");
+                                break;
+                            }if (e.getScoreboardTags().contains("preg3")) {
+                                e.removeScoreboardTag("preg3");
+                                e.addScoreboardTag("preg4");
+                                System.out.println("preg4");
+                                break;
+                            }if (e.getScoreboardTags().contains("preg2")) {
+                                e.removeScoreboardTag("preg2");
+                                e.addScoreboardTag("preg3");
+                                System.out.println("preg3");
+                                break;
+                            }if (e.getScoreboardTags().contains("preg1")) {
+                                e.removeScoreboardTag("preg1");
+                                e.addScoreboardTag("preg2");
+                                System.out.println("preg2");
                                 break;
                             }
-                            ++i;
                         }
                     } if (e.getScoreboardTags().contains("preg8")) {
                         e.removeScoreboardTag("preg8");
                         e.removeScoreboardTag("Pregnant");
+                        String nme = e.getCustomName();
                         Location loc = e.getLocation();
                         Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
                         h.setAge(-25000);
@@ -4060,7 +4827,13 @@ public class Commands implements CommandExecutor {
                         h.addScoreboardTag("Level:0");
                         h.addScoreboardTag("XP:1");
                         h.addScoreboardTag("Age:0");
+                        h.setCustomName(nme + "'s Foal");
                         h.setTamed(true);
+                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                        int index = new Random().nextInt(list.size());
+                        String rnt = list.get(index);
+                        h.addScoreboardTag("Trait:" + rnt);
+                        System.out.println("Birthing...");
                         if (e.getScoreboardTags().contains("fg:Filly")) {
                             h.addScoreboardTag("Gender:Filly");
                         } if (e.getScoreboardTags().contains("fg:Colt")) {
@@ -4068,89 +4841,172 @@ public class Commands implements CommandExecutor {
                         } for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
                             if (e.getScoreboardTags().contains("fb:" + brds)) {
                                 h.addScoreboardTag("Breed:" + brds);
+                                e.removeScoreboardTag("fb:" + brds);
+                                System.out.println("Breed:" + brds);
+                                break;
+                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
+                                h.addScoreboardTag("Breed:" + brds);
+                                System.out.println("Breed:" + brds);
                                 break;
                             }
                         }
-                        for (String brds : plugin.getCoatConfig().getStringList("Color")) {
-                            if (e.getScoreboardTags().contains("fc:" + brds)) {
-                                h.addScoreboardTag("Color:" + brds);
-                                if (brds == "Palomino") {
+                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
+                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
+                                h.addScoreboardTag("Color:" + brds2);
+                                e.removeScoreboardTag("fc:" + brds2);
+                                System.out.println("Color:" + brds2);
+                                if (brds2.equalsIgnoreCase("Palomino")) {
                                     h.setColor(Horse.Color.CREAMY);
-                                }  if (brds == "Chestnut") {
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Chestnut")) {
                                     h.setColor(Horse.Color.CHESTNUT);
-                                } if (brds == "Black") {
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Black")) {
                                     h.setColor(Horse.Color.BLACK);
-                                } if (brds == "Bay") {
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Bay")) {
                                     h.setColor(Horse.Color.DARK_BROWN);
-                                } if (brds == "Buckskin") {
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Buckskin")) {
                                     h.setColor(Horse.Color.BROWN);
-                                } if (brds == "Gray") {
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Gray")) {
                                     h.setColor(Horse.Color.GRAY);
-                                } if (brds == "White") {
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("White")) {
                                     h.setColor(Horse.Color.WHITE);
+                                    break;
                                 }
-                                break;
+                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
+                                h.addScoreboardTag("Color:" + brds2);
+                                System.out.println("Color:" + brds2);
+                                if (brds2.equalsIgnoreCase("Palomino")) {
+                                    h.setColor(Horse.Color.CREAMY);
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Chestnut")) {
+                                    h.setColor(Horse.Color.CHESTNUT);
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Black")) {
+                                    h.setColor(Horse.Color.BLACK);
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Bay")) {
+                                    h.setColor(Horse.Color.DARK_BROWN);
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Buckskin")) {
+                                    h.setColor(Horse.Color.BROWN);
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("Gray")) {
+                                    h.setColor(Horse.Color.GRAY);
+                                    break;
+                                } else if (brds2.equalsIgnoreCase("White")) {
+                                    h.setColor(Horse.Color.WHITE);
+                                    break;
+                                }
 
                             }
-                        } for (String brds : plugin.getBreedsConfig().getStringList("Style")) {
-                            if (e.getScoreboardTags().contains("fs:" + brds)) {
-                                h.addScoreboardTag("Style:" + brds);
-                                if (brds == "Snip") {
+                        } for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
+                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
+                                h.addScoreboardTag("Style:" + brds3);
+                                e.removeScoreboardTag("fs:" + brds3);
+                                System.out.println("Style:" + brds3);
+                                if (brds3.equalsIgnoreCase("Snip")) {
                                     h.setStyle(Horse.Style.WHITE);
-                                }  if (brds == "Paint") {
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("Paint")) {
                                     h.setStyle(Horse.Style.WHITEFIELD);
-                                } if (brds == "Star") {
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("Star")) {
                                     h.setStyle(Horse.Style.WHITE_DOTS);
-                                } if (brds == "Blaze") {
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("Blaze")) {
                                     h.setStyle(Horse.Style.BLACK_DOTS);
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("None")) {
+                                    h.setStyle(Horse.Style.NONE);
+                                    break;
                                 }
-                                break;
+                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
+                                System.out.println("Style:" + brds3);
+                                h.addScoreboardTag("Style:" + brds3);
+                                if (brds3.equalsIgnoreCase("Snip")) {
+                                    h.setStyle(Horse.Style.WHITE);
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("Paint")) {
+                                    h.setStyle(Horse.Style.WHITEFIELD);
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("Star")) {
+                                    h.setStyle(Horse.Style.WHITE_DOTS);
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("Blaze")) {
+                                    h.setStyle(Horse.Style.BLACK_DOTS);
+                                    break;
+                                } else if (brds3.equalsIgnoreCase("None")) {
+                                    h.setStyle(Horse.Style.NONE);
+                                    break;
+                                }
                             }
-                        } if (e.getScoreboardTags().contains("fs:1")) {
-                            h.addScoreboardTag("T1");
+                        } if (e.getScoreboardTags().contains("fspd:1")) {
+                            e.removeScoreboardTag("fspd:1");
+                            h.addScoreboardTag("Speed:T1");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                        } if (e.getScoreboardTags().contains("fs:2")) {
-                            h.addScoreboardTag("T2");
+                        } if (e.getScoreboardTags().contains("fspd:2")) {
+                            e.removeScoreboardTag("fspd:2");
+                            h.addScoreboardTag("Speed:T2");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                        } if (e.getScoreboardTags().contains("fs:3")) {
-                            h.addScoreboardTag("T3");
+                        } if (e.getScoreboardTags().contains("fspd:3")) {
+                            e.removeScoreboardTag("fspd:3");
+                            h.addScoreboardTag("Speed:T3");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                        } if (e.getScoreboardTags().contains("fs:4")) {
-                            h.addScoreboardTag("T4");
+                        } if (e.getScoreboardTags().contains("fspd:4")) {
+                            e.removeScoreboardTag("fspd:4");
+                            h.addScoreboardTag("Speed:T4");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                        } if (e.getScoreboardTags().contains("fs:5")) {
-                            h.addScoreboardTag("T5");
+                        } if (e.getScoreboardTags().contains("fspd:5")) {
+                            e.removeScoreboardTag("fspd:5");
+                            h.addScoreboardTag("Speed:T5");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                        } if (e.getScoreboardTags().contains("fs:6")) {
-                            h.addScoreboardTag("T6");
+                        } if (e.getScoreboardTags().contains("fspd:6")) {
+                            e.removeScoreboardTag("fspd:6");
+                            h.addScoreboardTag("Speed:T6");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                        } if (e.getScoreboardTags().contains("fs:7")) {
-                            h.addScoreboardTag("T7");
+                        } if (e.getScoreboardTags().contains("fspd:7")) {
+                            e.removeScoreboardTag("fspd:7");
+                            h.addScoreboardTag("Speed:T7");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
                         } if (e.getScoreboardTags().contains("fj:1")) {
+                            e.removeScoreboardTag("fj:1");
                             h.addScoreboardTag("1ft");
                             h.setJumpStrength(.517);
                         } if (e.getScoreboardTags().contains("fj:2")) {
+                            e.removeScoreboardTag("fj:2");
                             h.addScoreboardTag("2ft");
                             h.setJumpStrength(.617);
                         } if (e.getScoreboardTags().contains("fj:3")) {
+                            e.removeScoreboardTag("fj:3");
                             h.addScoreboardTag("3ft");
                             h.setJumpStrength(.717);
                         } if (e.getScoreboardTags().contains("fj:4")) {
+                            e.removeScoreboardTag("fj:4");
                             h.addScoreboardTag("4ft");
-                            h.setJumpStrength(.817);
-                        } if (e.getScoreboardTags().contains("fj:5")) {
-                            h.addScoreboardTag("5ft");
                             h.setJumpStrength(.917);
-                        } if (e.getScoreboardTags().contains("fj:6")) {
-                            h.addScoreboardTag("6ft");
+                        } if (e.getScoreboardTags().contains("fj:5")) {
+                            e.removeScoreboardTag("fj:5");
+                            h.addScoreboardTag("5ft");
                             h.setJumpStrength(1.017);
+                        } if (e.getScoreboardTags().contains("fj:6")) {
+                            e.removeScoreboardTag("fj:6");
+                            h.addScoreboardTag("6ft");
+                            h.setJumpStrength(1.117);
+                        } if (e.getScoreboardTags().contains("fj:8")) {
+                            e.removeScoreboardTag("fj:8");
+                            h.addScoreboardTag("6ft");
+                            h.setJumpStrength(1.117);
                         }
                     }
                 }for (Entity e : world2.getEntities()) {
                     if (e instanceof Horse) {
                         int i = 1;
-                        while (i <= 8) {
+                        while (i < 8) {
                             if (e.getScoreboardTags().contains("Pregnant")) {
                                 e.removeScoreboardTag("preg" + i);
                                 ++i;
@@ -4162,6 +5018,7 @@ public class Commands implements CommandExecutor {
                     } if (e.getScoreboardTags().contains("preg8")) {
                         e.removeScoreboardTag("preg8");
                         e.removeScoreboardTag("Pregnant");
+                        String nme = e.getCustomName();
                         Location loc = e.getLocation();
                         Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
                         h.setAge(-25000);
@@ -4171,6 +5028,7 @@ public class Commands implements CommandExecutor {
                         h.addScoreboardTag("Level:0");
                         h.addScoreboardTag("XP:1");
                         h.addScoreboardTag("Age:0");
+                        h.setCustomName(nme + "'s Foal");
                         h.setTamed(true);
                         if (e.getScoreboardTags().contains("fg:Filly")) {
                             h.addScoreboardTag("Gender:Filly");
@@ -4217,25 +5075,25 @@ public class Commands implements CommandExecutor {
                                 }
                                 break;
                             }
-                        } if (e.getScoreboardTags().contains("fs:1")) {
+                        } if (e.getScoreboardTags().contains("fspd:1")) {
                             h.addScoreboardTag("T1");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                        } if (e.getScoreboardTags().contains("fs:2")) {
+                        } if (e.getScoreboardTags().contains("fspd:2")) {
                             h.addScoreboardTag("T2");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                        } if (e.getScoreboardTags().contains("fs:3")) {
+                        } if (e.getScoreboardTags().contains("fspd:3")) {
                             h.addScoreboardTag("T3");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                        } if (e.getScoreboardTags().contains("fs:4")) {
+                        } if (e.getScoreboardTags().contains("fspd:4")) {
                             h.addScoreboardTag("T4");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                        } if (e.getScoreboardTags().contains("fs:5")) {
+                        } if (e.getScoreboardTags().contains("fspd:5")) {
                             h.addScoreboardTag("T5");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                        } if (e.getScoreboardTags().contains("fs:6")) {
+                        } if (e.getScoreboardTags().contains("fspd:6")) {
                             h.addScoreboardTag("T6");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                        } if (e.getScoreboardTags().contains("fs:7")) {
+                        } if (e.getScoreboardTags().contains("fspd:7")) {
                             h.addScoreboardTag("T7");
                             h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
                         } if (e.getScoreboardTags().contains("fj:1")) {
@@ -4262,104 +5120,127 @@ public class Commands implements CommandExecutor {
             } if (args[0].equalsIgnoreCase("lease")) {
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
-                Player player = (Player) Bukkit.getOnlinePlayers();
-                for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
-                        int num = 1;
-                        while (num <= 30) {
-                            if (e.getScoreboardTags().contains("Leased" + num)){
-                                e.removeScoreboardTag("Leased" + num);
-                                ++num;
-                                e.addScoreboardTag("Leased" + num);
-                                if (num == 30) {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            int num = 1;
+                            while (num <= 30) {
+                                if (e.getScoreboardTags().contains("Leased" + num)) {
                                     e.removeScoreboardTag("Leased" + num);
-                                    for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-                                        UUID puuid = p.getUniqueId();
-                                        String offp = p.getName();
-                                        if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
-                                            e.removeScoreboardTag("Leaser:" + puuid);
-                                            break;
+                                    ++num;
+                                    e.addScoreboardTag("Leased" + num);
+                                    if (num == 30) {
+                                        e.removeScoreboardTag("Leased" + num);
+                                        for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                            UUID puuid = p.getUniqueId();
+                                            String offp = p.getName();
+                                            if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
+                                                e.removeScoreboardTag("Leaser:" + puuid);
+                                                break;
+                                            }
                                         }
                                     }
-                                } break;
+                                    break;
+                                }
+                                ++num;
                             }
-                            ++num;
-                        }
 
+                        }
                     }
-                }for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse) {
-                        int num = 1;
-                        while (num <= 30) {
-                            if (e.getScoreboardTags().contains("Leased" + num)){
-                                e.removeScoreboardTag("Leased" + num);
-                                ++num;
-                                e.addScoreboardTag("Leased" + num);
-                                if (num == 30) {
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse) {
+                            int num = 1;
+                            while (num <= 30) {
+                                if (e.getScoreboardTags().contains("Leased" + num)) {
                                     e.removeScoreboardTag("Leased" + num);
-                                    for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-                                        UUID puuid = p.getUniqueId();
-                                        String offp = p.getName();
-                                        if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
-                                            e.removeScoreboardTag("Leaser:" + puuid);
-                                            break;
+                                    ++num;
+                                    e.addScoreboardTag("Leased" + num);
+                                    if (num == 30) {
+                                        e.removeScoreboardTag("Leased" + num);
+                                        for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                            UUID puuid = p.getUniqueId();
+                                            String offp = p.getName();
+                                            if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
+                                                e.removeScoreboardTag("Leaser:" + puuid);
+                                                break;
+                                            }
                                         }
                                     }
-                                } break;
+                                    break;
+                                }
+                                ++num;
                             }
-                            ++num;
-                        }
 
+                        }
                     }
                 }
             }
+            //I guess this is a ok way to do this.... I mean it works soo??
+            // Possibly look into a better way...
+            // ^ nah
             if (args[0].equalsIgnoreCase("injury")) {
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
-                Player player = (Player) Bukkit.getOnlinePlayers();
-                for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
-                        if (e.getPassenger() == player) {
-                            if (e.getScoreboardTags().contains("uji1")) {
-                                e.addScoreboardTag("uij3");
-                                return true;
-                            }
-                            if (e.getScoreboardTags().contains("uji2")) {
-                                e.addScoreboardTag("uij3");
-                                return true;
-                            }
-                            Random rnd = new Random();
-                            int i = rnd.nextInt(100);
-                            if (i <= 10) {
-                                e.addScoreboardTag("uij1");
-                                return true;
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    for (Entity e : world.getEntities()) {
+                        String name = e.getCustomName();
+                        if (e instanceof Horse) {
+                            if (e.getPassenger() == p) {
+                                String offp = p.getName();
+                                if (e.getScoreboardTags().contains("uji1")) {
+                                    e.addScoreboardTag("uij3");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
+                                }
+                                if (e.getScoreboardTags().contains("uji2")) {
+                                    e.addScoreboardTag("uij3");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
+                                }
+                                Random rnd = new Random();
+                                int i = rnd.nextInt(100);
+                                if (i <= 10) {
+                                    e.addScoreboardTag("uij1");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
 
-                            } if (i >= 80) {
-                                e.addScoreboardTag("uij2");
-                                return true;
+                                }
+                                if (i >= 80) {
+                                    e.addScoreboardTag("uij2");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
+                                }
                             }
                         }
                     }
-                } for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse) {
-                        if (e.getPassenger() == player) {
-                            if (e.getScoreboardTags().contains("uji1")) {
-                                e.addScoreboardTag("uij3");
-                                return true;
-                            }
-                            if (e.getScoreboardTags().contains("uji2")) {
-                                e.addScoreboardTag("uij3");
-                                return true;
-                            }
-                            Random rnd = new Random();
-                            int i = rnd.nextInt(100);
-                            if (i <= 10) {
-                                e.addScoreboardTag("uij1");
-                                return true;
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse) {
+                            String name = e.getCustomName();
+                            if (e.getPassenger() == p) {
+                                String offp = p.getName();
+                                if (e.getScoreboardTags().contains("uji1")) {
+                                    e.addScoreboardTag("uij3");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
+                                }
+                                if (e.getScoreboardTags().contains("uji2")) {
+                                    e.addScoreboardTag("uij3");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
+                                }
+                                Random rnd = new Random();
+                                int i = rnd.nextInt(100);
+                                if (i <= 10) {
+                                    e.addScoreboardTag("uij1");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
 
-                            } if (i >= 80) {
-                                e.addScoreboardTag("uij2");
-                                return true;
+                                }
+                                if (i >= 80) {
+                                    e.addScoreboardTag("uij2");
+                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    break;
+                                }
                             }
                         }
                     }
@@ -4370,25 +5251,46 @@ public class Commands implements CommandExecutor {
                 World world2 = Bukkit.getWorld("Flat");
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse) {
-                        if (!e.getScoreboardTags().contains("Vaxed")) {
-                            Random rnd = new Random();
-                            int i = rnd.nextInt(100);
-                            if (i >= 80) {
-                                e.addScoreboardTag("uill1");
-                                return true;
-                            }
-                            if (i >= 50) {
-                                e.addScoreboardTag("uill2");
-                                return true;
-                            }
-                            if (i >= 20) {
-                                e.addScoreboardTag("uill3");
-                                return true;
-                            }
-                            if (i <= 40) {
-                                if (e.getScoreboardTags().contains("Thirst:0")) {
-                                    e.addScoreboardTag("uill4");
-                                    return true;
+                        for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                            UUID puuid = p.getUniqueId();
+                            if (e.getScoreboardTags().contains("Owner:" + puuid)) {
+                                String offp = p.getName();
+                                System.out.println(offp);
+                                String name = e.getCustomName();
+                                if (!e.getScoreboardTags().contains("Vaxed")) {
+                                    Random rnd = new Random();
+                                    int i = rnd.nextInt(100);
+                                    if (i >= 60) {
+                                        if (!e.getScoreboardTags().contains("uill1")) {
+                                            e.addScoreboardTag("uill1");
+                                            System.out.println("uill1");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                        }
+                                    }
+                                    if (i >= 50) {
+                                        if (!e.getScoreboardTags().contains("uill2")) {
+                                            e.addScoreboardTag("uill2");
+                                            System.out.println("uill2");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                        }
+                                    }
+                                    if (i >= 20) {
+                                        if (!e.getScoreboardTags().contains("uill3")) {
+                                            e.addScoreboardTag("uill3");
+                                            System.out.println("uill3");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                        }
+                                    }
+                                    if (i <= 10) {
+                                        if (e.getScoreboardTags().contains("Thirst:0")) {
+                                            if (!e.getScoreboardTags().contains("uill4")) {
+                                                e.addScoreboardTag("uill4");
+                                                System.out.println("uill4");
+                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                            }
+                                        }
+                                    }
+                                    break;
                                 }
                             }
                         }
@@ -4397,23 +5299,31 @@ public class Commands implements CommandExecutor {
                     if (e instanceof Horse) {
                         if (!e.getScoreboardTags().contains("Vaxed")) {
                             Random rnd = new Random();
-                            int i = rnd.nextInt(100);
-                            if (i >= 80) {
-                                e.addScoreboardTag("uill1");
-                                return true;
-                            }
-                            if (i >= 50) {
-                                e.addScoreboardTag("uill2");
-                                return true;
-                            }
-                            if (i >= 20) {
-                                e.addScoreboardTag("uill3");
-                                return true;
-                            }
-                            if (i <= 40) {
-                                if (e.getScoreboardTags().contains("Thirst:0")) {
-                                    e.addScoreboardTag("uill4");
-                                    return true;
+                            for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                UUID puuid = p.getUniqueId();
+                                if (e.getScoreboardTags().contains("Owner:" + puuid)) {
+                                    String offp = p.getName();
+                                    String name = e.getCustomName();
+                                    int i = rnd.nextInt(100);
+                                    if (i >= 60) {
+                                        e.addScoreboardTag("uill1");
+                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    }
+                                    if (i >= 50) {
+                                        e.addScoreboardTag("uill2");
+                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    }
+                                    if (i >= 20) {
+                                        e.addScoreboardTag("uill3");
+                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                    }
+                                    if (i <= 40) {
+                                        if (e.getScoreboardTags().contains("Thirst:0")) {
+                                            e.addScoreboardTag("uill4");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                        }
+                                    }
+                                    break;
                                 }
                             }
                         }
@@ -4438,51 +5348,134 @@ public class Commands implements CommandExecutor {
                     if (e instanceof Horse) {
                         int i = 0;
                         while (i <= 62) {
-                            if (e.getScoreboardTags().contains("Age:" + i)) {
-                                e.removeScoreboardTag("Age:" + i);
-                                ++i;
-                                e.addScoreboardTag("Age:" + i);
-                                if (i == 62) {
-                                    ((Horse) e).setHealth(0);
-                                    for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-                                        UUID uuid = p.getUniqueId();
-                                        if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                                            p.getPlayer();
+                            if (!e.getScoreboardTags().contains("Invulnerable")) {
+                                if (e.getScoreboardTags().contains("Age:" + i)) {
+                                    e.removeScoreboardTag("Age:" + i);
+                                    ++i;
+                                    e.addScoreboardTag("Age:" + i);
+                                    if (i == 62) {
+                                        ((Horse) e).setHealth(0);
+                                        for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                            UUID uuid = p.getUniqueId();
+                                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                                p.getPlayer();
+                                            }
                                         }
                                     }
+                                    break;
                                 }
-                                break;
-                            }
-                            ++i;
-
-                        }
-                    }
-                } for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse) {
-                        int i = 0;
-                        while (i <= 62) {
-                            if (e.getScoreboardTags().contains("Age:" + i)) {
-                                e.removeScoreboardTag("Age:" + i);
                                 ++i;
-                                e.addScoreboardTag("Age:" + i);
-                                if (i == 62) {
-                                    ((Horse) e).setHealth(0);
-                                    for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-                                        UUID uuid = p.getUniqueId();
-                                        if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                                            p.getPlayer();
-                                        }
-                                    }
-                                }
-                                break;
                             }
-                            ++i;
 
                         }
                     }
                 }
+                for (Entity e : world2.getEntities()) {
+                    if (e instanceof Horse) {
+                        int i = 0;
+                        while (i <= 62) {
+                            if (!e.getScoreboardTags().contains("Invulnerable")) {
+                                if (e.getScoreboardTags().contains("Age:" + i)) {
+                                    e.removeScoreboardTag("Age:" + i);
+                                    ++i;
+                                    e.addScoreboardTag("Age:" + i);
+                                    if (i == 62) {
+                                        ((Horse) e).setHealth(0);
+                                        for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                            UUID uuid = p.getUniqueId();
+                                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                                p.getPlayer();
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                                ++i;
+                            }
 
-            } else if (args[0].equalsIgnoreCase("heat")) {
+                        }
+                    }
+                }
+            }else if (args[0].equalsIgnoreCase("heat4")) {
+                World world = Bukkit.getWorld("Equinox");
+                World world2 = Bukkit.getWorld("Flat");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("InHeat3")) {
+                            e.removeScoreboardTag("InHeat3");
+                            e.removeScoreboardTag("InHeat");
+                        }
+                    }
+                }
+                for (Entity e : world2.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("InHeat3")) {
+                            e.removeScoreboardTag("InHeat3");
+                            e.removeScoreboardTag("InHeat");
+                        }
+                    }
+                }
+            }else if (args[0].equalsIgnoreCase("heat3")) {
+            World world = Bukkit.getWorld("Equinox");
+            World world2 = Bukkit.getWorld("Flat");
+            for (Entity e : world.getEntities()) {
+                if (e instanceof Horse) {
+                    if (e.getScoreboardTags().contains("InHeat2")) {
+                        e.removeScoreboardTag("InHeat2");
+                        e.addScoreboardTag("InHeat3");
+                    }
+                }
+            }
+                for (Entity e : world2.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("InHeat2")) {
+                            e.removeScoreboardTag("InHeat2");
+                            e.addScoreboardTag("InHeat3");
+                        }
+                    }
+                }
+            }else if (args[0].equalsIgnoreCase("heat2")) {
+                World world = Bukkit.getWorld("Equinox");
+                World world2 = Bukkit.getWorld("Flat");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("InHeat1")) {
+                            e.removeScoreboardTag("InHeat1");
+                            e.addScoreboardTag("InHeat2");
+                        }
+                    }
+                }for (Entity e : world2.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("InHeat1")) {
+                            e.removeScoreboardTag("InHeat1");
+                            e.addScoreboardTag("InHeat2");
+                        }
+                    }
+                }
+            }else if (args[0].equalsIgnoreCase("heat1")) {
+                World world = Bukkit.getWorld("Equinox");
+                World world2 = Bukkit.getWorld("Flat");
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("Heat14")) {
+                            e.removeScoreboardTag("Heat14");
+                            e.addScoreboardTag("Heat1");
+                            e.addScoreboardTag("InHeat1");
+                            e.addScoreboardTag("InHeat");
+                        }
+                    }
+                }for (Entity e : world2.getEntities()) {
+                    if (e instanceof Horse) {
+                        if (e.getScoreboardTags().contains("Heat14")) {
+                            e.removeScoreboardTag("Heat14");
+                            e.addScoreboardTag("Heat1");
+                            e.addScoreboardTag("InHeat1");
+                            e.addScoreboardTag("InHeat");
+                        }
+                    }
+                }
+
+            }else if (args[0].equalsIgnoreCase("heat")) {
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
                 for (Entity e : world.getEntities()) {
@@ -4493,32 +5486,11 @@ public class Commands implements CommandExecutor {
                                 e.removeScoreboardTag("Heat" + i);
                                 ++i;
                                 e.addScoreboardTag("Heat" + i);
+                                System.out.println("Heat" + i);
                                 break;
 
                             }
                             ++i;
-
-                        }
-                        if (e.getScoreboardTags().contains("Heat14")) {
-                            e.removeScoreboardTag("Heat14");
-                            e.addScoreboardTag("Heat1");
-                            e.addScoreboardTag("InHeat1");
-                            return true;
-                        }
-                        if (e.getScoreboardTags().contains("InHeat1")) {
-                            e.removeScoreboardTag("InHeat1");
-                            e.removeScoreboardTag("InHeat2");
-                            return true;
-                        }
-                        if (e.getScoreboardTags().contains("InHeat2")) {
-                            e.removeScoreboardTag("InHeat2");
-                            e.removeScoreboardTag("InHeat3");
-                            return true;
-                        }
-                        if (e.getScoreboardTags().contains("InHeat3")) {
-                            e.removeScoreboardTag("InHeat3");
-                            e.removeScoreboardTag("InHeat");
-                            return true;
                         }
                     }
                 } for (Entity e : world2.getEntities()) {
@@ -4533,33 +5505,12 @@ public class Commands implements CommandExecutor {
 
                             }
                             ++i;
-
-                        }
-                        if (e.getScoreboardTags().contains("Heat14")) {
-                            e.removeScoreboardTag("Heat14");
-                            e.addScoreboardTag("Heat1");
-                            e.addScoreboardTag("InHeat1");
-                            return true;
-                        }
-                        if (e.getScoreboardTags().contains("InHeat1")) {
-                            e.removeScoreboardTag("InHeat1");
-                            e.removeScoreboardTag("InHeat2");
-                            return true;
-                        }
-                        if (e.getScoreboardTags().contains("InHeat2")) {
-                            e.removeScoreboardTag("InHeat2");
-                            e.removeScoreboardTag("InHeat3");
-                            return true;
-                        }
-                        if (e.getScoreboardTags().contains("InHeat3")) {
-                            e.removeScoreboardTag("InHeat3");
-                            e.removeScoreboardTag("InHeat");
-                            return true;
                         }
                     }
                 }
             }
         } return false;
+        //STFU Ik this file is huge idc
     }
     public Location getLocAroundCircle(Location center, double radius, double angleRad) {
         double x = center.getX() + radius * Math.cos(angleRad);

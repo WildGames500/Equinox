@@ -20,3 +20,18 @@ commands:
   access:
     description: Returns pong!
     usage: /<command>
+  heart:
+    description: Returns pong!
+    usage: /<command> [color code]
+  diamond:
+    description: Returns pong!
+    usage: /<command> [color code]
+  star:
+    description: Returns pong!
+    usage: /<command> [color code]
+  flower:
+    description: Returns pong!
+    usage: /<command> [color code]
+  bell:
+    description: Returns pong!
+    usage: /<command>
