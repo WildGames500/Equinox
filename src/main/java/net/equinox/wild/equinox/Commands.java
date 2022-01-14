@@ -5255,38 +5255,33 @@ public class Commands implements CommandExecutor {
                             UUID puuid = p.getUniqueId();
                             if (e.getScoreboardTags().contains("Owner:" + puuid)) {
                                 String offp = p.getName();
-                                System.out.println(offp);
                                 String name = e.getCustomName();
                                 if (!e.getScoreboardTags().contains("Vaxed")) {
                                     Random rnd = new Random();
                                     int i = rnd.nextInt(100);
-                                    if (i >= 60) {
+                                    if (i >= 40) {
                                         if (!e.getScoreboardTags().contains("uill1")) {
                                             e.addScoreboardTag("uill1");
-                                            System.out.println("uill1");
                                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                         }
                                     }
-                                    if (i >= 50) {
+                                    if (i >= 30) {
                                         if (!e.getScoreboardTags().contains("uill2")) {
                                             e.addScoreboardTag("uill2");
-                                            System.out.println("uill2");
                                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                         }
                                     }
                                     if (i >= 20) {
                                         if (!e.getScoreboardTags().contains("uill3")) {
                                             e.addScoreboardTag("uill3");
-                                            System.out.println("uill3");
                                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                         }
                                     }
-                                    if (i <= 10) {
+                                    if (i <= 3) {
                                         if (e.getScoreboardTags().contains("Thirst:0")) {
                                             if (!e.getScoreboardTags().contains("uill4")) {
                                                 e.addScoreboardTag("uill4");
-                                                System.out.println("uill4");
-                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                             }
                                         }
                                     }
@@ -5305,11 +5300,11 @@ public class Commands implements CommandExecutor {
                                     String offp = p.getName();
                                     String name = e.getCustomName();
                                     int i = rnd.nextInt(100);
-                                    if (i >= 60) {
+                                    if (i >= 40) {
                                         e.addScoreboardTag("uill1");
                                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
                                     }
-                                    if (i >= 50) {
+                                    if (i >= 30) {
                                         e.addScoreboardTag("uill2");
                                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
                                     }
@@ -5317,7 +5312,7 @@ public class Commands implements CommandExecutor {
                                         e.addScoreboardTag("uill3");
                                         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
                                     }
-                                    if (i <= 40) {
+                                    if (i <= 5) {
                                         if (e.getScoreboardTags().contains("Thirst:0")) {
                                             e.addScoreboardTag("uill4");
                                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");

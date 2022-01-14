@@ -320,7 +320,6 @@ public class Events1 implements Listener {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                             }
                         } else if (player.getItemInHand().getType() == Material.CLAY_BALL) {
-                            System.out.println("Test");
                             if (e.getEntity().getScoreboardTags().contains("Colic")) {
                                 ItemStack heldItem = player.getItemInHand();
                                 if (heldItem.getType() == Material.GOLD_NUGGET) {
@@ -331,7 +330,6 @@ public class Events1 implements Listener {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
                             }
                         } else if (player.getItemInHand().getType() == Material.GOLD_NUGGET) {
-                            System.out.println("Test");
                             if (e.getEntity().getScoreboardTags().contains("Flu")) {
                                 ItemStack heldItem = player.getItemInHand();
                                 if (heldItem.getType() == Material.GOLD_NUGGET) {
@@ -342,7 +340,6 @@ public class Events1 implements Listener {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
                             }
                         } else if (player.getItemInHand().getType() == Material.PRISMARINE_CRYSTALS) {
-                            System.out.println("Test");
                             if (e.getEntity().getScoreboardTags().contains("Strangles")) {
                                 ItemStack heldItem = player.getItemInHand();
                                 e.getEntity().removeScoreboardTag("Strangles");
