@@ -542,6 +542,7 @@ public class HorseGUI implements Listener {
                     if (bal >= cost) {
                         eco.withdrawPlayer(p, cost);
                         Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                        plugin.getDbContext().addHorseToDatabase(h);
                         h.setTamed(true);
                         h.addScoreboardTag("Owner:" + uuid);
                         h.addScoreboardTag("Owned");

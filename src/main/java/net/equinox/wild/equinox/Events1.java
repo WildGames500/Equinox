@@ -2,11 +2,13 @@ package net.equinox.wild.equinox;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import io.papermc.paper.event.entity.EntityMoveEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -1198,26 +1200,17 @@ public class Events1 implements Listener {
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent unload) {
-        World world = Bukkit.getWorld("Equinox");
-        World world2 = Bukkit.getWorld("Flat");
         Chunk chunk = unload.getChunk();
-        for (Entity e : world.getEntities()) {
-            if (e instanceof Horse) {
-                Chunk chunk1 = e.getChunk();
-                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-                int x = chunk1.getX();
-                int z = chunk1.getZ();
-                Bukkit.getServer().getWorld("Equinox").loadChunk(x, z);
-                Bukkit.getServer().getWorld("Equinox").setChunkForceLoaded(x, z, true);
-            }
-        } for (Entity e : world2.getEntities()) {
-            if (e instanceof Horse) {
-                Chunk chunk1 = e.getChunk();
-                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-                int x = chunk1.getX();
-                int z = chunk1.getZ();
-                Bukkit.getServer().getWorld("Flat").loadChunk(x, z);
-                Bukkit.getServer().getWorld("Flat").setChunkForceLoaded(x, z, true);
+        for(World world : Bukkit.getServer().getWorlds()) {
+            for (Entity e : world.getEntities()) {
+                if (e instanceof Horse) {
+                    Chunk chunk1 = e.getChunk();
+                    ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                    int x = chunk1.getX();
+                    int z = chunk1.getZ();
+                    world.loadChunk(x, z);
+                    world.setChunkForceLoaded(x, z, true);
+                }
             }
         }
     }
@@ -1280,8 +1273,8 @@ public class Events1 implements Listener {
     }
 
     @EventHandler
-    public void onMove(EntityMoveEvent e) {
-        Entity h = e.getEntity();
+    public void onMove(PlayerMoveEvent e) {
+        Entity h = e.getPlayer();
         if (h.getType() == EntityType.PLAYER) {
             if (h.getVehicle() == null) {
                 return;
