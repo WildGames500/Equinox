@@ -13,10 +13,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -72,7 +69,7 @@ public class Commands implements CommandExecutor {
                 Location loc = player.getLocation();
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (player.hasPermission("eq.op")) {
@@ -105,7 +102,7 @@ public class Commands implements CommandExecutor {
                 Location loc = player.getLocation();
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             Location l = plugin.getConfig().getLocation(euid + " home");
@@ -122,7 +119,7 @@ public class Commands implements CommandExecutor {
                 Location loc = player.getLocation();
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             plugin.getConfig().set(String.valueOf(euid + " home"), loc);
@@ -150,7 +147,7 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
@@ -323,7 +320,7 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
@@ -350,7 +347,7 @@ public class Commands implements CommandExecutor {
                     int cost = Integer.parseInt(args[2]);
                     ;
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
@@ -375,7 +372,7 @@ public class Commands implements CommandExecutor {
                 Location loc = player.getLocation();
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             e.addScoreboardTag("InHeat");
@@ -393,7 +390,7 @@ public class Commands implements CommandExecutor {
                     World world2 = Bukkit.getWorld("Flat");
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 String hn = e.getCustomName();
                                 TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
@@ -403,7 +400,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                     for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 String hn = e.getCustomName();
                                 TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
@@ -420,7 +417,7 @@ public class Commands implements CommandExecutor {
                     World world2 = Bukkit.getWorld("Flat");
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                 String hn = e.getCustomName();
                                 TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
@@ -430,7 +427,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                     for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                 String hn = e.getCustomName();
                                 TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
@@ -448,7 +445,7 @@ public class Commands implements CommandExecutor {
                     World world = Bukkit.getWorld("Equinox");
                     World world2 = Bukkit.getWorld("Flat");
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                 if (e.getCustomName().equals(args[1])) {
                                     ((Horse) e).damage(1, player);
@@ -458,7 +455,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                     for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                 if (e.getCustomName().equals(args[1])) {
                                     ((Horse) e).damage(1, player);
@@ -477,7 +474,7 @@ public class Commands implements CommandExecutor {
                     World world = Bukkit.getWorld("Equinox");
                     World world2 = Bukkit.getWorld("Flat");
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 if (e.getCustomName().equals(args[1])) {
                                     ((Horse) e).damage(1, player);
@@ -487,7 +484,7 @@ public class Commands implements CommandExecutor {
                         }
                     }
                     for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 if (e.getCustomName().equals(args[1])) {
                                     ((Horse) e).damage(1, player);
@@ -512,7 +509,7 @@ public class Commands implements CommandExecutor {
                     String name = sender.getName();
                     int cost = Integer.parseInt(args[2]);
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
@@ -541,7 +538,7 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
@@ -566,7 +563,7 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
@@ -593,7 +590,7 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             if (euid.equals(h)) {
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have trusted " + name + " to your horse!");
@@ -612,7 +609,7 @@ public class Commands implements CommandExecutor {
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             e.teleport(loc);
@@ -624,7 +621,7 @@ public class Commands implements CommandExecutor {
                     }
                 }
                 for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             e.teleport(loc);
@@ -642,7 +639,7 @@ public class Commands implements CommandExecutor {
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             Location loc = e.getLocation();
@@ -653,7 +650,7 @@ public class Commands implements CommandExecutor {
                     }
                 }
                 for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             Location loc = e.getLocation();
@@ -670,11 +667,13 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (player.hasPermission("eq.op")) {
                                 ((Horse) e).setHealth(0);
+                                ((Donkey) e).setHealth(0);
+                                ((Mule) e).setHealth(0);
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have killed this horse!");
                                 return true;
                             } else {
@@ -690,7 +689,7 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             if (euid.equals(h)) {
                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {
@@ -715,7 +714,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (!e.getScoreboardTags().contains("Owned")) {
@@ -742,7 +741,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
@@ -764,7 +763,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
@@ -819,7 +818,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = p.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (((Horse) e).getLeashHolder() instanceof Player) {
@@ -3585,7 +3584,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             String hn = e.getName();
@@ -3694,7 +3693,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
                 for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             String hn = e.getName();
@@ -4772,7 +4771,7 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("food")) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Hunger:0")) {
                                 if (e.getScoreboardTags().contains("DayH-1")) {
                                     e.removeScoreboardTag("DayH-1");
@@ -4815,7 +4814,7 @@ public class Commands implements CommandExecutor {
                 double t1 = 0.009 + (0.15 - 0.009) * r.nextDouble();
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey) {
                             if (e.getScoreboardTags().contains("Pregnant")) {
                                 if (e.getScoreboardTags().contains("preg7")) {
                                     e.removeScoreboardTag("preg7");
@@ -4866,207 +4865,469 @@ public class Commands implements CommandExecutor {
                             e.removeScoreboardTag("Pregnant");
                             String nme = e.getCustomName();
                             Location loc = e.getLocation();
-                            Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
-                            h.setAge(-25000);
-                            h.addScoreboardTag("Hunger:10");
-                            h.addScoreboardTag("Thirst:10");
-                            h.addScoreboardTag("Private");
-                            h.addScoreboardTag("Level:0");
-                            h.addScoreboardTag("XP:1");
-                            h.addScoreboardTag("Age:0");
-                            h.setCustomName(nme + "'s Foal");
-                            h.setTamed(true);
-                            List<String> list = plugin.getTraitConfig().getStringList("Traits");
-                            int index = new Random().nextInt(list.size());
-                            String rnt = list.get(index);
-                            h.addScoreboardTag("Trait:" + rnt);
-                            System.out.println("Birthing...");
-                            if (e.getScoreboardTags().contains("fg:Filly")) {
-                                h.addScoreboardTag("Gender:Filly");
-                            }
-                            if (e.getScoreboardTags().contains("fg:Colt")) {
-                                h.addScoreboardTag("Gender:Colt");
-                            }
-                            for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
-                                if (e.getScoreboardTags().contains("fb:" + brds)) {
-                                    h.addScoreboardTag("Breed:" + brds);
-                                    e.removeScoreboardTag("fb:" + brds);
-                                    System.out.println("Breed:" + brds);
-                                    break;
-                                } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
-                                    h.addScoreboardTag("Breed:" + brds);
-                                    System.out.println("Breed:" + brds);
-                                    break;
-                                }
-                            }
-                            for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
-                                if (e.getScoreboardTags().contains("fc:" + brds2)) {
-                                    h.addScoreboardTag("Color:" + brds2);
-                                    e.removeScoreboardTag("fc:" + brds2);
-                                    System.out.println("Color:" + brds2);
-                                    if (brds2.equalsIgnoreCase("Palomino")) {
-                                        h.setColor(Horse.Color.CREAMY);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Chestnut")) {
-                                        h.setColor(Horse.Color.CHESTNUT);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Black")) {
-                                        h.setColor(Horse.Color.BLACK);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Bay")) {
-                                        h.setColor(Horse.Color.DARK_BROWN);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Buckskin")) {
-                                        h.setColor(Horse.Color.BROWN);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Gray")) {
-                                        h.setColor(Horse.Color.GRAY);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("White")) {
-                                        h.setColor(Horse.Color.WHITE);
-                                        break;
-                                    }
-                                } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
-                                    h.addScoreboardTag("Color:" + brds2);
-                                    System.out.println("Color:" + brds2);
-                                    if (brds2.equalsIgnoreCase("Palomino")) {
-                                        h.setColor(Horse.Color.CREAMY);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Chestnut")) {
-                                        h.setColor(Horse.Color.CHESTNUT);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Black")) {
-                                        h.setColor(Horse.Color.BLACK);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Bay")) {
-                                        h.setColor(Horse.Color.DARK_BROWN);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Buckskin")) {
-                                        h.setColor(Horse.Color.BROWN);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("Gray")) {
-                                        h.setColor(Horse.Color.GRAY);
-                                        break;
-                                    } else if (brds2.equalsIgnoreCase("White")) {
-                                        h.setColor(Horse.Color.WHITE);
-                                        break;
-                                    }
+                            for (String brd : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                if (e.getScoreboardTags().contains("fb:" + brd)) {
+                                    if (brd.equalsIgnoreCase("Donkey")) {
+                                        Donkey h = (Donkey) world.spawnEntity(loc, EntityType.DONKEY);
+                                        h.setAge(-25000);
+                                        h.addScoreboardTag("Hunger:10");
+                                        h.addScoreboardTag("Thirst:10");
+                                        h.addScoreboardTag("Private");
+                                        h.addScoreboardTag("Level:0");
+                                        h.addScoreboardTag("XP:1");
+                                        h.addScoreboardTag("Age:0");
+                                        h.setCustomName(nme + "'s Foal");
+                                        h.setTamed(true);
+                                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                                        int index = new Random().nextInt(list.size());
+                                        String rnt = list.get(index);
+                                        h.addScoreboardTag("Trait:" + rnt);
+                                        System.out.println("Birthing...");
+                                        if (e.getScoreboardTags().contains("fg:Filly")) {
+                                            h.addScoreboardTag("Gender:Filly");
+                                        }
+                                        if (e.getScoreboardTags().contains("fg:Colt")) {
+                                            h.addScoreboardTag("Gender:Colt");
+                                        }
+                                        for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                            if (e.getScoreboardTags().contains("fb:" + brds)) {
+                                                h.addScoreboardTag("Breed:" + brds);
+                                                e.removeScoreboardTag("fb:" + brds);
+                                                System.out.println("Breed:" + brds);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
+                                                h.addScoreboardTag("Breed:" + brds);
+                                                System.out.println("Breed:" + brds);
+                                                break;
+                                            }
+                                        }
+                                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
+                                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
+                                                h.addScoreboardTag("Color:Gray");
+                                                e.removeScoreboardTag("fc:" + brds2);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
+                                                h.addScoreboardTag("Color:Gray");
+                                                System.out.println("Color:" + brds2);
+                                                break;
 
+                                            }
+                                        }
+                                        for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
+                                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
+                                                h.addScoreboardTag("Style:None");
+                                                e.removeScoreboardTag("fs:" + brds3);
+                                                System.out.println("Style:" + brds3);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
+                                                System.out.println("Style:" + brds3);
+                                                h.addScoreboardTag("Style:None");
+                                                break;
+                                            }
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:1")) {
+                                            e.removeScoreboardTag("fspd:1");
+                                            h.addScoreboardTag("Speed:T1");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:2")) {
+                                            e.removeScoreboardTag("fspd:2");
+                                            h.addScoreboardTag("Speed:T2");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:3")) {
+                                            e.removeScoreboardTag("fspd:3");
+                                            h.addScoreboardTag("Speed:T3");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:4")) {
+                                            e.removeScoreboardTag("fspd:4");
+                                            h.addScoreboardTag("Speed:T4");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:5")) {
+                                            e.removeScoreboardTag("fspd:5");
+                                            h.addScoreboardTag("Speed:T5");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:6")) {
+                                            e.removeScoreboardTag("fspd:6");
+                                            h.addScoreboardTag("Speed:T6");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:7")) {
+                                            e.removeScoreboardTag("fspd:7");
+                                            h.addScoreboardTag("Speed:T7");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:1")) {
+                                            e.removeScoreboardTag("fj:1");
+                                            h.addScoreboardTag("1ft");
+                                            h.setJumpStrength(.517);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:2")) {
+                                            e.removeScoreboardTag("fj:2");
+                                            h.addScoreboardTag("2ft");
+                                            h.setJumpStrength(.617);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:3")) {
+                                            e.removeScoreboardTag("fj:3");
+                                            h.addScoreboardTag("3ft");
+                                            h.setJumpStrength(.717);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:4")) {
+                                            e.removeScoreboardTag("fj:4");
+                                            h.addScoreboardTag("4ft");
+                                            h.setJumpStrength(.917);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:5")) {
+                                            e.removeScoreboardTag("fj:5");
+                                            h.addScoreboardTag("5ft");
+                                            h.setJumpStrength(1.017);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:6")) {
+                                            e.removeScoreboardTag("fj:6");
+                                            h.addScoreboardTag("6ft");
+                                            h.setJumpStrength(1.117);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:8")) {
+                                            e.removeScoreboardTag("fj:8");
+                                            h.addScoreboardTag("6ft");
+                                            h.setJumpStrength(1.117);
+                                        }
+                                    } else if(brd.equalsIgnoreCase("Mule")) {
+                                        Mule h = (Mule) world.spawnEntity(loc, EntityType.MULE);
+                                        h.setAge(-25000);
+                                        h.addScoreboardTag("Hunger:10");
+                                        h.addScoreboardTag("Thirst:10");
+                                        h.addScoreboardTag("Private");
+                                        h.addScoreboardTag("Level:0");
+                                        h.addScoreboardTag("XP:1");
+                                        h.addScoreboardTag("Age:0");
+                                        h.setCustomName(nme + "'s Foal");
+                                        h.setTamed(true);
+                                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                                        int index = new Random().nextInt(list.size());
+                                        String rnt = list.get(index);
+                                        h.addScoreboardTag("Trait:" + rnt);
+                                        System.out.println("Birthing...");
+                                        if (e.getScoreboardTags().contains("fg:Filly")) {
+                                            h.addScoreboardTag("Gender:Filly");
+                                        }
+                                        if (e.getScoreboardTags().contains("fg:Colt")) {
+                                            h.addScoreboardTag("Gender:Colt");
+                                        }
+                                        for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                            if (e.getScoreboardTags().contains("fb:" + brds)) {
+                                                h.addScoreboardTag("Breed:" + brds);
+                                                e.removeScoreboardTag("fb:" + brds);
+                                                System.out.println("Breed:" + brds);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
+                                                h.addScoreboardTag("Breed:" + brds);
+                                                System.out.println("Breed:" + brds);
+                                                break;
+                                            }
+                                        }
+                                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
+                                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
+                                                h.addScoreboardTag("Color:Gray");
+                                                e.removeScoreboardTag("fc:" + brds2);
+                                                System.out.println("Color:" + brds2);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
+                                                h.addScoreboardTag("Color:Gray");
+                                                System.out.println("Color:" + brds2);
+                                                break;
+                                            }
+                                        }
+                                        for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
+                                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
+                                                h.addScoreboardTag("Style:None");
+                                                e.removeScoreboardTag("fs:" + brds3);
+                                                System.out.println("Style:" + brds3);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
+                                                System.out.println("Style:None");
+                                                h.addScoreboardTag("Style:None");
+                                                break;
+                                            }
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:1")) {
+                                            e.removeScoreboardTag("fspd:1");
+                                            h.addScoreboardTag("Speed:T1");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:2")) {
+                                            e.removeScoreboardTag("fspd:2");
+                                            h.addScoreboardTag("Speed:T2");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:3")) {
+                                            e.removeScoreboardTag("fspd:3");
+                                            h.addScoreboardTag("Speed:T3");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:4")) {
+                                            e.removeScoreboardTag("fspd:4");
+                                            h.addScoreboardTag("Speed:T4");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:5")) {
+                                            e.removeScoreboardTag("fspd:5");
+                                            h.addScoreboardTag("Speed:T5");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:6")) {
+                                            e.removeScoreboardTag("fspd:6");
+                                            h.addScoreboardTag("Speed:T6");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:7")) {
+                                            e.removeScoreboardTag("fspd:7");
+                                            h.addScoreboardTag("Speed:T7");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:1")) {
+                                            e.removeScoreboardTag("fj:1");
+                                            h.addScoreboardTag("1ft");
+                                            h.setJumpStrength(.517);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:2")) {
+                                            e.removeScoreboardTag("fj:2");
+                                            h.addScoreboardTag("2ft");
+                                            h.setJumpStrength(.617);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:3")) {
+                                            e.removeScoreboardTag("fj:3");
+                                            h.addScoreboardTag("3ft");
+                                            h.setJumpStrength(.717);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:4")) {
+                                            e.removeScoreboardTag("fj:4");
+                                            h.addScoreboardTag("4ft");
+                                            h.setJumpStrength(.917);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:5")) {
+                                            e.removeScoreboardTag("fj:5");
+                                            h.addScoreboardTag("5ft");
+                                            h.setJumpStrength(1.017);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:6")) {
+                                            e.removeScoreboardTag("fj:6");
+                                            h.addScoreboardTag("6ft");
+                                            h.setJumpStrength(1.117);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:8")) {
+                                            e.removeScoreboardTag("fj:8");
+                                            h.addScoreboardTag("6ft");
+                                            h.setJumpStrength(1.117);
+                                        }
+                                    } else {
+                                        Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                                        h.setAge(-25000);
+                                        h.addScoreboardTag("Hunger:10");
+                                        h.addScoreboardTag("Thirst:10");
+                                        h.addScoreboardTag("Private");
+                                        h.addScoreboardTag("Level:0");
+                                        h.addScoreboardTag("XP:1");
+                                        h.addScoreboardTag("Age:0");
+                                        h.setCustomName(nme + "'s Foal");
+                                        h.setTamed(true);
+                                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                                        int index = new Random().nextInt(list.size());
+                                        String rnt = list.get(index);
+                                        h.addScoreboardTag("Trait:" + rnt);
+                                        System.out.println("Birthing...");
+                                        if (e.getScoreboardTags().contains("fg:Filly")) {
+                                            h.addScoreboardTag("Gender:Filly");
+                                        }
+                                        if (e.getScoreboardTags().contains("fg:Colt")) {
+                                            h.addScoreboardTag("Gender:Colt");
+                                        }
+                                        for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                            if (e.getScoreboardTags().contains("fb:" + brds)) {
+                                                h.addScoreboardTag("Breed:" + brds);
+                                                e.removeScoreboardTag("fb:" + brds);
+                                                System.out.println("Breed:" + brds);
+                                                break;
+                                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
+                                                h.addScoreboardTag("Breed:" + brds);
+                                                System.out.println("Breed:" + brds);
+                                                break;
+                                            }
+                                        }
+                                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
+                                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
+                                                h.addScoreboardTag("Color:" + brds2);
+                                                e.removeScoreboardTag("fc:" + brds2);
+                                                System.out.println("Color:" + brds2);
+                                                if (brds2.equalsIgnoreCase("Palomino")) {
+                                                    h.setColor(Horse.Color.CREAMY);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Chestnut")) {
+                                                    h.setColor(Horse.Color.CHESTNUT);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Black")) {
+                                                    h.setColor(Horse.Color.BLACK);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Bay")) {
+                                                    h.setColor(Horse.Color.DARK_BROWN);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Buckskin")) {
+                                                    h.setColor(Horse.Color.BROWN);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Gray")) {
+                                                    h.setColor(Horse.Color.GRAY);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("White")) {
+                                                    h.setColor(Horse.Color.WHITE);
+                                                    break;
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
+                                                h.addScoreboardTag("Color:" + brds2);
+                                                System.out.println("Color:" + brds2);
+                                                if (brds2.equalsIgnoreCase("Palomino")) {
+                                                    h.setColor(Horse.Color.CREAMY);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Chestnut")) {
+                                                    h.setColor(Horse.Color.CHESTNUT);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Black")) {
+                                                    h.setColor(Horse.Color.BLACK);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Bay")) {
+                                                    h.setColor(Horse.Color.DARK_BROWN);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Buckskin")) {
+                                                    h.setColor(Horse.Color.BROWN);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("Gray")) {
+                                                    h.setColor(Horse.Color.GRAY);
+                                                    break;
+                                                } else if (brds2.equalsIgnoreCase("White")) {
+                                                    h.setColor(Horse.Color.WHITE);
+                                                    break;
+                                                }
+
+                                            }
+                                        }
+                                        for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
+                                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
+                                                h.addScoreboardTag("Style:" + brds3);
+                                                e.removeScoreboardTag("fs:" + brds3);
+                                                System.out.println("Style:" + brds3);
+                                                if (brds3.equalsIgnoreCase("Snip")) {
+                                                    h.setStyle(Horse.Style.WHITE);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("Paint")) {
+                                                    h.setStyle(Horse.Style.WHITEFIELD);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("Star")) {
+                                                    h.setStyle(Horse.Style.WHITE_DOTS);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("Blaze")) {
+                                                    h.setStyle(Horse.Style.BLACK_DOTS);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("None")) {
+                                                    h.setStyle(Horse.Style.NONE);
+                                                    break;
+                                                }
+                                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
+                                                System.out.println("Style:" + brds3);
+                                                h.addScoreboardTag("Style:" + brds3);
+                                                if (brds3.equalsIgnoreCase("Snip")) {
+                                                    h.setStyle(Horse.Style.WHITE);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("Paint")) {
+                                                    h.setStyle(Horse.Style.WHITEFIELD);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("Star")) {
+                                                    h.setStyle(Horse.Style.WHITE_DOTS);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("Blaze")) {
+                                                    h.setStyle(Horse.Style.BLACK_DOTS);
+                                                    break;
+                                                } else if (brds3.equalsIgnoreCase("None")) {
+                                                    h.setStyle(Horse.Style.NONE);
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:1")) {
+                                            e.removeScoreboardTag("fspd:1");
+                                            h.addScoreboardTag("Speed:T1");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:2")) {
+                                            e.removeScoreboardTag("fspd:2");
+                                            h.addScoreboardTag("Speed:T2");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:3")) {
+                                            e.removeScoreboardTag("fspd:3");
+                                            h.addScoreboardTag("Speed:T3");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:4")) {
+                                            e.removeScoreboardTag("fspd:4");
+                                            h.addScoreboardTag("Speed:T4");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:5")) {
+                                            e.removeScoreboardTag("fspd:5");
+                                            h.addScoreboardTag("Speed:T5");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:6")) {
+                                            e.removeScoreboardTag("fspd:6");
+                                            h.addScoreboardTag("Speed:T6");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                                        }
+                                        if (e.getScoreboardTags().contains("fspd:7")) {
+                                            e.removeScoreboardTag("fspd:7");
+                                            h.addScoreboardTag("Speed:T7");
+                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:1")) {
+                                            e.removeScoreboardTag("fj:1");
+                                            h.addScoreboardTag("1ft");
+                                            h.setJumpStrength(.517);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:2")) {
+                                            e.removeScoreboardTag("fj:2");
+                                            h.addScoreboardTag("2ft");
+                                            h.setJumpStrength(.617);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:3")) {
+                                            e.removeScoreboardTag("fj:3");
+                                            h.addScoreboardTag("3ft");
+                                            h.setJumpStrength(.717);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:4")) {
+                                            e.removeScoreboardTag("fj:4");
+                                            h.addScoreboardTag("4ft");
+                                            h.setJumpStrength(.917);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:5")) {
+                                            e.removeScoreboardTag("fj:5");
+                                            h.addScoreboardTag("5ft");
+                                            h.setJumpStrength(1.017);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:6")) {
+                                            e.removeScoreboardTag("fj:6");
+                                            h.addScoreboardTag("6ft");
+                                            h.setJumpStrength(1.117);
+                                        }
+                                        if (e.getScoreboardTags().contains("fj:8")) {
+                                            e.removeScoreboardTag("fj:8");
+                                            h.addScoreboardTag("6ft");
+                                            h.setJumpStrength(1.117);
+                                        }
+                                    }
+                                    }
                                 }
                             }
-                            for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
-                                if (e.getScoreboardTags().contains("fs:" + brds3)) {
-                                    h.addScoreboardTag("Style:" + brds3);
-                                    e.removeScoreboardTag("fs:" + brds3);
-                                    System.out.println("Style:" + brds3);
-                                    if (brds3.equalsIgnoreCase("Snip")) {
-                                        h.setStyle(Horse.Style.WHITE);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("Paint")) {
-                                        h.setStyle(Horse.Style.WHITEFIELD);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("Star")) {
-                                        h.setStyle(Horse.Style.WHITE_DOTS);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("Blaze")) {
-                                        h.setStyle(Horse.Style.BLACK_DOTS);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("None")) {
-                                        h.setStyle(Horse.Style.NONE);
-                                        break;
-                                    }
-                                } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
-                                    System.out.println("Style:" + brds3);
-                                    h.addScoreboardTag("Style:" + brds3);
-                                    if (brds3.equalsIgnoreCase("Snip")) {
-                                        h.setStyle(Horse.Style.WHITE);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("Paint")) {
-                                        h.setStyle(Horse.Style.WHITEFIELD);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("Star")) {
-                                        h.setStyle(Horse.Style.WHITE_DOTS);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("Blaze")) {
-                                        h.setStyle(Horse.Style.BLACK_DOTS);
-                                        break;
-                                    } else if (brds3.equalsIgnoreCase("None")) {
-                                        h.setStyle(Horse.Style.NONE);
-                                        break;
-                                    }
-                                }
-                            }
-                            if (e.getScoreboardTags().contains("fspd:1")) {
-                                e.removeScoreboardTag("fspd:1");
-                                h.addScoreboardTag("Speed:T1");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                            }
-                            if (e.getScoreboardTags().contains("fspd:2")) {
-                                e.removeScoreboardTag("fspd:2");
-                                h.addScoreboardTag("Speed:T2");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                            }
-                            if (e.getScoreboardTags().contains("fspd:3")) {
-                                e.removeScoreboardTag("fspd:3");
-                                h.addScoreboardTag("Speed:T3");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                            }
-                            if (e.getScoreboardTags().contains("fspd:4")) {
-                                e.removeScoreboardTag("fspd:4");
-                                h.addScoreboardTag("Speed:T4");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                            }
-                            if (e.getScoreboardTags().contains("fspd:5")) {
-                                e.removeScoreboardTag("fspd:5");
-                                h.addScoreboardTag("Speed:T5");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                            }
-                            if (e.getScoreboardTags().contains("fspd:6")) {
-                                e.removeScoreboardTag("fspd:6");
-                                h.addScoreboardTag("Speed:T6");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                            }
-                            if (e.getScoreboardTags().contains("fspd:7")) {
-                                e.removeScoreboardTag("fspd:7");
-                                h.addScoreboardTag("Speed:T7");
-                                h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
-                            }
-                            if (e.getScoreboardTags().contains("fj:1")) {
-                                e.removeScoreboardTag("fj:1");
-                                h.addScoreboardTag("1ft");
-                                h.setJumpStrength(.517);
-                            }
-                            if (e.getScoreboardTags().contains("fj:2")) {
-                                e.removeScoreboardTag("fj:2");
-                                h.addScoreboardTag("2ft");
-                                h.setJumpStrength(.617);
-                            }
-                            if (e.getScoreboardTags().contains("fj:3")) {
-                                e.removeScoreboardTag("fj:3");
-                                h.addScoreboardTag("3ft");
-                                h.setJumpStrength(.717);
-                            }
-                            if (e.getScoreboardTags().contains("fj:4")) {
-                                e.removeScoreboardTag("fj:4");
-                                h.addScoreboardTag("4ft");
-                                h.setJumpStrength(.917);
-                            }
-                            if (e.getScoreboardTags().contains("fj:5")) {
-                                e.removeScoreboardTag("fj:5");
-                                h.addScoreboardTag("5ft");
-                                h.setJumpStrength(1.017);
-                            }
-                            if (e.getScoreboardTags().contains("fj:6")) {
-                                e.removeScoreboardTag("fj:6");
-                                h.addScoreboardTag("6ft");
-                                h.setJumpStrength(1.117);
-                            }
-                            if (e.getScoreboardTags().contains("fj:8")) {
-                                e.removeScoreboardTag("fj:8");
-                                h.addScoreboardTag("6ft");
-                                h.setJumpStrength(1.117);
-                            }
-                        }
                     }
                 }
 
@@ -5075,7 +5336,7 @@ public class Commands implements CommandExecutor {
                 for (World world : Bukkit.getWorlds()) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         for (Entity e : world.getEntities()) {
-                            if (e instanceof Horse) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                                 int num = 1;
                                 while (num <= 30) {
                                     if (e.getScoreboardTags().contains("Leased" + num)) {
@@ -5111,7 +5372,7 @@ public class Commands implements CommandExecutor {
                     for (Player p : Bukkit.getOnlinePlayers()) {
                         for (Entity e : world.getEntities()) {
                             String name = e.getCustomName();
-                            if (e instanceof Horse) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                                 if (e.getPassenger() == p) {
                                     String offp = p.getName();
                                     if (e.getScoreboardTags().contains("uji1")) {
@@ -5147,7 +5408,7 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("illness")) {
                 for (World world : Bukkit.getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
                                 UUID puuid = p.getUniqueId();
                                 if (e.getScoreboardTags().contains("Owner:" + puuid)) {
@@ -5156,19 +5417,19 @@ public class Commands implements CommandExecutor {
                                     if (!e.getScoreboardTags().contains("Vaxed")) {
                                         Random rnd = new Random();
                                         int i = rnd.nextInt(100);
-                                        if (i >= 40) {
+                                        if (i >= 15) {
                                             if (!e.getScoreboardTags().contains("uill1")) {
                                                 e.addScoreboardTag("uill1");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                             }
                                         }
-                                        if (i >= 30) {
+                                        if (i >= 10) {
                                             if (!e.getScoreboardTags().contains("uill2")) {
                                                 e.addScoreboardTag("uill2");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                             }
                                         }
-                                        if (i >= 20) {
+                                        if (i >= 5) {
                                             if (!e.getScoreboardTags().contains("uill3")) {
                                                 e.addScoreboardTag("uill3");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
@@ -5193,7 +5454,7 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("dirty")) {
                 for(World world : Bukkit.getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             e.removeScoreboardTag("hbrush");
                             e.removeScoreboardTag("sbrush");
                             e.removeScoreboardTag("hpick");
@@ -5204,7 +5465,7 @@ public class Commands implements CommandExecutor {
             if (args[0].equalsIgnoreCase("age")) {
                 for(World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             int i = 0;
                             while (i <= 62) {
                                 if (!e.getScoreboardTags().contains("Invulnerable")) {
@@ -5234,7 +5495,7 @@ public class Commands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("heat4")) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey) {
                             if (e.getScoreboardTags().contains("InHeat3")) {
                                 e.removeScoreboardTag("InHeat3");
                                 e.removeScoreboardTag("InHeat");
@@ -5246,7 +5507,7 @@ public class Commands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("heat3")) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey) {
                             if (e.getScoreboardTags().contains("InHeat2")) {
                                 e.removeScoreboardTag("InHeat2");
                                 e.addScoreboardTag("InHeat3");
@@ -5258,7 +5519,7 @@ public class Commands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("heat2")) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey) {
                             if (e.getScoreboardTags().contains("InHeat1")) {
                                 e.removeScoreboardTag("InHeat1");
                                 e.addScoreboardTag("InHeat2");
@@ -5270,7 +5531,7 @@ public class Commands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("heat1")) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey) {
                             if (e.getScoreboardTags().contains("Heat14")) {
                                 e.removeScoreboardTag("Heat14");
                                 e.addScoreboardTag("Heat1");
@@ -5284,7 +5545,7 @@ public class Commands implements CommandExecutor {
             } else if (args[0].equalsIgnoreCase("heat")) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey) {
                             int i = 1;
                             while (i <= 13) {
                                 if (e.getScoreboardTags().contains("Heat" + i)) {

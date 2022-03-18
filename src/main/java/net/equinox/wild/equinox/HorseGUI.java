@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Donkey;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -541,7 +542,13 @@ public class HorseGUI implements Listener {
                     double bal = eco.getBalance(p);
                     if (bal >= cost) {
                         eco.withdrawPlayer(p, cost);
-                        Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                        if (!breedname.isEmpty()) {
+                            if (breedname.equals("Donkey")) {
+                                Donkey h = (Donkey) world.spawnEntity(loc, EntityType.DONKEY);
+                            } else {
+                                Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                            }
+                        }
                         plugin.getDbContext().addHorseToDatabase(h);
                         h.setTamed(true);
                         h.addScoreboardTag("Owner:" + uuid);

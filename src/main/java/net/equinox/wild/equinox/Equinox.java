@@ -188,11 +188,15 @@ public final class Equinox extends JavaPlugin {
             public void run() {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Age:0")) {
                                 ((Horse) e).setAge(-25000);
+                                ((Donkey) e).setAge(-25000);
+                                ((Mule) e).setAge(-25000);
                             }if (e.getScoreboardTags().contains("Age:1")) {
                                 ((Horse) e).setAge(-25000);
+                                ((Donkey) e).setAge(-25000);
+                                ((Mule) e).setAge(-25000);
                             }
                         }
                     }
@@ -214,7 +218,7 @@ public final class Equinox extends JavaPlugin {
                     for (Entity e : world.getEntities()) {
                         Random rnd = new Random();
                         int i = rnd.nextInt(100);
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (!e.getScoreboardTags().contains("Invulnerable")) {
                                 if (i <= 35) {
                                     if (e.getScoreboardTags().contains("Thirst:10")) {
@@ -295,7 +299,7 @@ public final class Equinox extends JavaPlugin {
 
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Location loc = e.getLocation();
                             int radius = 4;
                             if (e.getScoreboardTags().contains("Thirst")) {
@@ -310,6 +314,8 @@ public final class Equinox extends JavaPlugin {
                                                 Levelled c = (Levelled) block.getBlockData();
                                                 if (c.getLevel() == 3) {
                                                     ((Horse) e).getPathfinder().findPath(loc2);
+                                                    ((Donkey) e).getPathfinder().findPath(loc2);
+                                                    ((Mule) e).getPathfinder().findPath(loc2);
                                                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                                         NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                                         if (e.getScoreboardTags().contains("Thirst:9")) {
@@ -654,7 +660,7 @@ public final class Equinox extends JavaPlugin {
             public void run() {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Location loc = e.getLocation();
                             int radius = 2;
                             if (e.getScoreboardTags().contains("Thirst")) {
@@ -664,6 +670,8 @@ public final class Equinox extends JavaPlugin {
                                 Material bt = block.getType();
                                 if (bt == Material.WATER) {
                                     ((Horse) e).getPathfinder().findPath(loc2);
+                                    ((Donkey) e).getPathfinder().findPath(loc2);
+                                    ((Mule) e).getPathfinder().findPath(loc2);
                                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                         NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                         block.setType(Material.AIR);
@@ -728,11 +736,13 @@ public final class Equinox extends JavaPlugin {
                 AtomicBoolean hasEaten = new AtomicBoolean(false);
                 for (World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Hunger")) {
                                 Block brewingStand = Utilities.findAbsoluteBlockWithinLocation(e.getLocation(), List.of(Material.BREWING_STAND), 25);
                                 if(brewingStand != null) {
                                     ((Horse) e).getPathfinder().findPath(brewingStand.getLocation());
+                                    ((Donkey) e).getPathfinder().findPath(brewingStand.getLocation());
+                                    ((Mule) e).getPathfinder().findPath(brewingStand.getLocation());
                                     if (!hasEaten.get()) {
                                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                             NBTEditor.set(e, (byte) 1, "EatingHaystack");
@@ -758,7 +768,7 @@ public final class Equinox extends JavaPlugin {
                 AtomicBoolean hasEaten = new AtomicBoolean(false);
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Location loc = e.getLocation();
                             int radius = 2;
                             if (e.getScoreboardTags().contains("Hunger")) {
@@ -789,7 +799,7 @@ public final class Equinox extends JavaPlugin {
             public void run() {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Random rnd = new Random();
                             int i = rnd.nextInt(100);
                             if (i <= 25) {
@@ -816,7 +826,7 @@ public final class Equinox extends JavaPlugin {
             public void run() {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Random rnd = new Random();
                             int i = rnd.nextInt(100);
                             if (i <= 10) {

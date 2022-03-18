@@ -5,10 +5,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -77,6 +74,30 @@ public class Events1 implements Listener {
                                     h.addScoreboardTag("preg1");
                                     for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
                                         Random rnd = new Random();
+                                        if (h.getScoreboardTags().contains("Breed:Donkey")) {
+                                            if (h2.getScoreboardTags().contains("Breed:Donkey")) {
+                                                h.addScoreboardTag("fb:Donkey");
+                                                break;
+                                                if (h2.getScoreboardTags().contains("Breed:Mule")) {
+                                                    return;
+                                                } else {
+                                                    h.addScoreboardTag("fb:Mule");
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        if (h2.getScoreboardTags().contains("Breed:Donkey")) {
+                                            if (h.getScoreboardTags().contains("Breed:Donkey")) {
+                                                h.addScoreboardTag("fb:Donkey");
+                                                break;
+                                                if (h.getScoreboardTags().contains("Breed:Mule")) {
+                                                    return;
+                                                } else {
+                                                    h.addScoreboardTag("fb:Mule");
+                                                    break;
+                                                }
+                                            }
+                                        } else {
                                         int i = rnd.nextInt(100);
                                         if (i <= 49) {
                                             if (h.getScoreboardTags().contains("Breed:" + brds)) {
@@ -1203,7 +1224,7 @@ public class Events1 implements Listener {
         Chunk chunk = unload.getChunk();
         for(World world : Bukkit.getServer().getWorlds()) {
             for (Entity e : world.getEntities()) {
-                if (e instanceof Horse) {
+                if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                     Chunk chunk1 = e.getChunk();
                     ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                     int x = chunk1.getX();
