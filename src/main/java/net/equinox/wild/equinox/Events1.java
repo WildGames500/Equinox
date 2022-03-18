@@ -77,7 +77,6 @@ public class Events1 implements Listener {
                                         if (h.getScoreboardTags().contains("Breed:Donkey")) {
                                             if (h2.getScoreboardTags().contains("Breed:Donkey")) {
                                                 h.addScoreboardTag("fb:Donkey");
-                                                break;
                                                 if (h2.getScoreboardTags().contains("Breed:Mule")) {
                                                     return;
                                                 } else {
@@ -89,7 +88,6 @@ public class Events1 implements Listener {
                                         if (h2.getScoreboardTags().contains("Breed:Donkey")) {
                                             if (h.getScoreboardTags().contains("Breed:Donkey")) {
                                                 h.addScoreboardTag("fb:Donkey");
-                                                break;
                                                 if (h.getScoreboardTags().contains("Breed:Mule")) {
                                                     return;
                                                 } else {
@@ -98,23 +96,24 @@ public class Events1 implements Listener {
                                                 }
                                             }
                                         } else {
-                                        int i = rnd.nextInt(100);
-                                        if (i <= 49) {
-                                            if (h.getScoreboardTags().contains("Breed:" + brds)) {
-                                                h.addScoreboardTag("fb:" + brds);
-                                                p.sendMessage(brds);
-                                                System.out.println("Breed" + brds);
-                                                break;
+                                            int i = rnd.nextInt(100);
+                                            if (i <= 49) {
+                                                if (h.getScoreboardTags().contains("Breed:" + brds)) {
+                                                    h.addScoreboardTag("fb:" + brds);
+                                                    p.sendMessage(brds);
+                                                    System.out.println("Breed" + brds);
+                                                    break;
+                                                }
                                             }
-                                        }
-                                        if (i > 49) {
-                                            if (h2.getScoreboardTags().contains("Breed:" + brds)) {
-                                                h.addScoreboardTag("fb:" + brds);
-                                                p.sendMessage(brds);
-                                                System.out.println("Breed" + brds);
-                                                break;
-                                            }
+                                            if (i > 49) {
+                                                if (h2.getScoreboardTags().contains("Breed:" + brds)) {
+                                                    h.addScoreboardTag("fb:" + brds);
+                                                    p.sendMessage(brds);
+                                                    System.out.println("Breed" + brds);
+                                                    break;
+                                                }
 
+                                            }
                                         }
                                     }
                                     for (String clrs : plugin.getCoatConfig().getStringList("Color")) {

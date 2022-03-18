@@ -545,113 +545,184 @@ public class HorseGUI implements Listener {
                         if (!breedname.isEmpty()) {
                             if (breedname.equals("Donkey")) {
                                 Donkey h = (Donkey) world.spawnEntity(loc, EntityType.DONKEY);
+                                plugin.getDbContext().addHorseToDatabase(h);
+                                h.setTamed(true);
+                                h.addScoreboardTag("Owner:" + uuid);
+                                h.addScoreboardTag("Owned");
+                                h.addScoreboardTag("Hunger:10");
+                                h.addScoreboardTag("Thirst:10");
+                                h.addScoreboardTag("Private");
+                                h.addScoreboardTag("Level:0");
+                                h.addScoreboardTag("XP:1");
+                                h.addScoreboardTag("Age:4");
+                                List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                                int index = new Random().nextInt(list.size());
+                                String rnt = list.get(index);
+                                h.addScoreboardTag("Trait:" + rnt);
+                                if (!breedname.isEmpty()) {
+                                    h.addScoreboardTag("Breed:" + breed);
+                                }
+                                if (!gendername.isEmpty()) {
+                                    h.addScoreboardTag("Gender:" + gender);
+                                    if (gender.equals("Mare")) {
+                                        h.addScoreboardTag("Heat1");
+                                    }
+                                }
+                                 if (coat.equals("Bay")) {
+                                    h.addScoreboardTag("Color:Bay");
+                                }if (coats.equals("None")) {
+                                    h.addScoreboardTag("Style:None");
+                                }
+                                if (speed.equals("Tier 7")) {
+                                    h.addScoreboardTag("Speed:T7");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                                } else if (speed.equals("Tier 6")) {
+                                    h.addScoreboardTag("Speed:T6");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                                } else if (speed.equals("Tier 5")) {
+                                    h.addScoreboardTag("Speed:T5");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                                } else if (speed.equals("Tier 4")) {
+                                    h.addScoreboardTag("Speed:T4");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                                } else if (speed.equals("Tier 3")) {
+                                    h.addScoreboardTag("Speed:T3");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                                } else if (speed.equals("Tier 2")) {
+                                    h.addScoreboardTag("Speed:T2");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                                } else if (speed.equals("Tier 1")) {
+                                    h.addScoreboardTag("Speed:T1");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                                }else if (speed.equals(null)) {
+                                    System.out.println("nulled");
+                                }
+                                if (jump.equals("1ft")) {
+                                    h.addScoreboardTag("1ft");
+                                    h.setJumpStrength(.517);
+                                } else if (jump.equals("2ft")) {
+                                    h.addScoreboardTag("2ft");
+                                    h.setJumpStrength(.617);
+                                } else if (jump.equals("3ft")) {
+                                    h.addScoreboardTag("3ft");
+                                    h.setJumpStrength(.717);
+                                } else if (jump.equals("4ft")) {
+                                    h.addScoreboardTag("4ft");
+                                    h.setJumpStrength(.917);
+                                } else if (jump.equals("5ft")) {
+                                    h.addScoreboardTag("5ft");
+                                    h.setJumpStrength(1.017);
+                                } else if (jump.equals("6ft")) {
+                                    h.addScoreboardTag("6ft");
+                                    h.setJumpStrength(1.117);
+                                }
                             } else {
                                 Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                                plugin.getDbContext().addHorseToDatabase(h);
+                                h.setTamed(true);
+                                h.addScoreboardTag("Owner:" + uuid);
+                                h.addScoreboardTag("Owned");
+                                h.addScoreboardTag("Hunger:10");
+                                h.addScoreboardTag("Thirst:10");
+                                h.addScoreboardTag("Private");
+                                h.addScoreboardTag("Level:0");
+                                h.addScoreboardTag("XP:1");
+                                h.addScoreboardTag("Age:4");
+                                List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                                int index = new Random().nextInt(list.size());
+                                String rnt = list.get(index);
+                                h.addScoreboardTag("Trait:" + rnt);
+                                if (!breedname.isEmpty()) {
+                                    h.addScoreboardTag("Breed:" + breed);
+                                }
+                                if (!gendername.isEmpty()) {
+                                    h.addScoreboardTag("Gender:" + gender);
+                                    if (gender.equals("Mare")) {
+                                        h.addScoreboardTag("Heat1");
+                                    }
+                                }
+                                if (coat.equals("Black")) {
+                                    h.setColor(Horse.Color.BLACK);
+                                    h.addScoreboardTag("Color:Black");
+                                } else if (coat.equals("Chestnut")) {
+                                    h.addScoreboardTag("Color:Chestnut");
+                                    h.setColor(Horse.Color.CHESTNUT);
+                                } else if (coat.equals("Bay")) {
+                                    h.addScoreboardTag("Color:Bay");
+                                    h.setColor(Horse.Color.DARK_BROWN);
+                                } else if (coat.equals("White")) {
+                                    h.addScoreboardTag("Color:White");
+                                    h.setColor(Horse.Color.WHITE);
+                                } else if (coat.equals("Palomino")) {
+                                    h.addScoreboardTag("Color:Palomino");
+                                    h.setColor(Horse.Color.CREAMY);
+                                } else if (coat.equals("Gray")) {
+                                    h.addScoreboardTag("Color:Silver");
+                                    h.setColor(Horse.Color.GRAY);
+                                }else if (coat.equals("Buckskin")) {
+                                    h.addScoreboardTag("Color:Buckskin");
+                                    h.setColor(Horse.Color.BROWN);
+                                }
+                                if (coats.equals("Snip")) {
+                                    h.addScoreboardTag("Style:Snip");
+                                    h.setStyle(Horse.Style.WHITE);
+                                } else if (coats.equals("Paint")) {
+                                    h.addScoreboardTag("Style:Paint");
+                                    h.setStyle(Horse.Style.WHITEFIELD);
+                                } else if (coats.equals("Star")) {
+                                    h.addScoreboardTag("Style:Star");
+                                    h.setStyle(Horse.Style.WHITE_DOTS);
+                                } else if (coats.equals("Blaze")) {
+                                    h.addScoreboardTag("Style:Blaze");
+                                    h.setStyle(Horse.Style.BLACK_DOTS);
+                                } else if (coats.equals("None")) {
+                                    h.addScoreboardTag("Style:None");
+                                    h.setStyle(Horse.Style.NONE);
+                                }
+                                if (speed.equals("Tier 7")) {
+                                    h.addScoreboardTag("Speed:T7");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                                } else if (speed.equals("Tier 6")) {
+                                    h.addScoreboardTag("Speed:T6");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                                } else if (speed.equals("Tier 5")) {
+                                    h.addScoreboardTag("Speed:T5");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                                } else if (speed.equals("Tier 4")) {
+                                    h.addScoreboardTag("Speed:T4");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                                } else if (speed.equals("Tier 3")) {
+                                    h.addScoreboardTag("Speed:T3");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                                } else if (speed.equals("Tier 2")) {
+                                    h.addScoreboardTag("Speed:T2");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                                } else if (speed.equals("Tier 1")) {
+                                    h.addScoreboardTag("Speed:T1");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                                }else if (speed.equals(null)) {
+                                    System.out.println("nulled");
+                                }
+                                if (jump.equals("1ft")) {
+                                    h.addScoreboardTag("1ft");
+                                    h.setJumpStrength(.517);
+                                } else if (jump.equals("2ft")) {
+                                    h.addScoreboardTag("2ft");
+                                    h.setJumpStrength(.617);
+                                } else if (jump.equals("3ft")) {
+                                    h.addScoreboardTag("3ft");
+                                    h.setJumpStrength(.717);
+                                } else if (jump.equals("4ft")) {
+                                    h.addScoreboardTag("4ft");
+                                    h.setJumpStrength(.917);
+                                } else if (jump.equals("5ft")) {
+                                    h.addScoreboardTag("5ft");
+                                    h.setJumpStrength(1.017);
+                                } else if (jump.equals("6ft")) {
+                                    h.addScoreboardTag("6ft");
+                                    h.setJumpStrength(1.117);
+                                }
                             }
-                        }
-                        plugin.getDbContext().addHorseToDatabase(h);
-                        h.setTamed(true);
-                        h.addScoreboardTag("Owner:" + uuid);
-                        h.addScoreboardTag("Owned");
-                        h.addScoreboardTag("Hunger:10");
-                        h.addScoreboardTag("Thirst:10");
-                        h.addScoreboardTag("Private");
-                        h.addScoreboardTag("Level:0");
-                        h.addScoreboardTag("XP:1");
-                        h.addScoreboardTag("Age:4");
-                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
-                        int index = new Random().nextInt(list.size());
-                        String rnt = list.get(index);
-                        h.addScoreboardTag("Trait:" + rnt);
-                        if (!breedname.isEmpty()) {
-                            h.addScoreboardTag("Breed:" + breed);
-                        }
-                        if (!gendername.isEmpty()) {
-                            h.addScoreboardTag("Gender:" + gender);
-                            if (gender.equals("Mare")) {
-                                h.addScoreboardTag("Heat1");
-                            }
-                        }
-                        if (coat.equals("Black")) {
-                            h.setColor(Horse.Color.BLACK);
-                            h.addScoreboardTag("Color:Black");
-                        } else if (coat.equals("Chestnut")) {
-                            h.addScoreboardTag("Color:Chestnut");
-                            h.setColor(Horse.Color.CHESTNUT);
-                        } else if (coat.equals("Bay")) {
-                            h.addScoreboardTag("Color:Bay");
-                            h.setColor(Horse.Color.DARK_BROWN);
-                        } else if (coat.equals("White")) {
-                            h.addScoreboardTag("Color:White");
-                            h.setColor(Horse.Color.WHITE);
-                        } else if (coat.equals("Palomino")) {
-                            h.addScoreboardTag("Color:Palomino");
-                            h.setColor(Horse.Color.CREAMY);
-                        } else if (coat.equals("Gray")) {
-                            h.addScoreboardTag("Color:Silver");
-                            h.setColor(Horse.Color.GRAY);
-                        }else if (coat.equals("Buckskin")) {
-                            h.addScoreboardTag("Color:Buckskin");
-                            h.setColor(Horse.Color.BROWN);
-                        }
-                        if (coats.equals("Snip")) {
-                            h.addScoreboardTag("Style:Snip");
-                            h.setStyle(Horse.Style.WHITE);
-                        } else if (coats.equals("Paint")) {
-                            h.addScoreboardTag("Style:Paint");
-                            h.setStyle(Horse.Style.WHITEFIELD);
-                        } else if (coats.equals("Star")) {
-                            h.addScoreboardTag("Style:Star");
-                            h.setStyle(Horse.Style.WHITE_DOTS);
-                        } else if (coats.equals("Blaze")) {
-                            h.addScoreboardTag("Style:Blaze");
-                            h.setStyle(Horse.Style.BLACK_DOTS);
-                        } else if (coats.equals("None")) {
-                            h.addScoreboardTag("Style:None");
-                            h.setStyle(Horse.Style.NONE);
-                        }
-                        if (speed.equals("Tier 7")) {
-                            h.addScoreboardTag("Speed:T7");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
-                        } else if (speed.equals("Tier 6")) {
-                            h.addScoreboardTag("Speed:T6");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                        } else if (speed.equals("Tier 5")) {
-                            h.addScoreboardTag("Speed:T5");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                        } else if (speed.equals("Tier 4")) {
-                            h.addScoreboardTag("Speed:T4");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                        } else if (speed.equals("Tier 3")) {
-                            h.addScoreboardTag("Speed:T3");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                        } else if (speed.equals("Tier 2")) {
-                            h.addScoreboardTag("Speed:T2");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                        } else if (speed.equals("Tier 1")) {
-                            h.addScoreboardTag("Speed:T1");
-                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                        }else if (speed.equals(null)) {
-                            System.out.println("nulled");
-                        }
-                        if (jump.equals("1ft")) {
-                            h.addScoreboardTag("1ft");
-                            h.setJumpStrength(.517);
-                        } else if (jump.equals("2ft")) {
-                            h.addScoreboardTag("2ft");
-                            h.setJumpStrength(.617);
-                        } else if (jump.equals("3ft")) {
-                            h.addScoreboardTag("3ft");
-                            h.setJumpStrength(.717);
-                        } else if (jump.equals("4ft")) {
-                            h.addScoreboardTag("4ft");
-                            h.setJumpStrength(.917);
-                        } else if (jump.equals("5ft")) {
-                            h.addScoreboardTag("5ft");
-                            h.setJumpStrength(1.017);
-                        } else if (jump.equals("6ft")) {
-                            h.addScoreboardTag("6ft");
-                            h.setJumpStrength(1.117);
                         }
                     } else {
                         menu.close();

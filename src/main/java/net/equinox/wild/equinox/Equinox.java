@@ -181,21 +181,29 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 300, 300); // TODO original 20000
+        }.runTaskTimer(plugin, 20000, 20000); // TODO original 20000
     }
     public void babyLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                        if (e instanceof Horse) {
                             if (e.getScoreboardTags().contains("Age:0")) {
                                 ((Horse) e).setAge(-25000);
-                                ((Donkey) e).setAge(-25000);
-                                ((Mule) e).setAge(-25000);
                             }if (e.getScoreboardTags().contains("Age:1")) {
                                 ((Horse) e).setAge(-25000);
+                            }
+                        } if (e instanceof Donkey) {
+                            if (e.getScoreboardTags().contains("Age:0")) {
                                 ((Donkey) e).setAge(-25000);
+                            }if (e.getScoreboardTags().contains("Age:1")) {
+                                ((Donkey) e).setAge(-25000);
+                            }
+                        } if (e instanceof Mule) {
+                            if (e.getScoreboardTags().contains("Age:0")) {
+                                ((Mule) e).setAge(-25000);
+                            }if (e.getScoreboardTags().contains("Age:1")) {
                                 ((Mule) e).setAge(-25000);
                             }
                         }
@@ -871,7 +879,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 200, 200); //TODO Restore to 2600
+        }.runTaskTimer(plugin, 2600, 2600); //TODO Restore to 2600
     }
 
     private void swapTrait(Entity e) {
