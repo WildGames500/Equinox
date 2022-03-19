@@ -330,7 +330,7 @@ public class Events1 implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent e) {
 
-        if (e.getEntityType() == EntityType.HORSE) {
+        if (e.getEntityType() == EntityType.HORSE || e.getEntityType() == EntityType.DONKEY || e.getEntityType() == EntityType.MULE) {
             Player player = ((Player) e.getDamager()).getPlayer();
             Location ploc = player.getLocation();
             UUID uuid = (UUID) player.getUniqueId();
@@ -1257,7 +1257,7 @@ public class Events1 implements Listener {
 
     @EventHandler
     public void AllDamage(EntityDamageEvent d) {
-        if (d.getEntityType() == EntityType.HORSE) {
+        if (d.getEntityType() == EntityType.HORSE || d.getEntityType() == EntityType.DONKEY || d.getEntityType() == EntityType.MULE) {
             d.setCancelled(true);
         }
     }
@@ -1275,7 +1275,7 @@ public class Events1 implements Listener {
             if (h.getVehicle() == null) {
                 return;
             }
-            if (h.getVehicle().getType() == EntityType.HORSE) {
+            if (h.getVehicle().getType() == EntityType.HORSE || h.getVehicle().getType() == EntityType.DONKEY || h.getVehicle().getType() == EntityType.MULE) {
                 int lx = (int) h.getLocation().getX();
                 int ly = (int) h.getLocation().getY();
                 int lz = (int) h.getLocation().getZ();

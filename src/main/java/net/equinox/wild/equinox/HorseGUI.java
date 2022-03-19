@@ -543,7 +543,7 @@ public class HorseGUI implements Listener {
                     if (bal >= cost) {
                         eco.withdrawPlayer(p, cost);
                         if (!breedname.isEmpty()) {
-                            if (breedname.equals("Donkey")) {
+                            if (breedname.size() >= 1 && breedname.containsValue("Donkey")) {
                                 Donkey h = (Donkey) world.spawnEntity(loc, EntityType.DONKEY);
                                 plugin.getDbContext().addHorseToDatabase(h);
                                 h.setTamed(true);
