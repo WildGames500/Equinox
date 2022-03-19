@@ -47,6 +47,26 @@ public class Events1 implements Listener {
     }
 
     @EventHandler
+    public void onMount(PlayerInteractEntityEvent e) {
+        Entity h = e.getRightClicked();
+        Player p = e.getPlayer();
+        UUID uuid = p.getUniqueId();
+        if (h.getScoreboardTags().contains("private")) {
+            System.out.println("Private");
+            if (!p.hasPermission("eq.staff")) {
+                if (!h.getScoreboardTags().contains("Owner:" + uuid)) {
+                    if (!h.getScoreboardTags().contains("Member:" + uuid)) {
+                        h.removePassenger(p);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have permission to ride this horse!");
+                        e.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    @EventHandler
     public void onBreeding(PlayerLeashEntityEvent e) {
         Entity h = e.getEntity();
         Player p = (Player) e.getLeashHolder();
@@ -1234,55 +1254,11 @@ public class Events1 implements Listener {
             }
         }
     }
-    @EventHandler
-    public void WildCommand(PlayerCommandPreprocessEvent e) {
-        Player p = e.getPlayer();
-        //get the command label
-        String m = e.getMessage();
-        if (m.equalsIgnoreCase("/smite WIldGames500")){
-            e.setCancelled(true);
-            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
-        }
-        if (m.equalsIgnoreCase("/smite Wild")){
-            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
-            e.setCancelled(true);
-        }
-        if (m.equalsIgnoreCase("/kill Wild")){
-            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
-            e.setCancelled(true);
-        }
-        if (m.equalsIgnoreCase("/kill WIldGames500")){
-            e.setCancelled(true);
-            p.sendMessage(ChatColor.RED + "You shall not cause damage to this user!");
-        }
-
-    }
 
     @EventHandler
     public void AllDamage(EntityDamageEvent d) {
         if (d.getEntityType() == EntityType.HORSE) {
             d.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onMount(PlayerInteractEntityEvent e) {
-        Entity h = e.getRightClicked();
-        Player p = e.getPlayer();
-        UUID uuid = p.getUniqueId();
-        if (h.getScoreboardTags().contains("private")) {
-            System.out.println("Private");
-            if (!p.hasPermission("eq.staff")) {
-                if (!h.getScoreboardTags().contains("Owner:" + uuid)) {
-                    if (!h.getScoreboardTags().contains("Member:" + uuid)) {
-
-                        h.removePassenger(p);
-                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have permission to ride this horse!");
-                        e.setCancelled(true);
-                        return;
-                    }
-                }
-            }
         }
     }
 
