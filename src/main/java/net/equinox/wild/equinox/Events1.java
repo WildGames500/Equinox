@@ -51,7 +51,7 @@ public class Events1 implements Listener {
         Entity h = e.getRightClicked();
         Player p = e.getPlayer();
         UUID uuid = p.getUniqueId();
-        if (h.getScoreboardTags().contains("private")) {
+        if (h.getScoreboardTags().contains("Private")) {
             System.out.println("Private");
             if (!p.hasPermission("eq.staff")) {
                 if (!h.getScoreboardTags().contains("Owner:" + uuid)) {
