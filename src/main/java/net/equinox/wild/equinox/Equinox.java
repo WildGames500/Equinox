@@ -28,10 +28,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 ///@SuppressWarnings("all")
@@ -48,6 +45,7 @@ public final class Equinox extends JavaPlugin {
     private EntityManager entityManager;
 
     private HashMap<Material, Integer> foodToHungerValues = new HashMap<Material, Integer>();
+    public HashMap<UUID, Boolean> lungeStatus = new HashMap<UUID, Boolean>();
 
     @Override
     public void onEnable() {

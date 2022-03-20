@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityUnleashEvent;
 import org.bukkit.event.entity.PlayerLeashEntityEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -271,6 +272,13 @@ public class Events1 implements Listener {
             }
         }
     }
+    @EventHandler
+    public void onUnleashEvent(EntityUnleashEvent e) {
+        if(plugin.lungeStatus.containsKey(e.getEntity().getUniqueId())) {
+            plugin.lungeStatus.put(e.getEntity().getUniqueId(), false);
+        }
+
+    }
 
     @EventHandler
     public void onPoopPunch(PlayerInteractEvent e) {
@@ -289,6 +297,9 @@ public class Events1 implements Listener {
                 int z = locate.getBlockZ();
                 int y1 = y + 1;
                 Location loc = locate.set(x, y1, z);
+                if(!loc.getBlock().hasMetadata("Poop")) {
+                    return;
+                }
                 Hologram hologram = HologramsAPI.createHologram(plugin, loc);
                 player.playSound(loc, "entity.slime.jump", 1, .5F);
                 player.giveExp(2);
@@ -308,6 +319,9 @@ public class Events1 implements Listener {
                 int z = locate.getBlockZ();
                 int y1 = y + 1;
                 Location loc = locate.set(x, y1, z);
+                if(!loc.getBlock().hasMetadata("Poop")) {
+                    return;
+                }
                 Hologram hologram = HologramsAPI.createHologram(plugin, loc);
                 player.playSound(loc, "entity.slime.jump", 1, .5F);
                 player.giveExp(1);

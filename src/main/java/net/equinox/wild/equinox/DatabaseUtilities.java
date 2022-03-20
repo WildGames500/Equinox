@@ -39,9 +39,11 @@ public class DatabaseUtilities {
     }
 
     public void updateHorseInDatabase(DbHorse horse) {
+        System.out.println("Preparing update transaction");
         manager.getTransaction().begin();
         manager.persist(horse);
         manager.getTransaction().commit();
+        System.out.println("Update transaction completed");
     }
 
 }
