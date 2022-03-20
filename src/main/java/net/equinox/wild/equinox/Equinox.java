@@ -835,7 +835,7 @@ public final class Equinox extends JavaPlugin {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Random rnd = new Random();
                             int i = rnd.nextInt(100);
-                            if (i <= 10) {
+                            if (i <= 10) { //set 10
                                 Block loc = e.getLocation().getBlock();
                                 Material block = loc.getType();
                                 String s = "https://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
@@ -848,7 +848,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 10000, 10000);
+        }.runTaskTimer(plugin, 10000, 10000);//set 10000
     }
 
     public void horseRiding(Equinox plugin) {
