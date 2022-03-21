@@ -284,11 +284,22 @@ public class Events1 implements Listener {
     public void onPoopPunch(PlayerInteractEvent e) {
         Entity p = e.getPlayer();
         Player player = (Player) p;
+        String name = player.getName();
 
         if (e.getClickedBlock() == null)
             return;
 
         Block block = e.getClickedBlock();
+        if (block.getType() == Material.BROWN_GLAZED_TERRACOTTA) {
+            if(player.hasPermission("eq.waste")) {
+                block.setType(Material.AIR);
+                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This waste has been removed!");
+                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "+ $5");
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + name + " 5");
+
+            }
+
+        }
         if (block.getType() == Material.PLAYER_HEAD) {
             if (doublexp.get("dxp") == "true") {
                 Location locate = block.getLocation();
@@ -319,14 +330,10 @@ public class Events1 implements Listener {
                 int z = locate.getBlockZ();
                 int y1 = y + 1;
                 Location loc = locate.set(x, y1, z);
-                if(!loc.getBlock().hasMetadata("Poop")) {
-                    return;
-                }
                 Hologram hologram = HologramsAPI.createHologram(plugin, loc);
                 player.playSound(loc, "entity.slime.jump", 1, .5F);
                 player.giveExp(1);
                 hologram.appendTextLine(ChatColor.YELLOW + "+1 xp");
-
                 block.setType(Material.AIR);
                 Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                     @Override
@@ -542,12 +549,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -561,12 +568,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -580,12 +587,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hbrush")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -782,12 +789,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -801,12 +808,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -844,12 +851,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -927,12 +934,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -946,12 +953,12 @@ public class Events1 implements Listener {
                                     if (e.getEntity().getScoreboardTags().contains("hbrush")) {
                                         if (doublexp.get("dxp") == "true") {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                            player.giveExp(6);
+                                            player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                            player.giveExp(25);
                                         } else {
                                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                            player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                            player.giveExp(3);
+                                            player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                            player.giveExp(15);
                                         }
                                     }
                                 }
@@ -1015,12 +1022,12 @@ public class Events1 implements Listener {
                                 if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                     if (doublexp.get("dxp") == "true") {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                        player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                        player.giveExp(6);
+                                        player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                        player.giveExp(25);
                                     } else {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                        player.giveExp(3);
+                                        player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                        player.giveExp(15);
                                     }
                                 }
                             }
@@ -1165,12 +1172,12 @@ public class Events1 implements Listener {
                                 if (e.getEntity().getScoreboardTags().contains("hpick")) {
                                     if (doublexp.get("dxp") == "true") {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                        player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                        player.giveExp(6);
+                                        player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                        player.giveExp(25);
                                     } else {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                        player.giveExp(3);
+                                        player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                        player.giveExp(15);
                                     }
                                 }
                             }
@@ -1184,12 +1191,12 @@ public class Events1 implements Listener {
                                 if (e.getEntity().getScoreboardTags().contains("hbrush")) {
                                     if (doublexp.get("dxp") == "true") {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                        player.sendActionBar(ChatColor.YELLOW + "+6 XP");
-                                        player.giveExp(6);
+                                        player.sendActionBar(ChatColor.YELLOW + "+25 XP");
+                                        player.giveExp(25);
                                     } else {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now clean!");
-                                        player.sendActionBar(ChatColor.YELLOW + "+3 XP");
-                                        player.giveExp(3);
+                                        player.sendActionBar(ChatColor.YELLOW + "+15 XP");
+                                        player.giveExp(15);
                                     }
                                 }
                             }
@@ -1278,8 +1285,10 @@ public class Events1 implements Listener {
 
     @EventHandler
     public void onDissconnect(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
-        p.eject();
+        Player player = e.getPlayer();
+        if (player.isInsideVehicle()) {
+            player.getVehicle().eject();
+        }
     }
 
     @EventHandler
