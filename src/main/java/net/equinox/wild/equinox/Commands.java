@@ -69,6 +69,10 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -102,6 +106,10 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
+                if(euid.equals(null)) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -119,6 +127,10 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
+                if(euid.equals(null)) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -147,6 +159,10 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     String name = sender.getName();
+                    if(euid.equals(null)) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -321,6 +337,10 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     String name2 = p2.getName();
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -348,6 +368,10 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     int cost = Integer.parseInt(args[2]);
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -511,6 +535,10 @@ public class Commands implements CommandExecutor {
                     Economy eco = Equinox.getEconomy();
                     String name = sender.getName();
                     int cost = Integer.parseInt(args[2]);
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -545,6 +573,10 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid2);
                     World world = player.getWorld();
                     String name = sender.getName();
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -570,6 +602,10 @@ public class Commands implements CommandExecutor {
                     UUID uuid2 = p2.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -597,6 +633,10 @@ public class Commands implements CommandExecutor {
                     UUID uuid = player.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
+                    if(euid.equals(null)) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -616,6 +656,10 @@ public class Commands implements CommandExecutor {
                 Location loc = player.getLocation();
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -625,7 +669,6 @@ public class Commands implements CommandExecutor {
                             return true;
 
                         }
-
                     }
                 }
                 for (Entity e : world2.getEntities()) {
@@ -646,6 +689,10 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 World world = Bukkit.getWorld("Equinox");
                 World world2 = Bukkit.getWorld("Flat");
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -716,6 +763,10 @@ public class Commands implements CommandExecutor {
                     UUID uuid = player.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -783,6 +834,10 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -805,6 +860,10 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -860,10 +919,13 @@ public class Commands implements CommandExecutor {
                 if(false) {
                     p.sendMessage("&7[&bEQ&7] >> &cThis command is currently disabled!");
                 }else {
-
                     UUID uuid = p.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = p.getWorld();
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -897,8 +959,13 @@ public class Commands implements CommandExecutor {
 
                                             if (timer == 100 || timer == 200 || timer == 300) {
                                                 horse.setXp(horse.getXp() + 1);
-                                                p.giveExp(1);
-                                                p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+1 XP"));
+                                                if (doublexp.get("dxp") == "true") {
+                                                    p.giveExp(6);
+                                                    p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+6 XP"));
+                                                }else{
+                                                    p.giveExp(3);
+                                                    p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                                                }
                                                 int requiredForNext = Utilities.getXpNeededForLevel(horse.getLevel() + 1);
                                                 if(requiredForNext <= horse.getXp()) {
                                                     horse.setLevel(horse.getLevel() + 1);
@@ -926,16 +993,20 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             String hn = e.getName();
-                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------" + "[" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + "<<" + "]" + ChatColor.STRIKETHROUGH + "" + ChatColor.GRAY + "------------------");
+                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------" + "[" + ChatColor.WHITE + "<<" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "]" + "" + ChatColor.STRIKETHROUGH + "----------------------");
                             msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info"));
                             player.spigot().sendMessage(msg);
-                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------------------------------------");
+                            player.sendMessage(ChatColor.GRAY +  "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
                             player.sendMessage(" ");
                             if (e.getScoreboardTags().contains("Vaxed")) {
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.WHITE + "Vaccines" + ChatColor.GRAY + "]");
@@ -1025,7 +1096,10 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("Rescue")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Rescue");
                             }
+                            return true;
 
+                        } else if(collection.isEmpty()) {
+                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         }
                     }
                 }
@@ -1035,6 +1109,10 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
                 for (Entity e : world.getEntities()) {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
@@ -1044,7 +1122,7 @@ public class Commands implements CommandExecutor {
                             TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + ChatColor.GRAY + "]" + "" + ChatColor.STRIKETHROUGH + "----------------------");
                             msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info2"));
                             player.spigot().sendMessage(msg);
-                            player.sendMessage(ChatColor.GRAY +  "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
+                            player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
                             player.sendMessage(" ");
                             for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
@@ -1074,367 +1152,6 @@ public class Commands implements CommandExecutor {
 //                            player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level0:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/20");
                             player.sendMessage(String.format("%s  ● %s Level: %s %s XP: %s",
                                     ChatColor.WHITE, ChatColor.AQUA, horse.getLevel(), ChatColor.YELLOW, horse.getXp()));
-
-//                            if (e.getScoreboardTags().contains("Level:0")) {
-//                                int xp = 1;
-//                                while (xp <= 20) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level0:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/20");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:1")) {
-//                                int xp = 20;
-//                                while (xp <= 50) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level1:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/50");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:2")) {
-//                                int xp = 50;
-//                                while (xp <= 100) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level2:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/100");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:3")) {
-//                                int xp = 100;
-//                                while (xp <= 165) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level3:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/165");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:4")) {
-//                                int xp = 165;
-//                                while (xp <= 255) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level4:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/255");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:5")) {
-//                                int xp = 255;
-//                                while (xp <= 385) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level5:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/385");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:6")) {
-//                                int xp = 385;
-//                                while (xp <= 495) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level6:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/495");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:7")) {
-//                                int xp = 495;
-//                                while (xp <= 695) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level7:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/695");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:8")) {
-//                                int xp = 695;
-//                                while (xp <= 865) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level8:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/865");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:9")) {
-//                                int xp = 865;
-//                                while (xp <= 1085) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level9:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/1085");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:10")) {
-//                                int xp = 1085;
-//                                while (xp <= 1500) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level10:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/1500");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:11")) {
-//                                int xp = 1500;
-//                                while (xp <= 1800) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level10:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/1800");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:12")) {
-//                                int xp = 1800;
-//                                while (xp <= 2000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level12:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/2000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:13")) {
-//                                int xp = 2000;
-//                                while (xp <= 2300) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level13:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/2300");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:14")) {
-//                                int xp = 2300;
-//                                while (xp <= 2800) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level14:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/2800");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:15")) {
-//                                int xp = 2800;
-//                                while (xp <= 3500) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level15:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/3500");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:16")) {
-//                                int xp = 3500;
-//                                while (xp <= 4200) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level16:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/4200");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:17")) {
-//                                int xp = 4200;
-//                                while (xp <= 4900) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level17:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/4900");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:18")) {
-//                                int xp = 4900;
-//                                while (xp <= 5600) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level18:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/5600");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:19")) {
-//                                int xp = 5600;
-//                                while (xp <= 6300) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level19:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/6300");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:20")) {
-//                                int xp = 6300;
-//                                while (xp <= 7000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level20:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/7000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:21")) {
-//                                int xp = 7000;
-//                                while (xp <= 7730) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level21:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/7730");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:22")) {
-//                                int xp = 7730;
-//                                while (xp <= 8110) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level22:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/8110");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:23")) {
-//                                int xp = 8110;
-//                                while (xp <= 8560) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level23:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/8560");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:24")) {
-//                                int xp = 8560;
-//                                while (xp <= 9150) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level24:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/9150");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:25")) {
-//                                int xp = 9150;
-//                                while (xp <= 9700) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level25:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/9700");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:26")) {
-//                                int xp = 9700;
-//                                while (xp <= 10200) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level26:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/10200");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:27")) {
-//                                int xp = 10200;
-//                                while (xp <= 10950) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level27:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/10950");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:28")) {
-//                                int xp = 10950;
-//                                while (xp <= 11600) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level28:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/11600");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:29")) {
-//                                int xp = 11600;
-//                                while (xp <= 12200) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level29:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/12200");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:30")) {
-//                                int xp = 12200;
-//                                while (xp <= 13000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level30:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/13000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:31")) {
-//                                int xp = 13000;
-//                                while (xp <= 14000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level31:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/14000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:32")) {
-//                                int xp = 14000;
-//                                while (xp <= 15500) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level32:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/15500");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:33")) {
-//                                int xp = 15500;
-//                                while (xp <= 17000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level33:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/17000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:34")) {
-//                                int xp = 17000;
-//                                while (xp <= 20000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level34:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/20000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
-//                            if (e.getScoreboardTags().contains("Level:35")) {
-//                                int xp = 20000;
-//                                while (xp <= 20000) {
-//                                    if (e.getScoreboardTags().contains("XP:" + xp)) {
-//                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level35:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/20000");
-//                                        break;
-//                                    }
-//                                    ++xp;
-//                                }
-//                            }
                             if (e.getScoreboardTags().contains("Gender:Mare")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Mare");
                             } else if (e.getScoreboardTags().contains("Gender:Stallion")) {
@@ -2715,30 +2432,32 @@ public class Commands implements CommandExecutor {
                         for (Entity e : world.getEntities()) {
                             String name = e.getCustomName();
                             if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                                if (e.getPassenger() == p) {
-                                    String offp = p.getName();
-                                    if (e.getScoreboardTags().contains("uji1")) {
-                                        e.addScoreboardTag("uij3");
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
-                                        break;
-                                    }
-                                    if (e.getScoreboardTags().contains("uji2")) {
-                                        e.addScoreboardTag("uij3");
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
-                                        break;
-                                    }
-                                    Random rnd = new Random();
-                                    int i = rnd.nextInt(100);
-                                    if (i <= 10) {
-                                        e.addScoreboardTag("uij1");
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
-                                        break;
+                                if (!e.getScoreboardTags().contains("Invulnerable")) {
+                                    if (e.getPassenger() == p) {
+                                        String offp = p.getName();
+                                        if (e.getScoreboardTags().contains("uji1")) {
+                                            e.addScoreboardTag("uij3");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                            break;
+                                        }
+                                        if (e.getScoreboardTags().contains("uji2")) {
+                                            e.addScoreboardTag("uij3");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                            break;
+                                        }
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 10) {
+                                            e.addScoreboardTag("uij1");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                            break;
 
-                                    }
-                                    if (i >= 80) {
-                                        e.addScoreboardTag("uij2");
-                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
-                                        break;
+                                        }
+                                        if (i >= 80) {
+                                            e.addScoreboardTag("uij2");
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown injury. ");
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -2759,29 +2478,33 @@ public class Commands implements CommandExecutor {
                                     if (!e.getScoreboardTags().contains("Vaxed")) {
                                         Random rnd = new Random();
                                         int i = rnd.nextInt(100);
-                                        if (i >= 15) {
+                                        if (i >= 5) {
                                             if (!e.getScoreboardTags().contains("uill1")) {
                                                 e.addScoreboardTag("uill1");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                                continue;
                                             }
                                         }
-                                        if (i >= 10) {
+                                        if (i >= 4) {
                                             if (!e.getScoreboardTags().contains("uill2")) {
                                                 e.addScoreboardTag("uill2");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                                continue;
                                             }
                                         }
-                                        if (i >= 5) {
+                                        if (i >= 2) {
                                             if (!e.getScoreboardTags().contains("uill3")) {
                                                 e.addScoreboardTag("uill3");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                                continue;
                                             }
                                         }
-                                        if (i <= 3) {
+                                        if (i <= 1) {
                                             if (e.getScoreboardTags().contains("Thirst:0")) {
                                                 if (!e.getScoreboardTags().contains("uill4")) {
                                                     e.addScoreboardTag("uill4");
                                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                                    continue;
                                                 }
                                             }
                                         }

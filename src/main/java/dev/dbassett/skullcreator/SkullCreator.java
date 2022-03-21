@@ -199,15 +199,16 @@ public class SkullCreator {
 
     /**
      * Sets the block to a skull with the skin found at the provided mojang URL.
-     *
-     * @param block The block to set.
+     *  @param block The block to set.
      * @param url   The mojang URL to set it to use.
+     * @return
      */
-    public static void blockWithUrl(Block block, String url) {
+    public static SkullMeta blockWithUrl(Block block, String url) {
         notNull(block, "block");
         notNull(url, "url");
 
         blockWithBase64(block, urlToBase64(url));
+        return null;
     }
 
     /**
