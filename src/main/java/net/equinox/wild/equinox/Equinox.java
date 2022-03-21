@@ -31,6 +31,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static net.equinox.wild.equinox.Commands.doublexp;
+
 ///@SuppressWarnings("all")
 @SuppressWarnings("deprecation")
 public final class Equinox extends JavaPlugin {
@@ -302,7 +304,6 @@ public final class Equinox extends JavaPlugin {
     public void drinkLoop2(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
-
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
@@ -319,9 +320,13 @@ public final class Equinox extends JavaPlugin {
                                             if (bt == Material.WATER_CAULDRON) {
                                                 Levelled c = (Levelled) block.getBlockData();
                                                 if (c.getLevel() == 3) {
-                                                    ((Horse) e).getPathfinder().findPath(loc2);
-                                                    ((Donkey) e).getPathfinder().findPath(loc2);
-                                                    ((Mule) e).getPathfinder().findPath(loc2);
+                                                    if (e instanceof Horse) {
+                                                        ((Horse) e).getPathfinder().findPath(loc2);
+                                                    } if (e instanceof Donkey) {
+                                                        ((Donkey) e).getPathfinder().findPath(loc2);
+                                                    } if (e instanceof Mule) {
+                                                        ((Mule) e).getPathfinder().findPath(loc2);
+                                                    }
                                                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                                         NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                                         if (e.getScoreboardTags().contains("Thirst:9")) {
@@ -675,9 +680,13 @@ public final class Equinox extends JavaPlugin {
                                 Location loc2 = block.getLocation();
                                 Material bt = block.getType();
                                 if (bt == Material.WATER) {
-                                    ((Horse) e).getPathfinder().findPath(loc2);
-                                    ((Donkey) e).getPathfinder().findPath(loc2);
-                                    ((Mule) e).getPathfinder().findPath(loc2);
+                                    if(e instanceof Horse) {
+                                        ((Horse) e).getPathfinder().findPath(loc2);
+                                    }if(e instanceof Donkey) {
+                                        ((Donkey) e).getPathfinder().findPath(loc2);
+                                    } if(e instanceof Mule) {
+                                        ((Mule) e).getPathfinder().findPath(loc2);
+                                    }
                                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                         NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                         block.setType(Material.AIR);
@@ -746,9 +755,13 @@ public final class Equinox extends JavaPlugin {
                             if (e.getScoreboardTags().contains("Hunger")) {
                                 Block brewingStand = Utilities.findAbsoluteBlockWithinLocation(e.getLocation(), List.of(Material.BREWING_STAND), 25);
                                 if(brewingStand != null) {
-                                    ((Horse) e).getPathfinder().findPath(brewingStand.getLocation());
-                                    ((Donkey) e).getPathfinder().findPath(brewingStand.getLocation());
-                                    ((Mule) e).getPathfinder().findPath(brewingStand.getLocation());
+                                    if (e instanceof Horse) {
+                                        ((Horse) e).getPathfinder().findPath(brewingStand.getLocation());
+                                    } if (e instanceof Donkey) {
+                                        ((Donkey) e).getPathfinder().findPath(brewingStand.getLocation());
+                                    } if (e instanceof Mule) {
+                                        ((Mule) e).getPathfinder().findPath(brewingStand.getLocation());
+                                    }
                                     if (!hasEaten.get()) {
                                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                             NBTEditor.set(e, (byte) 1, "EatingHaystack");
@@ -780,7 +793,13 @@ public final class Equinox extends JavaPlugin {
                             if (e.getScoreboardTags().contains("Hunger")) {
                                 Location foodSource = Utilities.findTypeOfBlockWithinLocation(loc, List.of(original), radius);
                                 if(foodSource != null) {
-                                    ((Horse) e).getPathfinder().findPath(foodSource);
+                                    if (e instanceof Horse) {
+                                        ((Horse) e).getPathfinder().findPath(foodSource);
+                                    } if (e instanceof Donkey) {
+                                        ((Donkey) e).getPathfinder().findPath(foodSource);
+                                    } if (e instanceof Mule) {
+                                        ((Mule) e).getPathfinder().findPath(foodSource);
+                                    }
                                     if(!hasEaten.get()) {
                                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                             NBTEditor.set(e, (byte) 1, "EatingHaystack");
@@ -806,18 +825,20 @@ public final class Equinox extends JavaPlugin {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            Random rnd = new Random();
-                            int i = rnd.nextInt(100);
-                            if (i <= 25) {
-                                Location loc = e.getLocation();
-                                int x = loc.getBlockX();
-                                int y = loc.getBlockY();
-                                int z = loc.getBlockZ();
-                                int y1 = y - 1;
-                                Block b = world.getBlockAt(x, y1, z);
-                                world.playSound(loc, Sound.ENTITY_GHAST_DEATH, 1, 1);
-                                if (b.getType() == Material.YELLOW_GLAZED_TERRACOTTA) {
-                                    b.setType(Material.BROWN_GLAZED_TERRACOTTA);
+                            if (!e.getScoreboardTags().contains("Invulnerable")) {
+                                Random rnd = new Random();
+                                int i = rnd.nextInt(100);
+                                if (i <= 15) {
+                                    Location loc = e.getLocation();
+                                    int x = loc.getBlockX();
+                                    int y = loc.getBlockY();
+                                    int z = loc.getBlockZ();
+                                    int y1 = y - 1;
+                                    Block b = world.getBlockAt(x, y1, z);
+                                    world.playSound(loc, Sound.ENTITY_GHAST_DEATH, 1, 1);
+                                    if (b.getType() == Material.YELLOW_GLAZED_TERRACOTTA) {
+                                        b.setType(Material.BROWN_GLAZED_TERRACOTTA);
+                                    }
                                 }
                             }
                         }
@@ -833,15 +854,17 @@ public final class Equinox extends JavaPlugin {
                 for(World world : getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            Random rnd = new Random();
-                            int i = rnd.nextInt(100);
-                            if (i <= 10) { //set 10
-                                Block loc = e.getLocation().getBlock();
-                                Material block = loc.getType();
-                                String s = "https://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
-                                if (block == Material.AIR) {
-                                    SkullCreator.blockWithUrl(loc, s);
-                                    loc.setMetadata("Poop", new FixedMetadataValue(plugin, "Poop"));
+                            if (!e.getScoreboardTags().contains("Invulnerable")) {
+                                Random rnd = new Random();
+                                int i = rnd.nextInt(100);
+                                if (i <= 10) { //set 10
+                                    Block loc = e.getLocation().getBlock();
+                                    Material block = loc.getType();
+                                    String s = "https://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
+                                    if (block == Material.AIR) {
+                                        SkullCreator.blockWithUrl(loc, s);
+                                        loc.setMetadata("Poop", new FixedMetadataValue(plugin, "Poop"));
+                                    }
                                 }
                             }
                         }
@@ -861,8 +884,14 @@ public final class Equinox extends JavaPlugin {
                     Entity e = p.getVehicle();
                     DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
                     horse.setXp(horse.getXp() + 3);
-                    p.giveExp(3);
-                    p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
+                    if (doublexp.get("dxp") == "true") {
+                        p.giveExp(10);
+                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+10 XP"));
+                    } else {
+                        p.giveExp(5);
+                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+5 XP"));
+                    }
+
                     int requiredForNext = Utilities.getXpNeededForLevel(horse.getLevel() + 1);
                     if(requiredForNext <= horse.getXp()) {
                         horse.setLevel(horse.getLevel() + 1);
