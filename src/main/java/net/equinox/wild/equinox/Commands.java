@@ -21,8 +21,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-import java.lang.management.ManagementFactory;
-import java.lang.management.OperatingSystemMXBean;
 import java.util.*;
 
 import static net.equinox.wild.equinox.Events1.collection;
@@ -31,8 +29,10 @@ import static net.equinox.wild.equinox.Events1.collection;
 public class Commands implements CommandExecutor {
     private final Equinox plugin;
     public static HashMap<String, String> doublexp = new HashMap<String, String>();
+    public static HashMap<UUID, Boolean> lungestat = new HashMap<UUID, Boolean>();
     public static HashMap<UUID, String> access = new HashMap<UUID, String>();
     public static HashMap<UUID, String> bell = new HashMap<UUID, String>();
+    public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
 
 
     public Commands(Equinox plugin) {
@@ -40,29 +40,54 @@ public class Commands implements CommandExecutor {
 
     }
 
-    private OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);
 
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (cmd.getName().equalsIgnoreCase("cpu")) {
-            if (args[0].equalsIgnoreCase("test")) {
-                sender.sendMessage(ChatColor.YELLOW + " »» Processor load «« ");
-                sender.sendMessage(ChatColor.AQUA + "    CPU-Load: " + ChatColor.GREEN + osBean.getSystemLoadAverage() * 100 + "%");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "say  »» Processor load «« ");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "say  CPU-Load: " + osBean.getSystemLoadAverage() * 100 + "%");
-                return true;
-            } else {
-                sender.sendMessage("&c»» Invalid arguments!");
-            }
-        }
         if (cmd.getName().equalsIgnoreCase("eq")) {
-            if (args.length == 0) {
-                return false;
-            }
             if (args[0].equalsIgnoreCase("ping")) {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
+            } else if (args[0].equalsIgnoreCase("hunger")) {
+                if(sender.hasPermission("eq.dev")) {
+                    Player player = (Player) sender;
+                    player.setFoodLevel(1);
+                }
+
+            } else if (args[0].equalsIgnoreCase("check")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
+                for (Entity e : world.getEntities()) {
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            if (player.hasPermission("eq.staff")) {
+                                if (e.getScoreboardTags().contains("DayH-1")) {
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse has not eaten for 1 day!");
+                                    return true;
+                                } if (e.getScoreboardTags().contains("DayH-2")) {
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse has not eaten for 2 days!");
+                                    return true;
+                                } if (e.getScoreboardTags().contains("DayH-3")) {
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse has not eaten for 3 days!");
+                                    return true;
+                                } else {
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has been fed!");
+                                    return true;
+                                }
+
+
+                            }
+                        }
+                    }
+                }
             } else if (args[0].equalsIgnoreCase("tagadd")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
@@ -294,9 +319,11 @@ public class Commands implements CommandExecutor {
                     if (player2.hasPermission("eq.realtor")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Realtor");
                     }
-                    if (player.hasPermission("eq.breeding")) {
+                    if (player2.hasPermission("eq.breeding")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Breeding");
-                    }
+                    } else {
+                        return true;
+                    } return true;
                 }
             } else if (args[0].equalsIgnoreCase("killall")) {
                 Player player = (Player) sender;
@@ -317,6 +344,8 @@ public class Commands implements CommandExecutor {
                             ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                             Bukkit.dispatchCommand(console, "lp group beginner permission set superbvote.doublexp");
                             Bukkit.dispatchCommand(console, "lp group sbeginner permission set superbvote.doublexp");
+                            sender.sendMessage(ChatColor.AQUA + " Double xp enabled!");
+
 
                         } else if (args[1].equalsIgnoreCase("false")) {
                             doublexp.put("dxp", "false");
@@ -329,7 +358,7 @@ public class Commands implements CommandExecutor {
                 }
             } else if (args[0].equalsIgnoreCase("unlease")) {
                 if (args.length == 2) {
-                    Player p2 = plugin.getServer().getPlayer(args[1]);
+                    OfflinePlayer p2 = plugin.getServer().getOfflinePlayer(args[1]);
                     UUID uuid2 = p2.getUniqueId();
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
@@ -346,10 +375,29 @@ public class Commands implements CommandExecutor {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
+                                if (player.hasPermission("eq.staff")) {
+                                    e.removeScoreboardTag("Leaser:" + uuid2);
+                                    int num = 1;
+                                    while (num <= 30) {
+                                        if (e.getScoreboardTags().contains("Leased" + num)) {
+                                            e.removeScoreboardTag("Leased" + num);
+                                        } else {
+                                            ++num;
+                                        }
+                                    }
+                                    player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name2 + " has been removed you from leasing your horse!");
+                                    return true;
+                                }
                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     e.removeScoreboardTag("Leaser:" + uuid2);
-                                    e.removeScoreboardTag("Leased1");
-                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has removed you from leasing!");
+                                    int num = 1;
+                                    while (num <= 30) {
+                                        if (e.getScoreboardTags().contains("Leased" + num)) {
+                                            e.removeScoreboardTag("Leased" + num);
+                                        } else {
+                                            ++num;
+                                        }
+                                    }
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name2 + " has been removed you from leasing your horse!");
                                     return true;
                                 }
@@ -377,7 +425,20 @@ public class Commands implements CommandExecutor {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
-                                if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                if (e.getScoreboardTags().contains("Owner:30807522-e3c9-471f-a366-c7b152650dfc")) {
+                                    if(player.hasPermission("eq.staff")) {
+                                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " sent lease request for " + "$" + cost + "!");
+                                        p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " would like to lease you" + n + " for " + "$" + cost + "!");
+                                        TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
+                                        TextComponent msg2 = new TextComponent(ChatColor.GRAY + "[" + ChatColor.RED + "Deny" + ChatColor.GRAY + "]");
+                                        msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq accept2 " + name + " " + cost));
+                                        msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq deny"));
+                                        p2.spigot().sendMessage(msg, msg2);
+                                        return true;
+                                    }
+
+                                }
+                                else if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " sent lease request for " + "$" + cost + "!");
                                     p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " would like to lease you" + n + " for " + "$" + cost + "!");
                                     TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
@@ -413,12 +474,13 @@ public class Commands implements CommandExecutor {
                     Player player = (Player) sender;
                     OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[1]);
                     UUID uuid2 = p2.getUniqueId();
-                    World world = Bukkit.getWorld("Equinox");
+                    World world = Bukkit.getWorld("EquinoxPlots");
                     World world2 = Bukkit.getWorld("Flat");
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                StringBuilder name = new StringBuilder();
                                 String hn = e.getCustomName();
                                 TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
                                 msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn + " " + args[1]));
@@ -440,7 +502,7 @@ public class Commands implements CommandExecutor {
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = Bukkit.getWorld("Equinox");
+                    World world = Bukkit.getWorld("EquinoxPlots");
                     World world2 = Bukkit.getWorld("Flat");
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     for (Entity e : world.getEntities()) {
@@ -469,11 +531,12 @@ public class Commands implements CommandExecutor {
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = Bukkit.getWorld("Equinox");
+                    World world = Bukkit.getWorld("EquinoxPlots");
                     World world2 = Bukkit.getWorld("Flat");
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+
                                 if (e.getCustomName().equals(args[1])) {
                                     ((Horse) e).damage(1, player);
                                     return true;
@@ -498,12 +561,12 @@ public class Commands implements CommandExecutor {
                     OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[2]);
                     UUID uuid2 = p2.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = Bukkit.getWorld("Equinox");
+                    World world = Bukkit.getWorld("EquinoxPlots");
                     World world2 = Bukkit.getWorld("Flat");
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                if (e.getCustomName().equals(args[1])) {
+                                if (e.getCustomName().equals(args[1])){
                                     ((Horse) e).damage(1, player);
                                     return true;
                                 }
@@ -513,7 +576,36 @@ public class Commands implements CommandExecutor {
                     for (Entity e : world2.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                if (e.getCustomName().equals(args[1])) {
+                                if (e.getCustomName().equals(args[1])){
+                                    ((Horse) e).damage(1, player);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (args.length == 4) {
+                    Player player = (Player) sender;
+                    UUID uuid = player.getUniqueId();
+                    OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[3]);
+                    UUID uuid2 = p2.getUniqueId();
+                    Location loc = player.getLocation();
+                    World world = Bukkit.getWorld("EquinoxPlots");
+                    World world2 = Bukkit.getWorld("Flat");
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                if (e.getCustomName().equals(args[1] + " " + args[2])) {
+                                    ((Horse) e).damage(1, player);
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    for (Entity e : world2.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                if (e.getCustomName().equals(args[1] + " " + args[2])) {
                                     ((Horse) e).damage(1, player);
                                     return true;
                                 }
@@ -535,15 +627,26 @@ public class Commands implements CommandExecutor {
                     Economy eco = Equinox.getEconomy();
                     String name = sender.getName();
                     int cost = Integer.parseInt(args[2]);
-                    if(collection.isEmpty()) {
-                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
-                        return true;
-                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
                             if (euid.equals(h) && sender instanceof Player) {
+                                if (e.getScoreboardTags().contains("Owner:30807522-e3c9-471f-a366-c7b152650dfc")) {
+                                    double bal = eco.getBalance(player);
+                                    System.out.println(bal);
+                                    if (bal < cost) {
+                                        p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Player does not have enough money to lease this horse!");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have enough money to lease this horse!");
+                                        return true;
+                                    }
+                                    eco.withdrawPlayer(player, cost);
+                                    p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the lease owner of " + n + "!");
+                                    e.addScoreboardTag("Leased1");
+                                    e.addScoreboardTag("Leaser:" + uuid);
+                                    return true;
+                                }
                                 if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                     double bal = eco.getBalance(player);
                                     System.out.println(bal);
@@ -573,16 +676,15 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid2);
                     World world = player.getWorld();
                     String name = sender.getName();
-                    if(collection.isEmpty()) {
-                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
-                        return true;
-                    }
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
+                            p2.sendMessage("test");
                             if (euid.equals(h)) {
+                                p2.sendMessage("test2");
                                 if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
+                                    p2.sendMessage("test3");
                                     e.addScoreboardTag("Owner:" + uuid);
                                     e.removeScoreboardTag("Owner:" + uuid2);
                                     p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
@@ -654,7 +756,7 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
-                World world = Bukkit.getWorld("Equinox");
+                World world = Bukkit.getWorld("EquinoxPlots");
                 World world2 = Bukkit.getWorld("Flat");
                 if(collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
@@ -687,7 +789,7 @@ public class Commands implements CommandExecutor {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
-                World world = Bukkit.getWorld("Equinox");
+                World world = Bukkit.getWorld("EquinoxPlots");
                 World world2 = Bukkit.getWorld("Flat");
                 if(collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
@@ -786,6 +888,11 @@ public class Commands implements CommandExecutor {
                                         name.append(word + " ");
                                     }
                                 }
+                                if (player.hasPermission("eq.dev")) {
+                                    e.setCustomName(name.toString());
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
+                                    return true;
+                                }
                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     e.setCustomName(name.toString());
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
@@ -847,6 +954,11 @@ public class Commands implements CommandExecutor {
                                 e.addScoreboardTag("Public");
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse public!");
                                 return true;
+                            } if (player.hasPermission("eq.dev")) {
+                                e.removeScoreboardTag("Private");
+                                e.addScoreboardTag("Public");
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse private!");
+                                return true;
                             } else if (!e.getScoreboardTags().contains("Owner:" + uuid)) {
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This is not your horse!");
                                 return true;
@@ -869,6 +981,11 @@ public class Commands implements CommandExecutor {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                e.removeScoreboardTag("Public");
+                                e.addScoreboardTag("Private");
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse private!");
+                                return true;
+                            }if (player.hasPermission("eq.dev")) {
                                 e.removeScoreboardTag("Public");
                                 e.addScoreboardTag("Private");
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse private!");
@@ -916,6 +1033,15 @@ public class Commands implements CommandExecutor {
                 return true;
             } else if (args[0].equalsIgnoreCase("lunge")) {
                 Player p = (Player) sender;
+                int cooldownTime = 25; // The number of seconds the player has to wait
+                if(cooldowns.containsKey(p.getName())) {
+                    long secondsLeft = ((cooldowns.get(p.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);
+                    if(secondsLeft>0) {
+                        sender.sendMessage("You cant do this for another "+ secondsLeft +" seconds!");
+                        return true;
+                    }
+                }
+                cooldowns.put(p.getName(), System.currentTimeMillis());
                 if(false) {
                     p.sendMessage("&7[&bEQ&7] >> &cThis command is currently disabled!");
                 }else {
@@ -926,11 +1052,20 @@ public class Commands implements CommandExecutor {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
+                    if (p.isInsideVehicle()) {
+                        p.getVehicle().eject();
+                    }
+
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             if (euid.equals(h)) {
                                 if (((Horse) e).getLeashHolder() instanceof Player) {
+                                    Player leash = (Player) ((Horse) e).getLeashHolder();
+                                    lungestat.put(uuid, true);
+                                    if (p != leash){
+                                        return true;
+                                    }
                                     plugin.lungeStatus.put(e.getUniqueId(), true);
                                     new BukkitRunnable() {
                                         int tick = 0;
@@ -951,6 +1086,10 @@ public class Commands implements CommandExecutor {
                                                 plugin.lungeStatus.remove(e.getUniqueId());
                                                 return;
                                             }
+                                            if (lungestat.get(uuid) == false) {
+                                                return;
+                                            }
+
 
                                             Location loc = getLocAroundCircle(center, radius, radPerTick);
 
@@ -1358,16 +1497,18 @@ public class Commands implements CommandExecutor {
                 World world = player.getWorld();
 
                 for (Entity e : world.getEntities()) {
-                    UUID h = e.getUniqueId();
-                    e.getScoreboardTags().removeIf(tag -> tag.contains("Hunger:"));
-                    e.getScoreboardTags().removeIf(tag -> tag.equalsIgnoreCase("Hunger"));
-                    if (euid.equals(h)) {
-                        e.addScoreboardTag("Hunger");
-                        e.addScoreboardTag("Hunger:0");
-                        player.sendMessage(String.format("%s %s's hunger has been reset to 0 and is now hungry!", ChatColor.DARK_RED, e.getName()));
+                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                        UUID h = e.getUniqueId();
+                        if (euid.equals(h)) {
+                            e.getScoreboardTags().removeIf(tag -> tag.contains("Hunger:"));
+                            e.getScoreboardTags().removeIf(tag -> tag.equalsIgnoreCase("Hunger"));
+                            e.addScoreboardTag("Hunger");
+                            e.addScoreboardTag("Hunger:0");
+                            player.sendMessage(String.format("%s %s's hunger has been reset to 0 and is now hungry!", ChatColor.DARK_RED, e.getName()));
+                            return true;
+                        }
                     }
                 }
-                return true;
             } else if (args[0].equalsIgnoreCase("debugtags")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
@@ -2478,28 +2619,28 @@ public class Commands implements CommandExecutor {
                                     if (!e.getScoreboardTags().contains("Vaxed")) {
                                         Random rnd = new Random();
                                         int i = rnd.nextInt(100);
-                                        if (i >= 5) {
+                                        if (i <= 20) {
                                             if (!e.getScoreboardTags().contains("uill1")) {
                                                 e.addScoreboardTag("uill1");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                                 continue;
                                             }
                                         }
-                                        if (i >= 4) {
+                                        if (i <= 30) {
                                             if (!e.getScoreboardTags().contains("uill2")) {
                                                 e.addScoreboardTag("uill2");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                                 continue;
                                             }
                                         }
-                                        if (i >= 2) {
+                                        if (i <= 15) {
                                             if (!e.getScoreboardTags().contains("uill3")) {
                                                 e.addScoreboardTag("uill3");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                                 continue;
                                             }
                                         }
-                                        if (i <= 1) {
+                                        if (i <= 5) {
                                             if (e.getScoreboardTags().contains("Thirst:0")) {
                                                 if (!e.getScoreboardTags().contains("uill4")) {
                                                     e.addScoreboardTag("uill4");
@@ -2508,7 +2649,6 @@ public class Commands implements CommandExecutor {
                                                 }
                                             }
                                         }
-                                        break;
                                     }
                                 }
                             }

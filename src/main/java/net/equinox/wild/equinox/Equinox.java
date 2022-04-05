@@ -1,5 +1,6 @@
 package net.equinox.wild.equinox;
 
+import com.earth2me.essentials.Essentials;
 import dev.dbassett.skullcreator.SkullCreator;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
@@ -33,6 +34,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static net.equinox.wild.equinox.Commands.doublexp;
 
+
 ///@SuppressWarnings("all")
 @SuppressWarnings("deprecation")
 public final class Equinox extends JavaPlugin {
@@ -43,6 +45,7 @@ public final class Equinox extends JavaPlugin {
     private FileConfiguration traitConfig;
     private FileConfiguration coatConfig;
     private FileConfiguration homesConfig;
+    static Essentials ess = (Essentials) Bukkit.getServer().getPluginManager().getPlugin("Essentials");
 
     private EntityManager entityManager;
 
@@ -59,7 +62,6 @@ public final class Equinox extends JavaPlugin {
         foodToHungerValues.put(Material.GRASS_BLOCK, 1);
         foodToHungerValues.put(Material.DRIED_KELP_BLOCK, 10);
         foodToHungerValues.put(Material.HAY_BLOCK, 10);
-//        eatLoop(this, Material.RED_STAINED_GLASS_PANE, Material.YELLOW_STAINED_GLASS_PANE);
         eatGrainLoop(this);
         eatLoop(this, Material.GRASS_BLOCK, Material.DIRT);
         eatLoop(this, Material.DRIED_KELP_BLOCK, Material.AIR);
@@ -345,7 +347,7 @@ public final class Equinox extends JavaPlugin {
                                                             e.removeScoreboardTag("Thirst");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 20) {
                                                                 c.setLevel(2);
                                                                 block.setBlockData(c);
                                                             }
@@ -362,18 +364,12 @@ public final class Equinox extends JavaPlugin {
                                                         } else if (e.getScoreboardTags().contains("Thirst:6")) {
                                                             e.removeScoreboardTag("Thirst:6");
                                                             e.addScoreboardTag("Thirst:9");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(2);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:5")) {
                                                             e.removeScoreboardTag("Thirst:5");
                                                             e.addScoreboardTag("Thirst:8");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 10) {
                                                                 c.setLevel(2);
                                                                 block.setBlockData(c);
                                                             }
@@ -382,7 +378,7 @@ public final class Equinox extends JavaPlugin {
                                                             e.addScoreboardTag("Thirst:7");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 5) {
                                                                 c.setLevel(2);
                                                                 block.setBlockData(c);
                                                             }
@@ -398,27 +394,15 @@ public final class Equinox extends JavaPlugin {
                                                         } else if (e.getScoreboardTags().contains("Thirst:2")) {
                                                             e.removeScoreboardTag("Thirst:2");
                                                             e.addScoreboardTag("Thirst:5");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(2);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:1")) {
                                                             e.removeScoreboardTag("Thirst:1");
                                                             e.addScoreboardTag("Thirst:4");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(2);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:0")) {
                                                             e.removeScoreboardTag("Thirst:0");
                                                             e.addScoreboardTag("Thirst:3");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 3) {
                                                                 c.setLevel(2);
                                                                 block.setBlockData(c);
                                                             }
@@ -454,7 +438,7 @@ public final class Equinox extends JavaPlugin {
                                                             e.removeScoreboardTag("Thirst");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 20) {
                                                                 c.setLevel(1);
                                                                 block.setBlockData(c);
                                                             }
@@ -464,25 +448,19 @@ public final class Equinox extends JavaPlugin {
                                                             e.removeScoreboardTag("Thirst");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 15) {
                                                                 c.setLevel(1);
                                                                 block.setBlockData(c);
                                                             }
                                                         } else if (e.getScoreboardTags().contains("Thirst:6")) {
                                                             e.removeScoreboardTag("Thirst:6");
                                                             e.addScoreboardTag("Thirst:9");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(1);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:5")) {
                                                             e.removeScoreboardTag("Thirst:5");
                                                             e.addScoreboardTag("Thirst:8");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 10) {
                                                                 c.setLevel(1);
                                                                 block.setBlockData(c);
                                                             }
@@ -491,43 +469,26 @@ public final class Equinox extends JavaPlugin {
                                                             e.addScoreboardTag("Thirst:7");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 5) {
                                                                 c.setLevel(1);
                                                                 block.setBlockData(c);
                                                             }
                                                         } else if (e.getScoreboardTags().contains("Thirst:3")) {
                                                             e.removeScoreboardTag("Thirst:3");
                                                             e.addScoreboardTag("Thirst:6");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(1);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:2")) {
                                                             e.removeScoreboardTag("Thirst:2");
                                                             e.addScoreboardTag("Thirst:5");
                                                             Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(1);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:1")) {
                                                             e.removeScoreboardTag("Thirst:1");
                                                             e.addScoreboardTag("Thirst:4");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                c.setLevel(1);
-                                                                block.setBlockData(c);
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:0")) {
                                                             e.removeScoreboardTag("Thirst:0");
                                                             e.addScoreboardTag("Thirst:3");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 3) {
                                                                 c.setLevel(1);
                                                                 block.setBlockData(c);
                                                             }
@@ -562,7 +523,7 @@ public final class Equinox extends JavaPlugin {
                                                             e.removeScoreboardTag("Thirst");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 20) {
                                                                 block.setType(Material.CAULDRON);
 
                                                             }
@@ -572,25 +533,19 @@ public final class Equinox extends JavaPlugin {
                                                             e.removeScoreboardTag("Thirst");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 15) {
                                                                 block.setType(Material.CAULDRON);
 
                                                             }
                                                         } else if (e.getScoreboardTags().contains("Thirst:6")) {
                                                             e.removeScoreboardTag("Thirst:6");
                                                             e.addScoreboardTag("Thirst:9");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                block.setType(Material.CAULDRON);
-
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:5")) {
                                                             e.removeScoreboardTag("Thirst:5");
                                                             e.addScoreboardTag("Thirst:8");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 10) {
                                                                 block.setType(Material.CAULDRON);
 
                                                             }
@@ -599,43 +554,26 @@ public final class Equinox extends JavaPlugin {
                                                             e.addScoreboardTag("Thirst:7");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 5) {
                                                                 block.setType(Material.CAULDRON);
 
                                                             }
                                                         } else if (e.getScoreboardTags().contains("Hunger:3")) {
                                                             e.removeScoreboardTag("Thirst:3");
                                                             e.addScoreboardTag("Thirst:6");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                block.setType(Material.CAULDRON);
-
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:2")) {
                                                             e.removeScoreboardTag("Thirst:2");
                                                             e.addScoreboardTag("Thirst:5");
-                                                            Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                block.setType(Material.CAULDRON);
-
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:1")) {
                                                             e.removeScoreboardTag("Thirst:1");
                                                             e.addScoreboardTag("Thirst:4");
                                                             Random rnd = new Random();
-                                                            int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
-                                                                block.setType(Material.CAULDRON);
-
-                                                            }
                                                         } else if (e.getScoreboardTags().contains("Thirst:0")) {
                                                             e.removeScoreboardTag("Thirst:0");
                                                             e.addScoreboardTag("Thirst:3");
                                                             Random rnd = new Random();
                                                             int i = rnd.nextInt(100);
-                                                            if (i <= 25) {
+                                                            if (i <= 3) {
                                                                 block.setType(Material.CAULDRON);
 
                                                             }
@@ -742,7 +680,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 0, 600);
+        }.runTaskTimer(plugin, 11000, 11000);
     }
 
     private void eatGrainLoop(Plugin plugin) {
@@ -795,6 +733,8 @@ public final class Equinox extends JavaPlugin {
                                 if(foodSource != null) {
                                     if (e instanceof Horse) {
                                         ((Horse) e).getPathfinder().findPath(foodSource);
+                                        System.out.println(e.getName() + " " + original);
+                                        System.out.println(e.getName() + " " + replacement);
                                     } if (e instanceof Donkey) {
                                         ((Donkey) e).getPathfinder().findPath(foodSource);
                                     } if (e instanceof Mule) {
@@ -803,11 +743,14 @@ public final class Equinox extends JavaPlugin {
                                     if(!hasEaten.get()) {
                                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
                                             NBTEditor.set(e, (byte) 1, "EatingHaystack");
+                                            for(Player player : world.getNearbyPlayers(loc, 5)) {
+                                                player.playSound(loc, "entity.horse.eat", 2, 1F);
+                                            }
                                             e.getWorld().getBlockAt(foodSource).setType(replacement);
                                             onConsumeFood(e, original);
                                             hasEaten.set(true);
+                                            System.out.println(e.getName() + " has eaten");
                                         }, 100);
-                                        return;
                                     }
                                 }
                             }
@@ -815,9 +758,8 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 500, 500);
+        }.runTaskTimer(plugin, 100, 200);
     }
-
 
     public void PeeLoop(Plugin plugin) {
         new BukkitRunnable() {
@@ -828,7 +770,7 @@ public final class Equinox extends JavaPlugin {
                             if (!e.getScoreboardTags().contains("Invulnerable")) {
                                 Random rnd = new Random();
                                 int i = rnd.nextInt(100);
-                                if (i <= 15) {
+                                if (i <= 10) {
                                     Location loc = e.getLocation();
                                     int x = loc.getBlockX();
                                     int y = loc.getBlockY();
@@ -845,7 +787,7 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 100, 9000);
+        }.runTaskTimer(plugin, 10000, 10000);
     }
 
     public void poop(Plugin plugin) {
@@ -878,18 +820,21 @@ public final class Equinox extends JavaPlugin {
         new BukkitRunnable() {
             public void run() {
                 for (Player p : Bukkit.getOnlinePlayers()) {
+                    if (ess.getUser(p) != null && ess.getUser(p).isAfk()) {
+                        continue;
+                    }
                     if (p.getVehicle() == null) {
-                        return;
+                        continue;
                     }
                     Entity e = p.getVehicle();
                     DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
                     horse.setXp(horse.getXp() + 3);
-                    if (doublexp.get("dxp") == "true") {
-                        p.giveExp(10);
-                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+10 XP"));
-                    } else {
-                        p.giveExp(5);
-                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+5 XP"));
+                    if (Objects.equals(doublexp.get("dxp"), "true")) {
+                        p.giveExp(25);
+                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_AQUA + "+25 XP"));
+                    } if (!Objects.equals(doublexp.get("dxp"), "true")) {
+                        p.giveExp(15);
+                        p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_AQUA + "+15 XP"));
                     }
 
                     int requiredForNext = Utilities.getXpNeededForLevel(horse.getLevel() + 1);
@@ -1015,7 +960,11 @@ public final class Equinox extends JavaPlugin {
 
 
     private void onConsumeFood(Entity e, Material foodType) {
-        Utilities.setFoodToHorse(e, foodToHungerValues.get(foodType));
+        if(foodType == Material.GRASS_BLOCK) {
+            Utilities.addFoodToHorse(e, foodToHungerValues.get(foodType));
+        } else {
+            Utilities.setFoodToHorse(e, foodToHungerValues.get(foodType));
+        }
     }
 
 //    private boolean setupChat() {

@@ -100,7 +100,9 @@ public class Utilities {
         }
 
         if(!foundHunger) return;
-
+        if(hungerLevel == 10) {
+            e.removeScoreboardTag("Hunger");
+        }
         setFoodToHorse(e, hungerLevel + amountOfPoints);
     }
 
@@ -132,7 +134,9 @@ public class Utilities {
         if (e.getScoreboardTags().contains(oldHunger)) {
             e.removeScoreboardTag(oldHunger);
             e.addScoreboardTag(newHunger);
-            e.removeScoreboardTag("Hunger");
+            if(hungerLevel == 10) {
+                e.removeScoreboardTag("Hunger");
+            }
         }
 
         if(hungerLevel == 0) {
