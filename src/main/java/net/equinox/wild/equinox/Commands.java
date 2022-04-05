@@ -224,8 +224,8 @@ public class Commands implements CommandExecutor {
                     if (player.hasPermission("group.beginner")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Beginner" + ChatColor.GRAY + "]");
                     }
-                    if (player.hasPermission("group.amature")) {
-                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amature" + ChatColor.GRAY + "]");
+                    if (player.hasPermission("group.amateur")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amateur" + ChatColor.GRAY + "]");
                     }
                     if (player.hasPermission("group.intermediate")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GREEN + "Intermediate" + ChatColor.GRAY + "]");
@@ -245,7 +245,31 @@ public class Commands implements CommandExecutor {
                     if (player.hasPermission("group.olympian")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "Olympian" + ChatColor.GRAY + "]");
                     }
-                    player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "XP:      " + xp);
+                    if (player.hasPermission("group.sbeginner")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Beginner" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.samateur")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amateur" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.sintermediate")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GREEN + "Intermediate" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.sadvanced")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.RED + "Advanced" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.sexpert")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Expert" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.schampion")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.BLUE + "Champion" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.selite")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.WHITE + "Elite" + ChatColor.GRAY + "]");
+                    }
+                    if (player.hasPermission("group.solympian")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "Olympian" + ChatColor.GRAY + "]");
+                    }
+                    player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "XP Level:      " + xp);
                     player.sendMessage(" ");
                     player.sendMessage(ChatColor.YELLOW + "[Licenses]");
                     if (player.hasPermission("eq.store")) {
@@ -274,14 +298,14 @@ public class Commands implements CommandExecutor {
                     player.sendMessage(" ");
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Info" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
                     player.sendMessage(" ");
-                    if (player2.hasPermission("group.default")) {
+                    if (player.hasPermission("group.default")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GRAY + "Newbie" + ChatColor.GRAY + "]");
                     }
                     if (player2.hasPermission("group.beginner")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Beginner" + ChatColor.GRAY + "]");
                     }
-                    if (player2.hasPermission("group.amature")) {
-                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amature" + ChatColor.GRAY + "]");
+                    if (player2.hasPermission("group.amateur")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amateur" + ChatColor.GRAY + "]");
                     }
                     if (player2.hasPermission("group.intermediate")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GREEN + "Intermediate" + ChatColor.GRAY + "]");
@@ -301,7 +325,31 @@ public class Commands implements CommandExecutor {
                     if (player2.hasPermission("group.olympian")) {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "Olympian" + ChatColor.GRAY + "]");
                     }
-                    player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "XP:      " + xp2);
+                    if (player2.hasPermission("group.sbeginner")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Beginner" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.samateur")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GOLD + "Amateur" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.sintermediate")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.GREEN + "Intermediate" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.sadvanced")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.RED + "Advanced" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.sexpert")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.LIGHT_PURPLE + "Expert" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.schampion")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.BLUE + "Champion" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.selite")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.WHITE + "Elite" + ChatColor.GRAY + "]");
+                    }
+                    if (player2.hasPermission("group.solympian")) {
+                        player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Rank:      " + ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "Olympian" + ChatColor.GRAY + "]");
+                    }
+                    player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "XP Level:      " + xp2);
                     player.sendMessage(" ");
                     player.sendMessage(ChatColor.YELLOW + "[Licenses]");
                     if (player2.hasPermission("eq.store")) {
@@ -541,8 +589,8 @@ public class Commands implements CommandExecutor {
                     try {
                         DbHorse horse = plugin.getDbContext().getHorseFromDatabaseById(Integer.parseInt(args[1]));
                         World lastWorld = plugin.getServer().getWorld(horse.getLastWorld());
-                        lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).setForceLoaded(true);
                         lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).load();
+                        lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).setForceLoaded(true);
 
                         Entity e = lastWorld.getEntity(UUID.fromString(horse.getUuid()));
 
@@ -691,11 +739,27 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
-                            p2.sendMessage("test");
                             if (euid.equals(h)) {
-                                p2.sendMessage("test2");
                                 if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                    p2.sendMessage("test3");
+                                    try {
+                                        DbHorse horse = plugin.getDbContext().getHorseFromDatabase(h);
+                                        if (e.getScoreboardTags().contains("Owner:" + uuid2.toString())) {
+                                            if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
+                                                System.out.println("This horse does not have an owner set... Correcting!");
+                                                horse.setOwnerUuid(uuid.toString());
+                                                plugin.getDbContext().updateHorseInDatabase(horse);
+                                            } else {
+                                                System.out.println("Changing horses owner in database...");
+                                                horse.setOwnerUuid(uuid.toString());
+                                                plugin.getDbContext().updateHorseInDatabase(horse);
+                                            }
+                                        }
+
+                                    } catch(NoSuchElementException exception) {
+                                        // Send message to player saying the horse with the specified id was not found
+                                        System.out.println("ERR");
+                                        exception.printStackTrace();
+                                    }
                                     e.addScoreboardTag("Owner:" + uuid);
                                     e.removeScoreboardTag("Owner:" + uuid2);
                                     p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
@@ -1314,20 +1378,23 @@ public class Commands implements CommandExecutor {
                             } else if (e.getScoreboardTags().contains("Gender:Colt")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Colt");
                             }
+                            if (e.getScoreboardTags().contains("Pregnant")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.LIGHT_PURPLE + " Pregnant");
+                            }
                             if (e.getScoreboardTags().contains("InHeat")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.RED + "In Heat");
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.RED + " In Heat");
                             }
                             int i = 0;
                             while (i <= 1) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Year");
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Yr");
                                     break;
                                 }
                                 ++i;
                             }
                             while (i >= 2) {
                                 if (e.getScoreboardTags().contains("Age:" + i)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Years");
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Yrs");
                                     break;
                                 }
                                 ++i;
@@ -2094,6 +2161,15 @@ public class Commands implements CommandExecutor {
                                         String rnt = list.get(index);
                                         h.addScoreboardTag("Trait:" + rnt);
                                         System.out.println("Birthing...");
+                                        for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                            UUID puuid = p.getUniqueId();
+                                            String offp = p.getName();
+                                            String l = plugin.getConfig().getString(puuid + " brand");
+                                            if (e.getScoreboardTags().contains("Owner:" + puuid)) {
+                                                h.addScoreboardTag("Owner:" + puuid);
+                                                plugin.getDbContext().addHorseToDatabase(h, String.valueOf(puuid));
+                                            }
+                                        }
                                         if (e.getScoreboardTags().contains("fg:Filly")) {
                                             h.addScoreboardTag("Gender:Filly");
                                         }
