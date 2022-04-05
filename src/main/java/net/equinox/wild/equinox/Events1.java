@@ -3,8 +3,6 @@ package net.equinox.wild.equinox;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import net.equinox.wild.equinox.entities.DbHorse;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
@@ -301,13 +299,7 @@ public class Events1 implements Listener {
         if (block.getType() == Material.BROWN_GLAZED_TERRACOTTA) {
             if(player.hasPermission("eq.waste")) {
                 block.setType(Material.AIR);
-                Random rnd = new Random();
-                int i = rnd.nextInt(100);
-                if (i <= 25) {
-                    player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GOLD + "+$1"));
-                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + name + " 1");
-                }
-
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + name + " brown_glazed_terracotta 1");
             }
 
         }
