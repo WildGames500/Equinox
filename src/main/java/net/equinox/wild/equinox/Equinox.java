@@ -17,7 +17,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.*;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,6 +50,8 @@ public final class Equinox extends JavaPlugin {
 
     private HashMap<Material, Integer> foodToHungerValues = new HashMap<Material, Integer>();
     public HashMap<UUID, Boolean> lungeStatus = new HashMap<UUID, Boolean>();
+
+    public static String POOP_TEXTURE_URL = "https://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
 
     @Override
     public void onEnable() {
@@ -802,10 +803,9 @@ public final class Equinox extends JavaPlugin {
                                 if (i <= 10) { //set 10
                                     Block loc = e.getLocation().getBlock();
                                     Material block = loc.getType();
-                                    String s = "https://textures.minecraft.net/texture/9b3b1f785f01753c45ef97fcffffb3f52658ffceb17ad3f7b592945c6df2fa";
                                     if (block == Material.AIR) {
-                                        SkullCreator.blockWithUrl(loc, s);
-                                        loc.setMetadata("Poop", new FixedMetadataValue(plugin, "Poop"));
+                                        SkullCreator.blockWithUrl(loc, POOP_TEXTURE_URL);
+//                                        loc.setMetadata("Poop", new FixedMetadataValue(plugin, "Poop"));
                                     }
                                 }
                             }
@@ -990,6 +990,8 @@ public final class Equinox extends JavaPlugin {
         return true;
     }
 
+
+
     public static Economy getEconomy() {
         return econ;
     }
@@ -1004,5 +1006,25 @@ public final class Equinox extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Plugin Has Been Disabled!  Good Bye!");
+        getLogger().info("Plugin is being disabled - saving entities to the database!");
+        for(World world : this.getServer().getWorlds()) {
+            for(Entity e : world.getEntities()) {
+                if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                    Chunk sourceChunk = e.getChunk();
+                    int x = sourceChunk.getX();
+                    int z = sourceChunk.getZ();
+
+                    DbHorse horse = this.getDbContext().getHorseFromDatabase(e.getUniqueId());
+
+                    if(horse != null) {
+                        horse.setLastWorld(e.getWorld().getName());
+                        horse.setLastChunkX(x);
+                        horse.setLastChunkZ(z);
+                        this.getDbContext().updateHorseInDatabase(horse);
+                    }
+
+                }
+            }
+        }
     }
 }

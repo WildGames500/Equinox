@@ -3,6 +3,7 @@ package net.equinox.wild.equinox;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -152,6 +153,16 @@ public class Utilities {
                 e.removeScoreboardTag("DayH-3");
             }
         }
+    }
+
+    public static boolean isSkullPoop(Block block) {
+        if(block.getType() != Material.PLAYER_HEAD) {
+            throw new IllegalArgumentException("Utilities#isSkullPoop - This is not a skull block!");
+        }
+
+        Skull skull = (Skull) block.getState();
+
+        return skull.getPlayerProfile().getTextures().getSkin().toExternalForm().equalsIgnoreCase(Equinox.POOP_TEXTURE_URL);
     }
 
     public static int getXpNeededForLevel(int newLevel) {

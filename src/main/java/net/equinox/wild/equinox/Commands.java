@@ -331,7 +331,7 @@ public class Commands implements CommandExecutor {
                 if (player.hasPermission("eq.dev")) {
                     for (Entity e : world.getEntities()) {
                         if (e.getType() == EntityType.HORSE)
-                            ((Horse) e).setHealth(0);
+                            ((LivingEntity) e).setHealth(0);
                     }
                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horses killed");
                     return true;
@@ -473,87 +473,98 @@ public class Commands implements CommandExecutor {
                 if (args.length >= 2) {
                     Player player = (Player) sender;
                     OfflinePlayer p2 = plugin.getServer().getOfflinePlayerIfCached(args[1]);
-                    UUID uuid2 = p2.getUniqueId();
-                    World world = Bukkit.getWorld("EquinoxPlots");
-                    World world2 = Bukkit.getWorld("Flat");
+                    UUID targetPlayerUuid = p2.getUniqueId();
+
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                    for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                StringBuilder name = new StringBuilder();
-                                String hn = e.getCustomName();
-                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
-                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn + " " + args[1]));
-                                player.spigot().sendMessage(msg);
-                            }
+                    for(DbHorse horse : plugin.getDbContext().getHorsesOwnedByPlayer(targetPlayerUuid.toString())) {
+                        StringBuilder name = new StringBuilder();
+                        String hn = horse.getName();
+                        if(hn == null) {
+                            hn = "No Name";
                         }
+                        TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                        msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + horse.getId()));
+                        player.spigot().sendMessage(msg);
                     }
-                    for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                String hn = e.getCustomName();
-                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
-                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn + " " + args[1]));
-                                player.spigot().sendMessage(msg);
-                            }
-                        }
-                    }
+//                    for(World world : plugin.getServer().getWorlds()) {
+//                        for(Entity e : world.getEntities()) {
+//                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+//                                if (e.getScoreboardTags().contains("Owner:" + targetPlayerUuid)) {
+//                                    StringBuilder name = new StringBuilder();
+//                                    String hn = e.getCustomName();
+//                                    TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+//                                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn + " " + args[1]));
+//                                    player.spigot().sendMessage(msg);
+//                                }
+//                            }
+//                        }
+//                    }
+
+                    return true;
+
                 } else {
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = Bukkit.getWorld("EquinoxPlots");
-                    World world2 = Bukkit.getWorld("Flat");
+
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                    for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                                String hn = e.getCustomName();
-                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
-                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
-                                player.spigot().sendMessage(msg);
-                            }
+                    for(DbHorse horse : plugin.getDbContext().getHorsesOwnedByPlayer(uuid.toString())) {
+                        StringBuilder name = new StringBuilder();
+                        String hn = horse.getName();
+                        if(hn == null) {
+                            hn = "No Name";
                         }
+                        TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+                        msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + horse.getId()));
+                        player.spigot().sendMessage(msg);
                     }
-                    for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                                String hn = e.getCustomName();
-                                TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
-                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
-                                player.spigot().sendMessage(msg);
-                            }
-                        }
-                    }
+//                    for (World world : plugin.getServer().getWorlds()) {
+//                        for (Entity e : world.getEntities()) {
+//                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+//                                if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+//                                    String hn = e.getCustomName();
+//                                    TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
+//                                    msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq select " + hn));
+//                                    player.spigot().sendMessage(msg);
+//                                }
+//                            }
+//                        }
+//                    }
+                    return true;
                 }
             } else if (args[0].equalsIgnoreCase("select")) {
                 if (args.length == 2) {
                     Player player = (Player) sender;
                     UUID uuid = player.getUniqueId();
                     Location loc = player.getLocation();
-                    World world = Bukkit.getWorld("EquinoxPlots");
-                    World world2 = Bukkit.getWorld("Flat");
-                    for (Entity e : world.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
 
-                                if (e.getCustomName().equals(args[1])) {
-                                    ((Horse) e).damage(1, player);
-                                    return true;
-                                }
+                    try {
+                        DbHorse horse = plugin.getDbContext().getHorseFromDatabaseById(Integer.parseInt(args[1]));
+                        World lastWorld = plugin.getServer().getWorld(horse.getLastWorld());
+                        lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).setForceLoaded(true);
+                        lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).load();
+
+                        Entity e = lastWorld.getEntity(UUID.fromString(horse.getUuid()));
+
+                        if (e.getScoreboardTags().contains("Owner:" + uuid.toString())) {
+                            if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
+                                System.out.println("This horse does not have an owner set... Correcting!");
+                                horse.setOwnerUuid(uuid.toString());
+                                plugin.getDbContext().updateHorseInDatabase(horse);
                             }
                         }
+
+                        ((LivingEntity) e).damage(1, player);
+                        return true;
+
+
+                    } catch(NoSuchElementException e) {
+                        // Send message to player saying the horse with the specified id was not found
+                        e.printStackTrace();
                     }
-                    for (Entity e : world2.getEntities()) {
-                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                            if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                                if (e.getCustomName().equals(args[1])) {
-                                    ((Horse) e).damage(1, player);
-                                    return true;
-                                }
-                            }
-                        }
-                    }
+
+                    return true;
+
                 }
                 if (args.length == 3) {
                     Player player = (Player) sender;
@@ -567,7 +578,7 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 if (e.getCustomName().equals(args[1])){
-                                    ((Horse) e).damage(1, player);
+                                    ((LivingEntity) e).damage(1, player);
                                     return true;
                                 }
                             }
@@ -577,7 +588,7 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 if (e.getCustomName().equals(args[1])){
-                                    ((Horse) e).damage(1, player);
+                                    ((LivingEntity) e).damage(1, player);
                                     return true;
                                 }
                             }
@@ -596,7 +607,7 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 if (e.getCustomName().equals(args[1] + " " + args[2])) {
-                                    ((Horse) e).damage(1, player);
+                                    ((LivingEntity) e).damage(1, player);
                                     return true;
                                 }
                             }
@@ -606,7 +617,7 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                 if (e.getCustomName().equals(args[1] + " " + args[2])) {
-                                    ((Horse) e).damage(1, player);
+                                    ((LivingEntity) e).damage(1, player);
                                     return true;
                                 }
                             }
@@ -756,64 +767,42 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
-                World world = Bukkit.getWorld("EquinoxPlots");
-                World world2 = Bukkit.getWorld("Flat");
-                if(collection.isEmpty()) {
-                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
-                    return true;
-                }
-                for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                        UUID h = e.getUniqueId();
-                        if (euid.equals(h)) {
-                            e.teleport(loc);
-                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse has been teleported to you!");
-                            return true;
+                for(World world : plugin.getServer().getWorlds()) {
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                e.teleport(loc);
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse has been teleported to you!");
+                                return true;
 
+                            }
                         }
                     }
                 }
-                for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                        UUID h = e.getUniqueId();
-                        if (euid.equals(h)) {
-                            e.teleport(loc);
-                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse has been teleported to you!");
-                            return true;
 
-                        }
-
-                    }
-                }
             } else if (args[0].equalsIgnoreCase("tp")) {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
-                World world = Bukkit.getWorld("EquinoxPlots");
-                World world2 = Bukkit.getWorld("Flat");
-                if(collection.isEmpty()) {
-                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
-                    return true;
-                }
-                for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                        UUID h = e.getUniqueId();
-                        if (euid.equals(h)) {
-                            Location loc = e.getLocation();
-                            player.teleport(loc);
-                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have been teleported to your horse!");
-                            return true;
-                        }
+                for(World world : plugin.getServer().getWorlds()) {
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
                     }
-                }
-                for (Entity e : world2.getEntities()) {
-                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                        UUID h = e.getUniqueId();
-                        if (euid.equals(h)) {
-                            Location loc = e.getLocation();
-                            player.teleport(loc);
-                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have been teleported to your horse!");
-                            return true;
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                Location loc = e.getLocation();
+                                player.teleport(loc);
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have been teleported to your horse!");
+                                return true;
+                            }
                         }
                     }
                 }
@@ -828,7 +817,7 @@ public class Commands implements CommandExecutor {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (player.hasPermission("eq.op")) {
-                                ((Horse) e).setHealth(0);
+                                ((LivingEntity) e).setHealth(0);
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have killed this horse!");
                                 return true;
                             } else {
@@ -873,6 +862,7 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             if (euid.equals(h)) {
+                                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(euid);
                                 StringBuilder name = new StringBuilder();
                                 // Test Name
                                 for(int i = 0; i < args.length; i++) {
@@ -890,21 +880,42 @@ public class Commands implements CommandExecutor {
                                 }
                                 if (player.hasPermission("eq.dev")) {
                                     e.setCustomName(name.toString());
+                                    if(horse != null) {
+                                        horse.setName(name.toString());
+                                        plugin.getDbContext().updateHorseInDatabase(horse);
+                                    } else {
+                                        System.out.println("Skipping update, as horse is null");
+                                    }
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
                                     return true;
                                 }
+
                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     e.setCustomName(name.toString());
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
+                                    if(horse != null) {
+                                        horse.setName(name.toString());
+                                        plugin.getDbContext().updateHorseInDatabase(horse);
+                                    } else {
+                                        System.out.println("Skipping update, as horse is null");
+                                    }
                                     return true;
                                 } else if (e.getScoreboardTags().contains("Member:" + uuid)) {
                                     e.setCustomName(name.toString());
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
+                                    if(horse != null) {
+                                        horse.setName(name.toString());
+                                        plugin.getDbContext().updateHorseInDatabase(horse);
+                                    } else {
+                                        System.out.println("Skipping update, as horse is null");
+                                    }
                                     return true;
                                 } else if (!e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This is not your horse!");
                                     return true;
                                 }
+
+
                             }
                         }
                     }
@@ -1060,8 +1071,8 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             if (euid.equals(h)) {
-                                if (((Horse) e).getLeashHolder() instanceof Player) {
-                                    Player leash = (Player) ((Horse) e).getLeashHolder();
+                                if (((LivingEntity) e).getLeashHolder() instanceof Player) {
+                                    Player leash = (Player) ((LivingEntity) e).getLeashHolder();
                                     lungestat.put(uuid, true);
                                     if (p != leash){
                                         return true;
@@ -1991,7 +2002,7 @@ public class Commands implements CommandExecutor {
                                         if (e.getScoreboardTags().contains("Owner:" + puuid)) {
                                             String offp = p.getName();
                                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of starvation. ");
-                                            ((Horse) e).setHealth(0);
+                                            ((LivingEntity) e).setHealth(0);
                                             break;
                                         }
 
@@ -2679,7 +2690,7 @@ public class Commands implements CommandExecutor {
                                         ++i;
                                         e.addScoreboardTag("Age:" + i);
                                         if (i == 62) {
-                                            ((Horse) e).setHealth(0);
+                                            ((LivingEntity) e).setHealth(0);
                                             for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
                                                 UUID uuid = p.getUniqueId();
                                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {

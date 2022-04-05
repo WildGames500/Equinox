@@ -545,7 +545,7 @@ public class HorseGUI implements Listener {
                         if (!breedname.isEmpty()) {
                             if (breedname.size() >= 1 && breedname.containsValue("Donkey")) {
                                 Donkey h = (Donkey) world.spawnEntity(loc, EntityType.DONKEY);
-                                plugin.getDbContext().addHorseToDatabase(h);
+                                plugin.getDbContext().addHorseToDatabase(h, uuid.toString());
                                 h.setTamed(true);
                                 h.addScoreboardTag("Owner:" + uuid);
                                 h.addScoreboardTag("Owned");
@@ -618,7 +618,7 @@ public class HorseGUI implements Listener {
                                 }
                             } else {
                                 Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
-                                plugin.getDbContext().addHorseToDatabase(h);
+                                plugin.getDbContext().addHorseToDatabase(h, uuid.toString());
                                 h.setTamed(true);
                                 h.addScoreboardTag("Owner:" + uuid);
                                 h.addScoreboardTag("Owned");

@@ -2,6 +2,7 @@ package net.equinox.wild.equinox;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import net.equinox.wild.equinox.entities.DbHorse;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
@@ -20,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.UUID;
 
@@ -323,44 +325,32 @@ public class Events1 implements Listener {
                 return;
             }
         }
-        if (block.getType() == Material.PLAYER_HEAD) {
-            if (doublexp.get("dxp") == "true") {
-                Location locate = block.getLocation();
-                int x = locate.getBlockX();
-                int y = locate.getBlockY();
-                int z = locate.getBlockZ();
-                int y1 = y + 1;
-                Location loc = locate.set(x, y1, z);
-                Hologram hologram = HologramsAPI.createHologram(plugin, loc);
-                player.playSound(loc, "entity.slime.jump", 1, .5F);
+
+        if (block.getType() == Material.PLAYER_HEAD && Utilities.isSkullPoop(block)) {
+            Location locate = block.getLocation();
+            int x = locate.getBlockX();
+            int y = locate.getBlockY();
+            int z = locate.getBlockZ();
+            int y1 = y + 1;
+            Location loc = locate.set(x, y1, z);
+            Hologram hologram = HologramsAPI.createHologram(plugin, loc);
+            player.playSound(loc, "entity.slime.jump", 1, .5F);
+            if(doublexp.get("dxp") != null && doublexp.get("dxp").equalsIgnoreCase("true")) {
                 player.giveExp(2);
                 hologram.appendTextLine(ChatColor.YELLOW + "+2 xp");
-                block.setType(Material.AIR);
-                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        hologram.delete();
-                    }
-                }, 100);
             } else {
-                Location locate = block.getLocation();
-                int x = locate.getBlockX();
-                int y = locate.getBlockY();
-                int z = locate.getBlockZ();
-                int y1 = y + 1;
-                Location loc = locate.set(x, y1, z);
-                Hologram hologram = HologramsAPI.createHologram(plugin, loc);
-                player.playSound(loc, "entity.slime.jump", 1, .5F);
                 player.giveExp(1);
                 hologram.appendTextLine(ChatColor.YELLOW + "+1 xp");
-                block.setType(Material.AIR);
-                Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                    @Override
-                    public void run() {
-                        hologram.delete();
-                    }
-                }, 100);
             }
+
+            block.setType(Material.AIR);
+            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                @Override
+                public void run() {
+                    hologram.delete();
+                }
+            }, 100);
+
         }
 
     }
@@ -374,6 +364,22 @@ public class Events1 implements Listener {
             Location ploc = player.getLocation();
             UUID uuid = (UUID) player.getUniqueId();
             if (e.getDamager() instanceof Player) {
+                try {
+                    DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getEntity().getUniqueId());
+                    System.out.println("Test 2");
+                    if (e.getEntity().getScoreboardTags().contains("Owner:" + uuid.toString())) {
+                        if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
+                            System.out.println("This horse does not have an owner set... Correcting!");
+                            horse.setOwnerUuid(uuid.toString());
+                            plugin.getDbContext().updateHorseInDatabase(horse);
+                        }
+                    }
+
+                } catch(NoSuchElementException exception) {
+                    // Send message to player saying the horse with the specified id was not found
+                    System.out.println("ERR");
+                    exception.printStackTrace();
+                }
                 lungestat.replace(uuid, false);
                 if (e.getEntity().getScoreboardTags().contains("Private")) {
                     //I hate that I had to do this for each permission for the horse please shoot me if I have to edit this...
@@ -692,6 +698,7 @@ public class Events1 implements Listener {
                             } else {
                                 collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
                                 player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+
                             }
                         }
                     } else if (player.hasPermission("eq.staff")) {
@@ -922,6 +929,22 @@ public class Events1 implements Listener {
                         } else {
                             collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                            try {
+                                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getEntity().getUniqueId());
+                                System.out.println("Test 2");
+                                if (e.getEntity().getScoreboardTags().contains("Owner:" + uuid.toString())) {
+                                    if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
+                                        System.out.println("This horse does not have an owner set... Correcting!");
+                                        horse.setOwnerUuid(uuid.toString());
+                                        plugin.getDbContext().updateHorseInDatabase(horse);
+                                    }
+                                }
+
+                            } catch(NoSuchElementException exception) {
+                                // Send message to player saying the horse with the specified id was not found
+                                System.out.println("ERR");
+                                exception.printStackTrace();
+                            }
                         }
                     } else if (e.getEntity().getScoreboardTags().contains("Member:" + uuid)) {
                         if (player.getItemInHand().getType() == Material.EMERALD) {
@@ -1334,9 +1357,26 @@ public class Events1 implements Listener {
                     }
                 } else if (!e.getEntity().getScoreboardTags().contains("Public")) {
                     if (!e.getEntity().getScoreboardTags().contains("Private")) {
-                        if(player.hasPermission("eq.dev")) {
+                        if(player.hasPermission("eq.dev")) { // MARK
                             collection.put(player.getUniqueId(), e.getEntity().getUniqueId());
                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have selected this horse!");
+                            System.out.println("Test 1");
+                            try {
+                                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getEntity().getUniqueId());
+
+                                if (e.getEntity().getScoreboardTags().contains("Owner:" + uuid.toString())) {
+                                    if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
+                                        System.out.println("This horse does not have an owner set... Correcting!");
+                                        horse.setOwnerUuid(uuid.toString());
+                                        plugin.getDbContext().updateHorseInDatabase(horse);
+                                    }
+                                }
+
+                            } catch(NoSuchElementException exception) {
+                                // Send message to player saying the horse with the specified id was not found
+                                System.out.println("ERR");
+                                exception.printStackTrace();
+                            }
                         } else {
                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This is not your horse!");
                         }
@@ -1346,32 +1386,73 @@ public class Events1 implements Listener {
         }
     }
 
+
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent unload) {
+
         Chunk chunk = unload.getChunk();
-        for(World world : Bukkit.getServer().getWorlds()) {
-            for (Entity e : world.getEntities()) {
+            for (Entity e : chunk.getEntities()) {
                 if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                    Chunk chunk1 = e.getChunk();
+                    Chunk sourceChunk = e.getChunk();
                     ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-                    int x = chunk1.getX();
-                    int z = chunk1.getZ();
-                    world.loadChunk(x, z);
+                    int x = sourceChunk.getX();
+                    int z = sourceChunk.getZ();
+
+                    DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
+
+                    if(horse != null) {
+                        Location loc = e.getLocation();
+                        horse.setLastWorld(e.getWorld().getName());
+                        horse.setLastChunkX(sourceChunk.getX());
+                        horse.setLastChunkZ(sourceChunk.getZ());
+                        plugin.getDbContext().updateHorseInDatabase(horse);
+                    }
+
+
+//                    world.loadChunk(x, z);
                     new BukkitRunnable() {
                         public void run() {
                             Chunk chunk2 = e.getChunk();
-                            if (chunk1.equals(chunk2)) {
-                                world.setChunkForceLoaded(x, z, true);
+                            if (sourceChunk.equals(chunk2)) {
+                                e.getWorld().setChunkForceLoaded(x, z, true);
                             } else {
-                                chunk1.unload();
+//                                sourceChunk.unload();
                             }
 
                         }
                     }.runTaskTimer(plugin, 1000, 1000);
                 }
             }
+
+    }
+
+
+    /**
+    @EventHandler
+    public void onEntitiesUnload(EntitiesUnloadEvent event) {
+        System.out.printf("Unload entities event called %n");
+
+        for(Entity e : event.getEntities()) {
+            if(e instanceof Donkey || e instanceof Horse || e instanceof Mule) {
+                Chunk sourceChunk = e.getChunk();
+                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                int x = sourceChunk.getX();
+                int z = sourceChunk.getZ();
+
+                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
+
+                if(horse != null) {
+                    Location loc = e.getLocation();
+                    horse.setLastWorld(e.getWorld().getName());
+                    horse.setLastChunkX(sourceChunk.getX());
+                    horse.setLastChunkZ(sourceChunk.getZ());
+                }
+
+                plugin.getDbContext().updateHorseInDatabase(horse);
+            }
         }
     }
+     **/
 
     @EventHandler
     public void AllDamage(EntityDamageEvent d) {
