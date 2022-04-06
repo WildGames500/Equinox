@@ -1,7 +1,9 @@
 package net.equinox.wild.equinox;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
@@ -167,6 +169,35 @@ public class Utilities {
 
     public static int getXpNeededForLevel(int newLevel) {
         return (int) Math.pow(newLevel, 3.00) + 19;
+    }
+
+    public static String convertLocationToString(Location loc) {
+        return loc.getWorld().getName() +
+                "_" +
+                loc.getX() +
+                "_" +
+                loc.getY() +
+                "_" +
+                loc.getZ();
+    }
+
+    public static Location convertStringToLocation(String data) throws IllegalArgumentException {
+        if(data == null) {
+            throw new IllegalArgumentException("The provided location string was null!");
+        }
+        String[] parts = data.split("_");
+
+        if(parts.length != 4) {
+            throw new IllegalArgumentException("This string is missing a piece of data! " +
+                    "(Does not match World_X_Y_Z pattern): " + data);
+        }
+
+        World world = Bukkit.getWorld(parts[0]);
+        double x = Double.parseDouble(parts[1]);
+        double y = Double.parseDouble(parts[2]);
+        double z = Double.parseDouble(parts[3]);
+
+        return new Location(world, x, y, z);
     }
 
 }

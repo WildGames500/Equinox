@@ -35,3 +35,6 @@ commands:
   bell:
     description: Returns pong!
     usage: /<command>
+  testill:
+    description: Shh this doesn't exist
+    usage: /testill Who knows?

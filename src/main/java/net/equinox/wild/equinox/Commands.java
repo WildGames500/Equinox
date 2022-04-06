@@ -3,6 +3,7 @@ package net.equinox.wild.equinox;
 
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
+import net.equinox.wild.equinox.entities.IllnessColic;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -139,11 +140,30 @@ public class Commands implements CommandExecutor {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
-                            Location l = plugin.getConfig().getLocation(euid + " home");
-                            e.teleport(l);
-                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse teleported to home!");
+                            DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
+
+                            try {
+                                Location l = horse.getHome();
+                                e.teleport(l);
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse teleported to home!");
+
+                                if (horse != null) {
+                                    Location horseLocation = e.getLocation();
+                                    horse.setLastWorld(e.getWorld().getName());
+                                    horse.setLastChunkX(horseLocation.getChunk().getX());
+                                    horse.setLastChunkX(horseLocation.getChunk().getZ());
+                                    plugin.getDbContext().updateHorseInDatabase(horse);
+                                    System.out.printf("(Sent Home) Updated horse #%s%n", horse.getId());
+                                }
+                            } catch(IllegalArgumentException exception) {
+                                sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Could not send home! Does your horse have a home set?");
+                                exception.printStackTrace();
+                                return true;
+                            }
+
                             return true;
                         }
+
                     }
                 }
             } else if (args[0].equalsIgnoreCase("sethome")) {
@@ -160,8 +180,15 @@ public class Commands implements CommandExecutor {
                     if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
-                            plugin.getConfig().set(String.valueOf(euid + " home"), loc);
-                            plugin.saveConfig();
+                            DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
+
+                            if(horse != null) {
+                                horse.setHome(loc);
+                                plugin.getDbContext().updateHorseInDatabase(horse);
+                                System.out.printf("(Home Set) Updated horse #%s%n", horse.getId());
+                            }
+//                            plugin.getConfig().set(String.valueOf(euid + " home"), loc);
+//                            plugin.saveConfig();
                             sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Home is set!");
                             return true;
 
@@ -541,20 +568,29 @@ public class Commands implements CommandExecutor {
                     try {
                         DbHorse horse = plugin.getDbContext().getHorseFromDatabaseById(Integer.parseInt(args[1]));
                         World lastWorld = plugin.getServer().getWorld(horse.getLastWorld());
-                        lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).setForceLoaded(true);
-                        lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ()).load();
 
-                        Entity e = lastWorld.getEntity(UUID.fromString(horse.getUuid()));
+                        Chunk targetChunk = lastWorld.getChunkAt(horse.getLastChunkX(), horse.getLastChunkZ());
+                        targetChunk.load();
+                        targetChunk.setForceLoaded(true);
 
-                        if (e.getScoreboardTags().contains("Owner:" + uuid.toString())) {
-                            if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
-                                System.out.println("This horse does not have an owner set... Correcting!");
-                                horse.setOwnerUuid(uuid.toString());
-                                plugin.getDbContext().updateHorseInDatabase(horse);
+                        Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
+                            @Override
+                            public void run() {
+                                for(Entity e : lastWorld.getEntities()) {
+                                    if(e.getUniqueId().toString().equalsIgnoreCase(horse.getUuid())) {
+                                        if (e.getScoreboardTags().contains("Owner:" + uuid.toString())) {
+                                            if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
+                                                System.out.println("This horse does not have an owner set... Correcting!");
+                                                horse.setOwnerUuid(uuid.toString());
+                                                plugin.getDbContext().updateHorseInDatabase(horse);
+                                            }
+                                        }
+                                        ((LivingEntity) e).damage(1, player);
+                                    }
+                                }
                             }
-                        }
+                        }, 25);
 
-                        ((LivingEntity) e).damage(1, player);
                         return true;
 
 
@@ -1089,7 +1125,8 @@ public class Commands implements CommandExecutor {
                                             final Location center = p.getLocation();
                                             NBTEditor.set(e, (byte) 0, "EatingHaystack");
                                             DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
-
+                                            horse.setRecentlyLunged(true);
+                                            plugin.getDbContext().updateHorseInDatabase(horse);
                                             ++tick;
 
                                             if(!plugin.lungeStatus.get(e.getUniqueId())) {
@@ -1152,6 +1189,7 @@ public class Commands implements CommandExecutor {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             String hn = e.getName();
+                            DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
                             TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------" + "[" + ChatColor.WHITE + "<<" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "]" + "" + ChatColor.STRIKETHROUGH + "----------------------");
                             msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info"));
                             player.spigot().sendMessage(msg);
@@ -1172,8 +1210,12 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("Flu")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Flu");
                             }
-                            if (e.getScoreboardTags().contains("Colic")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Colic");
+                            if (horse.getColic() != null) {
+                                if(horse.getColic().isDiagnosed()) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Colic");
+                                } else {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Unknown Illness");
+                                }
                             }
                             if (e.getScoreboardTags().contains("Strangles")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles");
@@ -1258,248 +1300,253 @@ public class Commands implements CommandExecutor {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
-                World world = player.getWorld();
                 if(collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
-                for (Entity e : world.getEntities()) {
-                    if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
-                        UUID h = e.getUniqueId();
-                        if (euid.equals(h)) {
-                            String hn = e.getName();
-                            DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId()); //TODO: Gracefully fail if horse is not in DB
-                            TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + ChatColor.GRAY + "]" + "" + ChatColor.STRIKETHROUGH + "----------------------");
-                            msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info2"));
-                            player.spigot().sendMessage(msg);
-                            player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
-                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
-                            player.sendMessage(" ");
-                            for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
-                                UUID puuid = p.getUniqueId();
-                                String offp = p.getName();
-                                String l = plugin.getConfig().getString(puuid + " brand");
-                                if (e.getScoreboardTags().contains("Owner:" + puuid)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Owner:  " + ChatColor.WHITE + offp);
-                                }
-                                if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Leaser:  " + ChatColor.WHITE + offp);
-                                }
-                                if (e.getScoreboardTags().contains("brand:" + l)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Brand:  " + ChatColor.WHITE + l);
-                                }
-                            }
-                            if (e.getScoreboardTags().contains("Private")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.RED + "Private");
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " ID:  " + ChatColor.WHITE + "#" + horse.getId());
+                for(World world : plugin.getServer().getWorlds()) {
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                String hn = e.getName();
+                                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId()); //TODO: Gracefully fail if horse is not in DB
+                                TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------" + "[" + ChatColor.YELLOW + "1" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "][" + ChatColor.WHITE + ">>" + ChatColor.GRAY + "]" + "" + ChatColor.STRIKETHROUGH + "----------------------");
+                                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info2"));
+                                player.spigot().sendMessage(msg);
+                                player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
+                                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
                                 player.sendMessage(" ");
-                            }
-                            if (e.getScoreboardTags().contains("Public")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.GREEN + "Public");
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " ID:  " + ChatColor.WHITE + "#" + horse.getId());
-                                player.sendMessage(" ");
-                            }
+                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                    UUID puuid = p.getUniqueId();
+                                    String offp = p.getName();
+                                    String l = plugin.getConfig().getString(puuid + " brand");
+                                    if (e.getScoreboardTags().contains("Owner:" + puuid)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Owner:  " + ChatColor.WHITE + offp);
+                                    }
+                                    if (e.getScoreboardTags().contains("Leaser:" + puuid)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Leaser:  " + ChatColor.WHITE + offp);
+                                    }
+                                    if (e.getScoreboardTags().contains("brand:" + l)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Brand:  " + ChatColor.WHITE + l);
+                                    }
+                                }
+                                if (e.getScoreboardTags().contains("Private")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.RED + "Private");
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " ID:  " + ChatColor.WHITE + "#" + horse.getId());
+                                    player.sendMessage(" ");
+                                }
+                                if (e.getScoreboardTags().contains("Public")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Status:  " + ChatColor.GREEN + "Public");
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " ID:  " + ChatColor.WHITE + "#" + horse.getId());
+                                    player.sendMessage(" ");
+                                }
 //                            player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Level0:  " + ChatColor.YELLOW + xp + ChatColor.WHITE + "/20");
-                            player.sendMessage(String.format("%s  ● %s Level: %s %s XP: %s",
-                                    ChatColor.WHITE, ChatColor.AQUA, horse.getLevel(), ChatColor.YELLOW, horse.getXp()));
-                            if (e.getScoreboardTags().contains("Gender:Mare")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Mare");
-                            } else if (e.getScoreboardTags().contains("Gender:Stallion")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Stallion");
-                            } else if (e.getScoreboardTags().contains("Gender:Gelding")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.YELLOW + "Gelding");
-                            }
-                            if (e.getScoreboardTags().contains("Gender:Filly")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Filly");
-                            } else if (e.getScoreboardTags().contains("Gender:Colt")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Colt");
-                            }
-                            if (e.getScoreboardTags().contains("InHeat")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.RED + "In Heat");
-                            }
-                            int i = 0;
-                            while (i <= 1) {
-                                if (e.getScoreboardTags().contains("Age:" + i)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Year");
-                                    break;
+                                player.sendMessage(String.format("%s  ● %s Level: %s %s XP: %s",
+                                        ChatColor.WHITE, ChatColor.AQUA, horse.getLevel(), ChatColor.YELLOW, horse.getXp()));
+                                if (e.getScoreboardTags().contains("Gender:Mare")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Mare");
+                                } else if (e.getScoreboardTags().contains("Gender:Stallion")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Stallion");
+                                } else if (e.getScoreboardTags().contains("Gender:Gelding")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.YELLOW + "Gelding");
                                 }
-                                ++i;
-                            }
-                            while (i >= 2) {
-                                if (e.getScoreboardTags().contains("Age:" + i)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Years");
-                                    break;
+                                if (e.getScoreboardTags().contains("Gender:Filly")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.RED + "Filly");
+                                } else if (e.getScoreboardTags().contains("Gender:Colt")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Colt");
                                 }
-                                ++i;
-                            }
-                            for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
-                                if (e.getScoreboardTags().contains("Breed:" + brds)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Breed:  " + ChatColor.WHITE + brds);
+                                if (e.getScoreboardTags().contains("Pregnant")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.LIGHT_PURPLE + " Pregnant");
                                 }
-                            }
-                            if (e.getScoreboardTags().contains("Color:Black")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Black");
-                            }
-                            if (e.getScoreboardTags().contains("Color:Silver")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Gray");
-                            }
-                            if (e.getScoreboardTags().contains("Color:Bay")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Bay");
-                            }
-                            if (e.getScoreboardTags().contains("Color:Buckskin")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Buckskin");
-                            }
-                            if (e.getScoreboardTags().contains("Color:Palomino")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Palomino");
-                            }
-                            if (e.getScoreboardTags().contains("Color:Chestnut")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Chestnut");
-                            }
-                            if (e.getScoreboardTags().contains("Color:White")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "White");
-                            }
-                            if (e.getScoreboardTags().contains("Style:Blaze")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Blaze");
-                            }
-                            if (e.getScoreboardTags().contains("Style:Paint")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Paint");
-                            }
-                            if (e.getScoreboardTags().contains("Style:None")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "None");
-                            }
-                            if (e.getScoreboardTags().contains("Style:Star")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Star");
-                            }
-                            if (e.getScoreboardTags().contains("Style:Snip")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Snip");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T1")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 1");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T2")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 2");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T3")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 3");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T4")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 4");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T5")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 5");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T6")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 6");
-                            }
-                            if (e.getScoreboardTags().contains("Speed:T7")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 7");
-                            }
-                            if (e.getScoreboardTags().contains("1ft")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "1ft");
-                            }
-                            if (e.getScoreboardTags().contains("2ft")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "2ft");
-                            }
-                            if (e.getScoreboardTags().contains("3ft")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "3ft");
-                            }
-                            if (e.getScoreboardTags().contains("4ft")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "4ft");
-                            }
-                            if (e.getScoreboardTags().contains("5ft")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "5ft");
-                            }
-                            if (e.getScoreboardTags().contains("6ft")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "6ft");
-                            }
-                            if (e.getScoreboardTags().contains("hbrush")) {
-                                if (e.getScoreboardTags().contains("sbrush")) {
-                                    if (e.getScoreboardTags().contains("hpick")) {
-                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.GREEN + "Clean");
+                                if (e.getScoreboardTags().contains("InHeat")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.RED + "In Heat");
+                                }
+                                int i = 0;
+                                while (i <= 1) {
+                                    if (e.getScoreboardTags().contains("Age:" + i)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Year");
+                                        break;
+                                    }
+                                    ++i;
+                                }
+                                while (i >= 2) {
+                                    if (e.getScoreboardTags().contains("Age:" + i)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Age:  " + ChatColor.WHITE + i + "Years");
+                                        break;
+                                    }
+                                    ++i;
+                                }
+                                for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                    if (e.getScoreboardTags().contains("Breed:" + brds)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Breed:  " + ChatColor.WHITE + brds);
                                     }
                                 }
-                            }
-                            if (!e.getScoreboardTags().contains("hbrush")) {
-                                if (!e.getScoreboardTags().contains("sbrush")) {
-                                    if (!e.getScoreboardTags().contains("hpick")) {
-                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.RED + "Dirty");
+                                if (e.getScoreboardTags().contains("Color:Black")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Black");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Silver")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Gray");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Bay")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Bay");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Buckskin")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Buckskin");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Palomino")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Palomino");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Chestnut")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Chestnut");
+                                }
+                                if (e.getScoreboardTags().contains("Color:White")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "White");
+                                }
+                                if (e.getScoreboardTags().contains("Style:Blaze")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Blaze");
+                                }
+                                if (e.getScoreboardTags().contains("Style:Paint")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Paint");
+                                }
+                                if (e.getScoreboardTags().contains("Style:None")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "None");
+                                }
+                                if (e.getScoreboardTags().contains("Style:Star")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Star");
+                                }
+                                if (e.getScoreboardTags().contains("Style:Snip")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Snip");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T1")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 1");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T2")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 2");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T3")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 3");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T4")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 4");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T5")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 5");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T6")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 6");
+                                }
+                                if (e.getScoreboardTags().contains("Speed:T7")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 7");
+                                }
+                                if (e.getScoreboardTags().contains("1ft")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "1ft");
+                                }
+                                if (e.getScoreboardTags().contains("2ft")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "2ft");
+                                }
+                                if (e.getScoreboardTags().contains("3ft")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "3ft");
+                                }
+                                if (e.getScoreboardTags().contains("4ft")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "4ft");
+                                }
+                                if (e.getScoreboardTags().contains("5ft")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "5ft");
+                                }
+                                if (e.getScoreboardTags().contains("6ft")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "6ft");
+                                }
+                                if (e.getScoreboardTags().contains("hbrush")) {
+                                    if (e.getScoreboardTags().contains("sbrush")) {
+                                        if (e.getScoreboardTags().contains("hpick")) {
+                                            player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.GREEN + "Clean");
+                                        }
                                     }
                                 }
-                            }
-                            for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
-                                if (e.getScoreboardTags().contains("Trait:" + trts)) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Trait:  " + ChatColor.WHITE + trts);
+                                if (!e.getScoreboardTags().contains("hbrush")) {
+                                    if (!e.getScoreboardTags().contains("sbrush")) {
+                                        if (!e.getScoreboardTags().contains("hpick")) {
+                                            player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.RED + "Dirty");
+                                        }
+                                    }
                                 }
+                                for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
+                                    if (e.getScoreboardTags().contains("Trait:" + trts)) {
+                                        player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Trait:  " + ChatColor.WHITE + trts);
+                                    }
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:10")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:9")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++++" + ChatColor.RED + "-" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:8")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++" + ChatColor.RED + "--" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:7")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++" + ChatColor.RED + "---" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:6")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++" + ChatColor.RED + "----" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:5")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++" + ChatColor.RED + "-----" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:4")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++" + ChatColor.RED + "------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:3")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++" + ChatColor.RED + "-------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:2")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++" + ChatColor.RED + "--------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:1")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Hunger:0")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:10")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:9")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++++" + ChatColor.RED + "-" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:8")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++" + ChatColor.RED + "--" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:7")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++" + ChatColor.RED + "---" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:6")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++" + ChatColor.RED + "----" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:5")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++" + ChatColor.RED + "-----" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:4")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++" + ChatColor.RED + "------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:3")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++" + ChatColor.RED + "-------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:2")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++" + ChatColor.RED + "--------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:1")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
+                                }
+                                if (e.getScoreboardTags().contains("Thirst:0")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
+                                }
+                                return true;
                             }
-                            if (e.getScoreboardTags().contains("Hunger:10")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:9")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++++" + ChatColor.RED + "-" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:8")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++" + ChatColor.RED + "--" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:7")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++" + ChatColor.RED + "---" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:6")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++" + ChatColor.RED + "----" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:5")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++" + ChatColor.RED + "-----" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:4")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++" + ChatColor.RED + "------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:3")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++" + ChatColor.RED + "-------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:2")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++" + ChatColor.RED + "--------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:1")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Hunger:0")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Hunger:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:10")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++++" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:9")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++++" + ChatColor.RED + "-" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:8")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++++" + ChatColor.RED + "--" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:7")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++++" + ChatColor.RED + "---" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:6")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++++" + ChatColor.RED + "----" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:5")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++++" + ChatColor.RED + "-----" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:4")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++++" + ChatColor.RED + "------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:3")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+++" + ChatColor.RED + "-------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:2")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "++" + ChatColor.RED + "--------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:1")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "+" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("Thirst:0")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Thirst:  " + ChatColor.GRAY + "[" + ChatColor.GREEN + "" + ChatColor.RED + "---------" + ChatColor.GRAY + "]");
-                            }
-                            return true;
                         }
                     }
+
                 }
             } else if (args[0].equalsIgnoreCase("resethunger")) {
                 Player player = (Player) sender;
@@ -1533,6 +1580,48 @@ public class Commands implements CommandExecutor {
                     }
                 }
                 return true;
+            } else if (args[0].equalsIgnoreCase("testill")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
+
+                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(euid);
+                IllnessColic colic = horse.getColic();
+                colic.setSicknessTime(colic.getSicknessTime() + 10);
+                horse.setColic(colic);
+                plugin.getDbContext().updateHorseInDatabase(horse);
+
+                return true;
+            } else if (args[0].equalsIgnoreCase("diagnose")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                World world = player.getWorld();
+                if(collection.isEmpty()) {
+                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                    return true;
+                }
+
+                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(euid);
+
+                if(player.hasPermission("eq.vet")) {
+                    if(args[1].equalsIgnoreCase("colic")) {
+                        if(horse.getColic() != null) {
+                            IllnessColic colic = horse.getColic();
+                            colic.setDiagnosed(true);
+                            horse.setColic(colic);
+                            plugin.getDbContext().updateHorseInDatabase(horse);
+                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You've succesfully diagnosed this horse with colic!");
+                        }
+                    }
+                } else {
+                    // Send no permissions message
+                }
             }
         }
         if (cmd.getName().equalsIgnoreCase("Diamond")) {
@@ -1964,6 +2053,7 @@ public class Commands implements CommandExecutor {
                 }.runTaskTimer(plugin, 0, 200);
             }
         }
+
         if (cmd.getName().equalsIgnoreCase("rankup")) {
             Player p2 = plugin.getServer().getPlayer(args[0]);
             if (args.length == 1) {
@@ -2575,6 +2665,42 @@ public class Commands implements CommandExecutor {
                     }
                 }
             }
+
+            if (args[0].equalsIgnoreCase("updatecolic")) {
+                for(DbHorse horse : plugin.getDbContext().getAllHorsesFromDatabase()) {
+                    if(horse.getColic() != null) {
+                        IllnessColic colic = horse.getColic();
+
+                        if(colic.getSicknessTime() >= 14 && colic.isDiagnosed()) {
+                            plugin.getDbContext().removeColicFromHorse(horse);
+                        } else {
+                            if(horse.isRecentlyLunged()) {
+                                colic.setSicknessTime(colic.getSicknessTime() + 1);
+                                horse.setColic(colic);
+                                plugin.getDbContext().updateHorseInDatabase(horse);
+                            }
+                        }
+
+                        if(!colic.isDiagnosed()) {
+                            colic.setTimeUndiagnosed(colic.getTimeUndiagnosed() + 1);
+                            if(colic.getTimeUndiagnosed() >= 8) {
+                                OfflinePlayer offp = Bukkit.getOfflinePlayer(UUID.fromString(horse.getOwnerUuid()));
+                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp.getName() + " Your horse " + horse.getName() + " has died of colic. ");
+
+                                plugin.getDbContext().deleteHorseFromDatabase(horse);
+                                for(World world : plugin.getServer().getWorlds()) {
+                                    Entity e = world.getEntity(UUID.fromString(horse.getUuid()));
+                                    if(e != null) {
+                                        ((LivingEntity) e).setHealth(0);
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             //I guess this is a ok way to do this.... I mean it works soo??
             // Possibly look into a better way...
             // ^ nah
@@ -2622,6 +2748,7 @@ public class Commands implements CommandExecutor {
                 for (World world : Bukkit.getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
                             for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
                                 UUID puuid = p.getUniqueId();
                                 if (e.getScoreboardTags().contains("Owner:" + puuid)) {
@@ -2653,11 +2780,14 @@ public class Commands implements CommandExecutor {
                                         }
                                         if (i <= 5) {
                                             if (e.getScoreboardTags().contains("Thirst:0")) {
-                                                if (!e.getScoreboardTags().contains("uill4")) {
-                                                    e.addScoreboardTag("uill4");
-                                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
-                                                    continue;
+                                                if(horse != null) {
+                                                    if(horse.getColic() == null) {
+                                                        plugin.getDbContext().giveColicToHorse(horse);
+                                                    }
                                                 }
+                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                                continue;
+
                                             }
                                         }
                                     }

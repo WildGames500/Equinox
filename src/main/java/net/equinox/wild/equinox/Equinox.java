@@ -750,7 +750,6 @@ public final class Equinox extends JavaPlugin {
                                             e.getWorld().getBlockAt(foodSource).setType(replacement);
                                             onConsumeFood(e, original);
                                             hasEaten.set(true);
-                                            System.out.println(e.getName() + " has eaten");
                                         }, 100);
                                     }
                                 }

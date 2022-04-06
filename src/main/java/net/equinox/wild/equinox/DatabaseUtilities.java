@@ -1,6 +1,7 @@
 package net.equinox.wild.equinox;
 
 import net.equinox.wild.equinox.entities.DbHorse;
+import net.equinox.wild.equinox.entities.IllnessColic;
 import org.bukkit.entity.Entity;
 
 import javax.persistence.EntityManager;
@@ -25,11 +26,38 @@ public class DatabaseUtilities {
         DbHorse horse = new DbHorse();
         horse.setUuid(entity.getUniqueId().toString());
         horse.setOwnerUuid(ownerId);
+        horse.setLastWorld(entity.getWorld().getName());
+        horse.setLastChunkX(entity.getLocation().getChunk().getX());
+        horse.setLastChunkZ(entity.getLocation().getChunk().getZ());
+
         System.out.println("Persisting to DB");
         manager.persist(horse);
         System.out.printf("Created Horse in DB with ID %s from UUID %s%n", horse.getId(), horse.getUuid());
         manager.getTransaction().commit();
-        return 0;
+        return horse.getId();
+    }
+
+    public void giveColicToHorse(DbHorse horse) {
+        manager.getTransaction().begin();
+        IllnessColic colic = new IllnessColic();
+        manager.persist(colic);
+        horse.setColic(colic);
+        manager.persist(horse);
+        manager.getTransaction().commit();;
+    }
+
+    public void removeColicFromHorse(DbHorse horse) {
+        manager.getTransaction().begin();
+        manager.remove(horse.getColic());
+        horse.setColic(null);
+        manager.persist(horse);
+        manager.getTransaction().commit();
+    }
+
+    public void deleteHorseFromDatabase(DbHorse horse) {
+        manager.getTransaction().begin();
+        manager.remove(horse);
+        manager.getTransaction().commit();
     }
 
     //TODO: Update these two methods to query the database with the specific UUID/ID to prevent lag
@@ -38,7 +66,7 @@ public class DatabaseUtilities {
         Query query = manager.createQuery("from net.equinox.wild.equinox.entities.DbHorse");
         List<DbHorse> horses = query.getResultList();
 
-        return horses.stream().filter(horse -> horse.getUuid().equalsIgnoreCase(uuid.toString())).findFirst().orElseThrow();
+        return horses.stream().filter(horse -> horse.getUuid().equalsIgnoreCase(uuid.toString())).findFirst().orElse(null);
     }
 
     @SuppressWarnings("unchecked")
@@ -50,6 +78,12 @@ public class DatabaseUtilities {
     }
 
     @SuppressWarnings("unchecked")
+    public List<DbHorse> getAllHorsesFromDatabase() {
+        Query query = manager.createQuery("from net.equinox.wild.equinox.entities.DbHorse");
+        return query.getResultList();
+    }
+
+    @SuppressWarnings("unchecked")
     public List<DbHorse> getHorsesOwnedByPlayer(String uuid) {
         Query query = manager.createQuery("from net.equinox.wild.equinox.entities.DbHorse");
         List<DbHorse> horses = query.getResultList();
@@ -58,11 +92,22 @@ public class DatabaseUtilities {
     }
 
     public void updateHorseInDatabase(DbHorse horse) {
-        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
+//        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
         manager.getTransaction().begin();
         manager.persist(horse);
         manager.getTransaction().commit();
-        System.out.println("Update transaction completed");
+        if(horse.getColic() != null) {
+            updateColicInDatabase(horse.getColic());
+        }
+//        System.out.println("Update transaction completed");
+    }
+
+    private void updateColicInDatabase(IllnessColic colic) {
+//        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
+        manager.getTransaction().begin();
+        manager.persist(colic);
+        manager.getTransaction().commit();
+//        System.out.println("Update transaction completed");
     }
 
 }
