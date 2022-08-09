@@ -2,6 +2,7 @@ package net.equinox.wild.equinox;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
@@ -41,15 +42,55 @@ public class Events1 implements Listener {
     @EventHandler
     public void onClickBrewingSlot(InventoryClickEvent event) {
         if (event.getInventory() instanceof BrewerInventory && event.getView().getTopInventory().equals(event.getClickedInventory())) {
-            BrewerInventory inventory = (BrewerInventory)event.getInventory();
+            BrewerInventory inventory = (BrewerInventory) event.getInventory();
             if (event.getSlot() >= 0 && event.getSlot() <= 2)
                 if (event.getCurrentItem().getType().isAir() && event.getCursor() != null && Seed.MATERIALS.contains(event.getCursor().getType())) {
+                    Player player = (Player) event.getWhoClicked();
                     ItemStack droppedItem = event.getCursor().clone();
                     droppedItem.setAmount(1);
                     event.getCursor().setAmount(event.getCursor().getAmount() - 1);
                     inventory.setItem(event.getSlot(), droppedItem);
                     event.setCursor(event.getCursor());
                     event.setCancelled(true);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        Location loc = event.getInventory().getLocation();
+                        double x = loc.getX();
+                        double y = loc.getY();
+                        double z = loc.getZ();
+                        for (Entity e : loc.getNearbyLivingEntities(4)) {
+                            if (e.getType() == EntityType.HORSE) {
+                                ((Horse) e).getPathfinder().findPath(loc);
+                                System.out.println("Found");
+                                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                    NBTEditor.set(e, (byte) 1, "EatingHaystack");
+                                    player.playSound(loc, "entity.horse.eat", 2, 1F);
+                                    if (event.getInventory() instanceof BrewerInventory) {
+                                        if (event.getInventory().contains(Material.WHEAT_SEEDS)) {
+                                            event.getInventory().remove(Material.WHEAT_SEEDS);
+                                            plugin.onConsumeFood(e, Material.WHEAT_SEEDS);
+                                            System.out.println("Ate");
+                                        }
+                                        if (event.getInventory().contains(Material.BEETROOT_SEEDS)) {
+                                            event.getInventory().remove(Material.BEETROOT_SEEDS);
+                                            plugin.onConsumeFood(e, Material.BEETROOT_SEEDS);
+                                            System.out.println("Ate");
+                                        }
+                                        if (event.getInventory().contains(Material.PUMPKIN_SEEDS)) {
+                                            event.getInventory().remove(Material.PUMPKIN_SEEDS);
+                                            plugin.onConsumeFood(e, Material.PUMPKIN_SEEDS);
+                                            System.out.println("Ate");
+                                        }
+                                        if (event.getInventory().contains(Material.MELON_SEEDS)) {
+                                            event.getInventory().remove(Material.MELON_SEEDS);
+                                            plugin.onConsumeFood(e, Material.MELON_SEEDS);
+                                            System.out.println("Ate");
+                                        }
+                                    }
+                                }, 100);
+                            }
+                        }
+
+                    }, 2);
                 }
         }
     }
@@ -90,7 +131,6 @@ public class Events1 implements Listener {
 
         }
     }
-
     @EventHandler
     public void onMount(PlayerInteractEntityEvent e) {
         Entity h = e.getRightClicked();

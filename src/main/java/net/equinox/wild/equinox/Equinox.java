@@ -61,6 +61,10 @@ public final class Equinox extends JavaPlugin {
         poop(this);
         loopHorses(this);
         foodToHungerValues.put(Material.GRASS_BLOCK, 1);
+        foodToHungerValues.put(Material.WHEAT_SEEDS, 2);
+        foodToHungerValues.put(Material.BEETROOT_SEEDS, 5);
+        foodToHungerValues.put(Material.PUMPKIN_SEEDS, 4);
+        foodToHungerValues.put(Material.MELON_SEEDS, 6);
         foodToHungerValues.put(Material.DRIED_KELP_BLOCK, 10);
         foodToHungerValues.put(Material.HAY_BLOCK, 10);
         //eatGrainLoop(this);
@@ -732,10 +736,6 @@ public final class Equinox extends JavaPlugin {
                                 if(brewingStand != null) {
                                     if (e instanceof Horse) {
                                         ((Horse) e).getPathfinder().findPath(brewingStand.getLocation());
-                                    } if (e instanceof Donkey) {
-                                        ((Donkey) e).getPathfinder().findPath(brewingStand.getLocation());
-                                    } if (e instanceof Mule) {
-                                        ((Mule) e).getPathfinder().findPath(brewingStand.getLocation());
                                     }
                                     if (!hasEaten.get()) {
                                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
@@ -1054,9 +1054,17 @@ public final class Equinox extends JavaPlugin {
 */
 
 
-    private void onConsumeFood(Entity e, Material foodType) {
+    void onConsumeFood(Entity e, Material foodType) {
         if(foodType == Material.GRASS_BLOCK) {
             Utilities.addFoodToHorse(e, foodToHungerValues.get(foodType));
+        } if(foodType == Material.WHEAT_SEEDS) {
+            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
+        } if(foodType == Material.BEETROOT_SEEDS) {
+            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
+        } if(foodType == Material.MELON_SEEDS) {
+            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
+        } if(foodType == Material.PUMPKIN_SEEDS) {
+            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
         } else {
             Utilities.setFoodToHorse(e, foodToHungerValues.get(foodType));
         }

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Utilities {
+
     public static Location findTypeOfBlockWithinLocation(Location loc, List<Material> validTypes, int radius) {
 //        Block block = loc.getWorld().getBlockAt(loc);
         for(int x = loc.getBlockX(); x <= (loc.getBlockX() + radius); x++) {
@@ -120,7 +121,38 @@ public class Utilities {
         }
         setFoodToHorse(e, hungerLevel + amountOfPoints);
     }
+    public static void addFoodToHorse2(Entity e, int amountOfPoints) {
+        boolean foundHunger = false;
+        int hungerLevel = 10;
 
+        for (String tag : e.getScoreboardTags()) {
+            if (tag.contains("Hunger:")) {
+                // ["Hunger", "9"]
+                try {
+                    hungerLevel = Integer.parseInt(tag.split(":")[1]);
+                } catch (NumberFormatException ignored) {}
+                foundHunger = true;
+                break;
+            }
+        }
+
+        if(!foundHunger) return;
+        if(hungerLevel >= 10) {
+            if (e.getScoreboardTags().contains("Trait:Glutton")) {
+                Random rnd = new Random();
+                int i = rnd.nextInt(100);
+                if (i <= 15) {
+                    return;
+                } else {
+                    e.removeScoreboardTag("Hunger");
+                }
+
+            } else {
+                e.removeScoreboardTag("Hunger");
+            }
+        }
+        setFoodToHorse(e, hungerLevel + amountOfPoints);
+    }
     public static void setFoodToHorse(Entity e, int amountOfPoints) {
         boolean foundHunger = false;
         int hungerLevel = 10;
