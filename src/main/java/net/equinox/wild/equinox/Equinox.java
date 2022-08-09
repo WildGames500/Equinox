@@ -1055,16 +1055,8 @@ public final class Equinox extends JavaPlugin {
 
 
     void onConsumeFood(Entity e, Material foodType) {
-        if(foodType == Material.GRASS_BLOCK) {
+        if(foodType == Material.GRASS_BLOCK || foodType == Material.WHEAT_SEEDS || foodType == Material.BEETROOT_SEEDS || foodType == Material.MELON_SEEDS || foodType == Material.PUMPKIN_SEEDS) {
             Utilities.addFoodToHorse(e, foodToHungerValues.get(foodType));
-        } if(foodType == Material.WHEAT_SEEDS) {
-            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
-        } if(foodType == Material.BEETROOT_SEEDS) {
-            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
-        } if(foodType == Material.MELON_SEEDS) {
-            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
-        } if(foodType == Material.PUMPKIN_SEEDS) {
-            Utilities.addFoodToHorse2(e, foodToHungerValues.get(foodType));
         } else {
             Utilities.setFoodToHorse(e, foodToHungerValues.get(foodType));
         }
