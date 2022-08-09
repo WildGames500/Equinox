@@ -408,10 +408,10 @@ public class HorseGUI implements Listener {
                 ref4.setItemMeta(metaref4);
                 ref5.setItemMeta(metaref5);
                 metaref1.setDisplayName("None");
-                metaref2.setDisplayName("Blaze");
-                metaref3.setDisplayName("Snip");
+                metaref2.setDisplayName("Appy");
+                metaref3.setDisplayName("Blaze");
                 metaref4.setDisplayName("Paint");
-                metaref5.setDisplayName("Star");
+                metaref5.setDisplayName("Speckled");
                 ref1.setItemMeta(metaref1);
                 ref2.setItemMeta(metaref2);
                 ref3.setItemMeta(metaref3);
@@ -663,17 +663,17 @@ public class HorseGUI implements Listener {
                                     h.addScoreboardTag("Color:Buckskin");
                                     h.setColor(Horse.Color.BROWN);
                                 }
-                                if (coats.equals("Snip")) {
-                                    h.addScoreboardTag("Style:Snip");
+                                if (coats.equals("Blaze")) {
+                                    h.addScoreboardTag("Style:Blaze");
                                     h.setStyle(Horse.Style.WHITE);
                                 } else if (coats.equals("Paint")) {
                                     h.addScoreboardTag("Style:Paint");
                                     h.setStyle(Horse.Style.WHITEFIELD);
-                                } else if (coats.equals("Star")) {
-                                    h.addScoreboardTag("Style:Star");
+                                } else if (coats.equals("Speckled")) {
+                                    h.addScoreboardTag("Style:Speckled");
                                     h.setStyle(Horse.Style.WHITE_DOTS);
-                                } else if (coats.equals("Blaze")) {
-                                    h.addScoreboardTag("Style:Blaze");
+                                } else if (coats.equals("Appy")) {
+                                    h.addScoreboardTag("Style:Appy");
                                     h.setStyle(Horse.Style.BLACK_DOTS);
                                 } else if (coats.equals("None")) {
                                     h.addScoreboardTag("Style:None");

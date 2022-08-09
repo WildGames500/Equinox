@@ -9,9 +9,9 @@
 <!--            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>-->
 <!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>-->
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://172.17.0.1:3306/s2_equinox" />
-            <property name="javax.persistence.jdbc.user" value="u2_pdKouAcHaq" />
-            <property name="javax.persistence.jdbc.password" value="Tab4y@Dp!18VXYOjZGNEPyq7" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://db-buf-01.sparkedhost.us/s69860_equidreams" />
+            <property name="javax.persistence.jdbc.user" value="u69860_pjZFyeXSyF" />
+            <property name="javax.persistence.jdbc.password" value="==7k8P8SqQmJwWK@d!xnk^Rw" />
             <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="javax.persistence.schema-generation.database.action" value="create" />
         </properties>

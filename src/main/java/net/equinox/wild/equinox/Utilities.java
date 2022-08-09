@@ -14,6 +14,7 @@ import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Utilities {
     public static Location findTypeOfBlockWithinLocation(Location loc, List<Material> validTypes, int radius) {
@@ -103,8 +104,19 @@ public class Utilities {
         }
 
         if(!foundHunger) return;
-        if(hungerLevel == 10) {
-            e.removeScoreboardTag("Hunger");
+        if(hungerLevel >= 10) {
+            if (e.getScoreboardTags().contains("Trait:Glutton")) {
+                Random rnd = new Random();
+                int i = rnd.nextInt(100);
+                if (i <= 15) {
+                    return;
+                } else {
+                    e.removeScoreboardTag("Hunger");
+                }
+
+            } else {
+                e.removeScoreboardTag("Hunger");
+            }
         }
         setFoodToHorse(e, hungerLevel + amountOfPoints);
     }
@@ -138,7 +150,18 @@ public class Utilities {
             e.removeScoreboardTag(oldHunger);
             e.addScoreboardTag(newHunger);
             if(hungerLevel == 10) {
-                e.removeScoreboardTag("Hunger");
+                if (e.getScoreboardTags().contains("Trait:Glutton")) {
+                    Random rnd = new Random();
+                    int i = rnd.nextInt(100);
+                    if (i <= 15) {
+                        return;
+                    } else {
+                        e.removeScoreboardTag("Hunger");
+                    }
+
+                } else {
+                    e.removeScoreboardTag("Hunger");
+                }
             }
         }
 

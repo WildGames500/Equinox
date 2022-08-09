@@ -90,7 +90,16 @@ public class DatabaseUtilities {
 
         return horses.stream().filter(horse -> horse.getOwnerUuid().equalsIgnoreCase(uuid)).collect(Collectors.toList());
     }
+    public void updateHorseOwnerUUID(String uuid, String h) {
+//        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
+        manager.getTransaction().begin();
+        DbHorse horse = getHorseFromDatabase(UUID.fromString(h));
+        horse.setOwnerUuid(uuid);
+        manager.persist(horse);
+        manager.getTransaction().commit();
 
+//        System.out.println("Update transaction completed");
+    }
     public void updateHorseInDatabase(DbHorse horse) {
 //        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
         manager.getTransaction().begin();

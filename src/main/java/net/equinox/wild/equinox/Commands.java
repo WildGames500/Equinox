@@ -50,10 +50,83 @@ public class Commands implements CommandExecutor {
                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Pong!");
                 return true;
             } else if (args[0].equalsIgnoreCase("hunger")) {
-                if(sender.hasPermission("eq.dev")) {
+                if (sender.hasPermission("eq.dev")) {
                     Player player = (Player) sender;
                     player.setFoodLevel(1);
                 }
+            } else if (args[0].equalsIgnoreCase("help")) {
+                Player player = (Player) sender;
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
+                player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + " Equinox Help " + ChatColor.GRAY + "]" + "          ");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
+                player.sendMessage("");
+                TextComponent msg = new TextComponent(" ● " + ChatColor.GOLD + "[" + ChatColor.YELLOW + "General Commands" + ChatColor.GOLD + "]");
+                msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq help2"));
+                player.spigot().sendMessage(msg);
+                player.sendMessage("");
+                TextComponent msg2 = new TextComponent(" ● " + ChatColor.DARK_RED + "[" + ChatColor.RED + "Vet Commands" + ChatColor.DARK_RED + "]");
+                msg2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq help3"));
+                player.spigot().sendMessage(msg2);
+                player.sendMessage("");
+                TextComponent msg3 = new TextComponent(" ● " + ChatColor.DARK_AQUA + "[" + ChatColor.AQUA + "Staff Commands" + ChatColor.DARK_AQUA + "]");
+                msg3.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq help4"));
+                player.spigot().sendMessage(msg3);
+                player.sendMessage("");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
+                player.sendMessage("");
+                return true;
+            } else if (args[0].equalsIgnoreCase("help2")) {
+                Player player = (Player) sender;
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + " Equinox General Commands " + ChatColor.GRAY + "]" + "          ");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                player.sendMessage("");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "lunge  " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Lunges your selected horse");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "info   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Displays your selected horse's info");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "list   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Lists your owned horses");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "list [player]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Lists player's owned horses");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "tp   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "----------------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Teleports you to selected horse");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "tphere   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "------------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Teleports selected horse to you");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "me   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "----------------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Displays your info");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "me [player]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Displays player's info");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "menu   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Opens equinox GUI");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "home   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Sends horse home");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "sethome   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Sets horse's home");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "lease [player] [price]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Leases horse to player");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "unlease [player]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Unleases horse from player");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "trust [player]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Trusts player to horse");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "private   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Sets horse to private");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "public   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Sets horse to public");
+                player.sendMessage("");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                player.sendMessage("");
+                return true;
+            } else if (args[0].equalsIgnoreCase("help3")) {
+                Player player = (Player) sender;
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + " Equinox Vet Commands " + ChatColor.GRAY + "]" + "          ");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                player.sendMessage("");
+                player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "Diagnose [illness]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Diagnoses selected horse");
+                player.sendMessage("");
+                player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                player.sendMessage("");
+                return true;
+            } else if (args[0].equalsIgnoreCase("help4")) {
+                Player player = (Player) sender;
+                if (player.hasPermission("eq.staff")) {
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                    player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + " Equinox Staff Commands " + ChatColor.GRAY + "]" + "          ");
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                    player.sendMessage("");
+                    player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "Check   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Checks selected horses unfed time");
+                    player.sendMessage(" ● " + ChatColor.GRAY + "/" + ChatColor.WHITE + "eq " + ChatColor.AQUA + "tagadd [Rescue,Invulnerable,Original]   " + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------" + ChatColor.WHITE + "" + ChatColor.ITALIC + "   Adds tag to horse [Admin+]");
+                    player.sendMessage("");
+                    player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------------------------------------");
+                    player.sendMessage("");
+                    return true;
+                }
+
 
             } else if (args[0].equalsIgnoreCase("check")) {
                 Player player = (Player) sender;
@@ -95,7 +168,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
-                if(collection.isEmpty()) {
+                if (collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -121,6 +194,865 @@ public class Commands implements CommandExecutor {
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Original Tag Added!");
                                     return true;
 
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("color")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                player.sendMessage(ChatColor.GRAY + "["+ ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >>" + ChatColor.GREEN + "You hace successfully changed this horses color!");
+                if (player.hasPermission("eq.staff")) {
+                    if (args[1].equalsIgnoreCase("black")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.BLACK);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:Black");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("sealbrown")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.BLACK);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:Seal Brown");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("bay")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.BROWN);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:Bay");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("sootybay")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.BROWN);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:Sooty Bay");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("Chestnut")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CHESTNUT);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:Chestnut");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("flaxenchestnut")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CHESTNUT);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:Flaxen Chestnut");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("lightchestnut")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CHESTNUT);
+                                    ((Horse) e).setHealth(3);
+                                    e.addScoreboardTag("Color:Light Chestnut");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("lightflaxenchestnut")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CHESTNUT);
+                                    ((Horse) e).setHealth(4);
+                                    e.addScoreboardTag("Color:Light Flaxen Chestnut");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("flaxenchestnut2")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CHESTNUT);
+                                    ((Horse) e).setHealth(5);
+                                    e.addScoreboardTag("Color:Flaxen Chestnut2");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("white")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.WHITE);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:White");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("white2")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.WHITE);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:White2");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("cremello")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.WHITE);
+                                    ((Horse) e).setHealth(3);
+                                    e.addScoreboardTag("Color:Cremello");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("Cremello2")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.WHITE);
+                                    ((Horse) e).setHealth(4);
+                                    e.addScoreboardTag("Color:Cremello2");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("palomino")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CREAMY);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:Palomino");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("flaxenpalomino")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CREAMY);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:Flaxen Palomino");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("lightpalomino")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CREAMY);
+                                    ((Horse) e).setHealth(3);
+                                    e.addScoreboardTag("Color:Light Palomino");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("lightpalomino2")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CREAMY);
+                                    ((Horse) e).setHealth(4);
+                                    e.addScoreboardTag("Color:Light Palomino2");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("buckskin")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.CREAMY);
+                                    ((Horse) e).setHealth(5);
+                                    e.addScoreboardTag("Color:Buckskin");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("lightbay")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.DARK_BROWN);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:Light Bay");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("stripedlightbay")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.DARK_BROWN);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:Striped Light Bay");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("gray")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.GRAY);
+                                    ((Horse) e).setHealth(1);
+                                    e.addScoreboardTag("Color:Silver");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("gray2")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Color:Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:Flaxen Chestnut2");
+                                    e.removeScoreboardTag("Color:Light Chestnut");
+                                    e.removeScoreboardTag("Color:Light Flaxen Chestnut");
+                                    e.removeScoreboardTag("Color:White");
+                                    e.removeScoreboardTag("Color:White2");
+                                    e.removeScoreboardTag("Color:Cremello");
+                                    e.removeScoreboardTag("Color:Cremello2");
+                                    e.removeScoreboardTag("Color:Bay");
+                                    e.removeScoreboardTag("Color:Light Bay");
+                                    e.removeScoreboardTag("Color:Striped Light Bay");
+                                    e.removeScoreboardTag("Color:Silver");
+                                    e.removeScoreboardTag("Color:Silver2");
+                                    e.removeScoreboardTag("Color:Palomino");
+                                    e.removeScoreboardTag("Color:Flaxen Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino");
+                                    e.removeScoreboardTag("Color:Light Palomino2");
+                                    e.removeScoreboardTag("Color:Buckskin");
+                                    e.removeScoreboardTag("Color:Black");
+                                    e.removeScoreboardTag("Color:Seal Brown");
+                                    e.removeScoreboardTag("Color:Sooty Bay");
+                                    ((Horse) e).setColor(Horse.Color.GRAY);
+                                    ((Horse) e).setHealth(2);
+                                    e.addScoreboardTag("Color:Silver2");
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else if (args[0].equalsIgnoreCase("style")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                World world = player.getWorld();
+                player.sendMessage(ChatColor.GRAY + "["+ ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >>" + ChatColor.GREEN + "You hace successfully changed this horses markings!");
+                if (player.hasPermission("eq.staff")) {
+                    if (args[1].equalsIgnoreCase("none")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Style:None");
+                                    e.removeScoreboardTag("Style:Star");
+                                    e.removeScoreboardTag("Style:Snip");
+                                    e.removeScoreboardTag("Style:Paint");
+                                    e.removeScoreboardTag("Style:Appy");
+                                    e.removeScoreboardTag("Style:Blaze");
+                                    e.removeScoreboardTag("Style:Speckled");
+                                    ((Horse) e).setStyle(Horse.Style.NONE);
+                                    e.addScoreboardTag("Style:None");
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                    if (args[1].equalsIgnoreCase("appy")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Style:None");
+                                    e.removeScoreboardTag("Style:Star");
+                                    e.removeScoreboardTag("Style:Snip");
+                                    e.removeScoreboardTag("Style:Paint");
+                                    e.removeScoreboardTag("Style:Appy");
+                                    e.removeScoreboardTag("Style:Blaze");
+                                    e.removeScoreboardTag("Style:Speckled");
+                                    ((Horse) e).setStyle(Horse.Style.BLACK_DOTS);
+                                    e.addScoreboardTag("Style:Appy");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("speckled")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Style:None");
+                                    e.removeScoreboardTag("Style:Star");
+                                    e.removeScoreboardTag("Style:Snip");
+                                    e.removeScoreboardTag("Style:Paint");
+                                    e.removeScoreboardTag("Style:Appy");
+                                    e.removeScoreboardTag("Style:Blaze");
+                                    e.removeScoreboardTag("Style:Speckled");
+                                    ((Horse) e).setStyle(Horse.Style.WHITE_DOTS);
+                                    e.addScoreboardTag("Style:Speckled");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("paint")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Style:None");
+                                    e.removeScoreboardTag("Style:Star");
+                                    e.removeScoreboardTag("Style:Snip");
+                                    e.removeScoreboardTag("Style:Paint");
+                                    e.removeScoreboardTag("Style:Appy");
+                                    e.removeScoreboardTag("Style:Blaze");
+                                    e.removeScoreboardTag("Style:Speckled");
+                                    ((Horse) e).setStyle(Horse.Style.WHITEFIELD);
+                                    e.addScoreboardTag("Style:Paint");
+                                    return true;
+                                }
+                            }
+                        }
+                    } else if (args[1].equalsIgnoreCase("blaze")) {
+                        for (Entity e : world.getEntities()) {
+                            if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                                UUID h = e.getUniqueId();
+                                if (euid.equals(h)) {
+                                    e.removeScoreboardTag("Style:None");
+                                    e.removeScoreboardTag("Style:Star");
+                                    e.removeScoreboardTag("Style:Snip");
+                                    e.removeScoreboardTag("Style:Paint");
+                                    e.removeScoreboardTag("Style:Appy");
+                                    e.removeScoreboardTag("Style:Blaze");
+                                    e.removeScoreboardTag("Style:Speckled");
+                                    ((Horse) e).setStyle(Horse.Style.WHITE);
+                                    e.addScoreboardTag("Style:Blaze");
+                                    return true;
                                 }
                             }
                         }
@@ -727,13 +1659,11 @@ public class Commands implements CommandExecutor {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
                             String n = e.getCustomName();
-                            p2.sendMessage("test");
                             if (euid.equals(h)) {
-                                p2.sendMessage("test2");
                                 if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                    p2.sendMessage("test3");
                                     e.addScoreboardTag("Owner:" + uuid);
                                     e.removeScoreboardTag("Owner:" + uuid2);
+                                    plugin.getDbContext().updateHorseOwnerUUID(String.valueOf(uuid), String.valueOf(h));
                                     p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " has accepted your request!");
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You are now the owner of " + n + "!");
                                     return true;
@@ -797,6 +1727,114 @@ public class Commands implements CommandExecutor {
                         }
                     }
 
+                }
+            } else if (args[0].equalsIgnoreCase("setjump")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                Location loc = player.getLocation();
+                for(World world : plugin.getServer().getWorlds()) {
+                    if(collection.isEmpty()) {
+                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
+                        return true;
+                    }
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            if (player.hasPermission("eq.staff")) {
+                                if (args[1].equalsIgnoreCase("1ft")) {
+                                    UUID h = e.getUniqueId();
+                                    if (euid.equals(h)) {
+                                        ((Horse) e).setJumpStrength(.517);
+                                        e.removeScoreboardTag("1ft");
+                                        e.removeScoreboardTag("2ft");
+                                        e.removeScoreboardTag("3ft");
+                                        e.removeScoreboardTag("4ft");
+                                        e.removeScoreboardTag("5ft");
+                                        e.removeScoreboardTag("6ft");
+                                        e.addScoreboardTag("1ft");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse's jump has been set!");
+                                        return true;
+
+                                    }
+                                } if (args[1].equalsIgnoreCase("2ft")) {
+                                    UUID h = e.getUniqueId();
+                                    if (euid.equals(h)) {
+                                        ((Horse) e).setJumpStrength(.617);
+                                        e.removeScoreboardTag("1ft");
+                                        e.removeScoreboardTag("2ft");
+                                        e.removeScoreboardTag("3ft");
+                                        e.removeScoreboardTag("4ft");
+                                        e.removeScoreboardTag("5ft");
+                                        e.removeScoreboardTag("6ft");
+                                        e.addScoreboardTag("2ft");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse's jump has been set!");
+                                        return true;
+
+                                    }
+                                } if (args[1].equalsIgnoreCase("3ft")) {
+                                    UUID h = e.getUniqueId();
+                                    if (euid.equals(h)) {
+                                        ((Horse) e).setJumpStrength(.717);
+                                        e.removeScoreboardTag("1ft");
+                                        e.removeScoreboardTag("2ft");
+                                        e.removeScoreboardTag("3ft");
+                                        e.removeScoreboardTag("4ft");
+                                        e.removeScoreboardTag("5ft");
+                                        e.removeScoreboardTag("6ft");
+                                        e.addScoreboardTag("3ft");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse's jump has been set!");
+                                        return true;
+
+                                    }
+                                }if (args[1].equalsIgnoreCase("4ft")) {
+                                    UUID h = e.getUniqueId();
+                                    if (euid.equals(h)) {
+                                        ((Horse) e).setJumpStrength(.817);
+                                        e.removeScoreboardTag("1ft");
+                                        e.removeScoreboardTag("2ft");
+                                        e.removeScoreboardTag("3ft");
+                                        e.removeScoreboardTag("4ft");
+                                        e.removeScoreboardTag("5ft");
+                                        e.removeScoreboardTag("6ft");
+                                        e.addScoreboardTag("4ft");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse's jump has been set!");
+                                        return true;
+
+                                    }
+                                }if (args[1].equalsIgnoreCase("5ft")) {
+                                    UUID h = e.getUniqueId();
+                                    if (euid.equals(h)) {
+                                        ((Horse) e).setJumpStrength(.917);
+                                        e.removeScoreboardTag("1ft");
+                                        e.removeScoreboardTag("2ft");
+                                        e.removeScoreboardTag("3ft");
+                                        e.removeScoreboardTag("4ft");
+                                        e.removeScoreboardTag("5ft");
+                                        e.removeScoreboardTag("6ft");
+                                        e.addScoreboardTag("5ft");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse's jump has been set!");
+                                        return true;
+
+                                    }
+                                }if (args[1].equalsIgnoreCase("6ft")) {
+                                    UUID h = e.getUniqueId();
+                                    if (euid.equals(h)) {
+                                        ((Horse) e).setJumpStrength(1.117);
+                                        e.removeScoreboardTag("1ft");
+                                        e.removeScoreboardTag("2ft");
+                                        e.removeScoreboardTag("3ft");
+                                        e.removeScoreboardTag("4ft");
+                                        e.removeScoreboardTag("5ft");
+                                        e.removeScoreboardTag("6ft");
+                                        e.addScoreboardTag("6ft");
+                                        sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Horse's jump has been set!");
+                                        return true;
+
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             } else if (args[0].equalsIgnoreCase("tphere")) {
                 Player player = (Player) sender;
@@ -1057,27 +2095,29 @@ public class Commands implements CommandExecutor {
                 }
             } else if (args[0].equalsIgnoreCase("menu")) {
                 Player player = (Player) sender;
-                Inventory menu = Bukkit.getServer().createInventory(null, 9, "§0Menu");
+                if (player.hasPermission("eq.staff")) {
+                    Inventory menu = Bukkit.getServer().createInventory(null, 9, "§0Menu");
 
-                ItemStack ref1 = new ItemStack(Material.HORSE_SPAWN_EGG);
-                ItemStack ref2 = new ItemStack(Material.SADDLE);
+                    ItemStack ref1 = new ItemStack(Material.HORSE_SPAWN_EGG);
+                    ItemStack ref2 = new ItemStack(Material.SADDLE);
 
-                ItemMeta metaref1 = ref1.getItemMeta();
-                ItemMeta metaref2 = ref2.getItemMeta();
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ItemMeta metaref2 = ref2.getItemMeta();
 
-                ref1.setItemMeta(metaref1);
-                ref2.setItemMeta(metaref2);
-                metaref1.setLore(Collections.singletonList("§9§oCreate a custom horse"));
-                metaref2.setLore(Collections.singletonList("§9§oPurchase player a player horse"));
-                metaref1.setDisplayName("§bHorse Creation");
-                metaref2.setDisplayName("§bHorse Market");
-                ref1.setItemMeta(metaref1);
-                ref2.setItemMeta(metaref2);
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    metaref1.setLore(Collections.singletonList("§9§oCreate a custom horse"));
+                    metaref2.setLore(Collections.singletonList("§9§oPurchase player a player horse"));
+                    metaref1.setDisplayName("§bHorse Creation");
+                    metaref2.setDisplayName("§bHorse Market");
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
 
-                menu.setItem(3, ref1);
-                menu.setItem(5, ref2);
-                player.openInventory(menu);
-                return true;
+                    menu.setItem(3, ref1);
+                    menu.setItem(5, ref2);
+                    player.openInventory(menu);
+                    return true;
+                }
             } else if (args[0].equalsIgnoreCase("lunge")) {
                 Player p = (Player) sender;
                 int cooldownTime = 25; // The number of seconds the player has to wait
@@ -1112,6 +2152,14 @@ public class Commands implements CommandExecutor {
                                     lungestat.put(uuid, true);
                                     if (p != leash){
                                         return true;
+                                    }
+                                    if (e.getScoreboardTags().contains("Trait:Stubborn")) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 10) {
+                                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Your stubborn horse has ignored you!");
+                                            return true;
+                                        }
                                     }
                                     plugin.lungeStatus.put(e.getUniqueId(), true);
                                     new BukkitRunnable() {
@@ -1356,6 +2404,12 @@ public class Commands implements CommandExecutor {
                                 } else if (e.getScoreboardTags().contains("Gender:Colt")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Gender:  " + ChatColor.AQUA + "Colt");
                                 }
+                                if (e.getScoreboardTags().contains("Malnuroshed")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Weight:  " + ChatColor.RED + "Malnurished");
+                                }
+                                if (!e.getScoreboardTags().contains("Malnuroshed")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Weight:  " + ChatColor.YELLOW + "Average");
+                                }
                                 if (e.getScoreboardTags().contains("Pregnant")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + "" + ChatColor.LIGHT_PURPLE + " Pregnant");
                                 }
@@ -1385,11 +2439,23 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Color:Black")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Black");
                                 }
-                                if (e.getScoreboardTags().contains("Color:Silver")) {
+                                if (e.getScoreboardTags().contains("Color:Seal Brown")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Seal Brown");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Silver") || e.getScoreboardTags().contains("Color:Silver2")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Gray");
                                 }
                                 if (e.getScoreboardTags().contains("Color:Bay")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Bay");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Light Bay")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Light Bay");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Striped Light Bay")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Striped Light Bay");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Sooty Bay")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Sooty Bay");
                                 }
                                 if (e.getScoreboardTags().contains("Color:Buckskin")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Buckskin");
@@ -1397,14 +2463,38 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Color:Palomino")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Palomino");
                                 }
+                                if (e.getScoreboardTags().contains("Color:Flaxen Palomino")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Flaxen Palomino");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Light Palomino")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Light Palomino");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Light Palomino2")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Light Palomino");
+                                }
                                 if (e.getScoreboardTags().contains("Color:Chestnut")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Chestnut");
                                 }
-                                if (e.getScoreboardTags().contains("Color:White")) {
+                                if (e.getScoreboardTags().contains("Color:Flaxen Chestnut") || e.getScoreboardTags().contains("Color:Flaxen Chestnut2")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Flaxen Chestnut");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Light Chestnut")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Light Chestnut");
+                                }
+                                if (e.getScoreboardTags().contains("Color:Light Flaxen Chestnut")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Light Flaxen Chestnut");
+                                }
+                                if (e.getScoreboardTags().contains("Color:White") || e.getScoreboardTags().contains("Color:White2")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "White");
                                 }
-                                if (e.getScoreboardTags().contains("Style:Blaze")) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Blaze");
+                                if (e.getScoreboardTags().contains("Color:Cremello") || e.getScoreboardTags().contains("Color:Cremello2")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Color:  " + ChatColor.WHITE + "Cremello");
+                                }
+                                if (e.getScoreboardTags().contains("Style:Appy")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Appy");
+                                }
+                                if (e.getScoreboardTags().contains("Style:Speckled")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Speckled");
                                 }
                                 if (e.getScoreboardTags().contains("Style:Paint")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Paint");
@@ -1412,11 +2502,8 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Style:None")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "None");
                                 }
-                                if (e.getScoreboardTags().contains("Style:Star")) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Star");
-                                }
-                                if (e.getScoreboardTags().contains("Style:Snip")) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Snip");
+                                if (e.getScoreboardTags().contains("Style:Blaze")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Pattern:  " + ChatColor.WHITE + "Blaze");
                                 }
                                 if (e.getScoreboardTags().contains("Speed:T1")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Speed:  " + ChatColor.WHITE + "Tier 1");
@@ -1457,19 +2544,11 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("6ft")) {
                                     player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Jump:  " + ChatColor.WHITE + "6ft");
                                 }
-                                if (e.getScoreboardTags().contains("hbrush")) {
-                                    if (e.getScoreboardTags().contains("sbrush")) {
-                                        if (e.getScoreboardTags().contains("hpick")) {
-                                            player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.GREEN + "Clean");
-                                        }
-                                    }
+                                if (e.getScoreboardTags().contains("Cleaned")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.GREEN + "Clean " + ChatColor.GRAY + "[" + ChatColor.YELLOW + "Brushed" + ChatColor.GRAY + "]");
                                 }
-                                if (!e.getScoreboardTags().contains("hbrush")) {
-                                    if (!e.getScoreboardTags().contains("sbrush")) {
-                                        if (!e.getScoreboardTags().contains("hpick")) {
-                                            player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.RED + "Dirty");
-                                        }
-                                    }
+                                if (!e.getScoreboardTags().contains("Cleaned")) {
+                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Cleanliness:  " + ChatColor.RED + "Dirty");
                                 }
                                 for (String trts : plugin.getTraitConfig().getStringList("Traits")) {
                                     if (e.getScoreboardTags().contains("Trait:" + trts)) {
@@ -2057,14 +3136,10 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("rankup")) {
             Player p2 = plugin.getServer().getPlayer(args[0]);
             if (args.length == 1) {
-                if (sender.hasPermission("eq.staff")) {
-                    if (p2.hasPermission("is.newbie")) {
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "eco give " + args[0] + " 1500");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " promote ranks");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + args[0] + " bread 9");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + args[0] + " apple 9");
-                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "broadcast Congratulations " + args[0] + " on ranking to beginner!");
-                    }
+                if (p2.hasPermission("is.newbie")) {
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + args[0] + " promote ranks");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + args[0] + " bread 9");
+                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "give " + args[0] + " apple 9");
                 }
             }
         }
@@ -2074,15 +3149,24 @@ public class Commands implements CommandExecutor {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Hunger:0")) {
+                                if (!e.getScoreboardTags().contains("DayH-1")) {
+                                    if (!e.getScoreboardTags().contains("DayH-2")) {
+                                        if (!e.getScoreboardTags().contains("DayH-3")) {
+                                            e.addScoreboardTag("DayH-1");
+                                            continue;
+                                        }
+                                    }
+                                }
                                 if (e.getScoreboardTags().contains("DayH-1")) {
                                     e.removeScoreboardTag("DayH-1");
                                     e.addScoreboardTag("DayH-2");
-                                    break;
+                                    e.addScoreboardTag("Malnurished");
+                                    continue;
                                 }
                                 if (e.getScoreboardTags().contains("DayH-2")) {
                                     e.removeScoreboardTag("DayH-2");
                                     e.addScoreboardTag("DayH-3");
-                                    break;
+                                    continue;
                                 }
                                 if (e.getScoreboardTags().contains("DayH-3")) {
                                     e.removeScoreboardTag("DayH-3");
@@ -2093,7 +3177,7 @@ public class Commands implements CommandExecutor {
                                             String offp = p.getName();
                                             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of starvation. ");
                                             ((LivingEntity) e).setHealth(0);
-                                            break;
+                                            continue;
                                         }
 
                                     }
@@ -2121,31 +3205,26 @@ public class Commands implements CommandExecutor {
                                     e.removeScoreboardTag("preg7");
                                     e.addScoreboardTag("preg8");
                                     System.out.println("preg8");
-                                    break;
                                 }
                                 if (e.getScoreboardTags().contains("preg6")) {
                                     e.removeScoreboardTag("preg6");
                                     e.addScoreboardTag("preg7");
                                     System.out.println("preg7");
-                                    break;
                                 }
                                 if (e.getScoreboardTags().contains("preg5")) {
                                     e.removeScoreboardTag("preg5");
                                     e.addScoreboardTag("preg6");
                                     System.out.println("preg6");
-                                    break;
                                 }
                                 if (e.getScoreboardTags().contains("preg4")) {
                                     e.removeScoreboardTag("preg4");
                                     e.addScoreboardTag("preg5");
                                     System.out.println("preg5");
-                                    break;
                                 }
                                 if (e.getScoreboardTags().contains("preg3")) {
                                     e.removeScoreboardTag("preg3");
                                     e.addScoreboardTag("preg4");
                                     System.out.println("preg4");
-                                    break;
                                 }
                                 if (e.getScoreboardTags().contains("preg2")) {
                                     e.removeScoreboardTag("preg2");
@@ -2157,478 +3236,198 @@ public class Commands implements CommandExecutor {
                                     e.removeScoreboardTag("preg1");
                                     e.addScoreboardTag("preg2");
                                     System.out.println("preg2");
-                                    break;
+                                }
+                            }
+                            if (e.getScoreboardTags().contains("preg8")) {
+                                e.removeScoreboardTag("preg8");
+                                e.removeScoreboardTag("Pregnant");
+                                String nme = e.getCustomName();
+                                Location loc = e.getLocation();
+                                Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
+                                UUID uuid = h.getUniqueId();
+                                plugin.getDbContext().addHorseToDatabase(h, uuid.toString());
+                                h.setAge(-25000);
+                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                    UUID puuid = p.getUniqueId();
+                                    if (e.getScoreboardTags().contains("Owner:" + puuid)) {
+                                        h.addScoreboardTag("Owner:" + puuid);
+                                    }
+                                }
+                                h.addScoreboardTag("Owned");
+                                h.addScoreboardTag("Hunger:10");
+                                h.addScoreboardTag("Thirst:10");
+                                h.addScoreboardTag("Private");
+                                h.addScoreboardTag("Level:0");
+                                h.addScoreboardTag("XP:1");
+                                h.addScoreboardTag("Age:0");
+                                h.setCustomName(nme + "'s Foal");
+                                h.setTamed(true);
+                                List<String> list = plugin.getTraitConfig().getStringList("Traits");
+                                int index = new Random().nextInt(list.size());
+                                String rnt = list.get(index);
+                                h.addScoreboardTag("Trait:" + rnt);
+                                System.out.println("Birthing...");
+                                if (e.getScoreboardTags().contains("fg:Filly")) {
+                                    h.addScoreboardTag("Gender:Filly");
+                                }
+                                if (e.getScoreboardTags().contains("fg:Colt")) {
+                                    h.addScoreboardTag("Gender:Colt");
+                                }
+                                for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
+                                    if (e.getScoreboardTags().contains("fb:" + brds)) {
+                                        h.addScoreboardTag("Breed:" + brds);
+                                        e.removeScoreboardTag("fb:" + brds);
+                                        System.out.println("Breed:" + brds);
+                                    } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
+                                        h.addScoreboardTag("Breed:" + brds);
+                                        System.out.println("Breed:" + brds);
+                                    }
+                                }
+                                for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
+                                    if (e.getScoreboardTags().contains("fc:" + brds2)) {
+                                        h.addScoreboardTag("Color:" + brds2);
+                                        e.removeScoreboardTag("fc:" + brds2);
+                                        System.out.println("Color:" + brds2);
+                                        if (brds2.equalsIgnoreCase("Palomino")) {
+                                            h.setColor(Horse.Color.CREAMY);
+                                        } else if (brds2.equalsIgnoreCase("Chestnut")) {
+                                            h.setColor(Horse.Color.CHESTNUT);
+                                        } else if (brds2.equalsIgnoreCase("Black")) {
+                                            h.setColor(Horse.Color.BLACK);
+                                        } else if (brds2.equalsIgnoreCase("Bay")) {
+                                            h.setColor(Horse.Color.DARK_BROWN);
+                                        } else if (brds2.equalsIgnoreCase("Buckskin")) {
+                                            h.setColor(Horse.Color.BROWN);
+                                        } else if (brds2.equalsIgnoreCase("Gray")) {
+                                            h.setColor(Horse.Color.GRAY);
+                                        } else if (brds2.equalsIgnoreCase("White")) {
+                                            h.setColor(Horse.Color.WHITE);
+                                        }
+                                    } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
+                                        h.addScoreboardTag("Color:" + brds2);
+                                        System.out.println("Color:" + brds2);
+                                        if (brds2.equalsIgnoreCase("Palomino")) {
+                                            h.setColor(Horse.Color.CREAMY);
+                                        } else if (brds2.equalsIgnoreCase("Chestnut")) {
+                                            h.setColor(Horse.Color.CHESTNUT);
+                                        } else if (brds2.equalsIgnoreCase("Black")) {
+                                            h.setColor(Horse.Color.BLACK);
+                                        } else if (brds2.equalsIgnoreCase("Bay")) {
+                                            h.setColor(Horse.Color.DARK_BROWN);
+                                        } else if (brds2.equalsIgnoreCase("Buckskin")) {
+                                            h.setColor(Horse.Color.BROWN);
+                                        } else if (brds2.equalsIgnoreCase("Gray")) {
+                                            h.setColor(Horse.Color.GRAY);
+                                        } else if (brds2.equalsIgnoreCase("White")) {
+                                            h.setColor(Horse.Color.WHITE);
+                                        }
+
+                                    }
+                                }
+                                for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
+                                    if (e.getScoreboardTags().contains("fs:" + brds3)) {
+                                        h.addScoreboardTag("Style:" + brds3);
+                                        e.removeScoreboardTag("fs:" + brds3);
+                                        System.out.println("Style:" + brds3);
+                                        if (brds3.equalsIgnoreCase("Blaze")) {
+                                            h.setStyle(Horse.Style.WHITE);
+                                        } else if (brds3.equalsIgnoreCase("Paint")) {
+                                            h.setStyle(Horse.Style.WHITEFIELD);
+                                        } else if (brds3.equalsIgnoreCase("Speckled")) {
+                                            h.setStyle(Horse.Style.WHITE_DOTS);
+                                        } else if (brds3.equalsIgnoreCase("Appy")) {
+                                            h.setStyle(Horse.Style.BLACK_DOTS);
+                                        } else if (brds3.equalsIgnoreCase("None")) {
+                                            h.setStyle(Horse.Style.NONE);
+                                        }
+                                    } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
+                                        System.out.println("Style:" + brds3);
+                                        h.addScoreboardTag("Style:" + brds3);
+                                        if (brds3.equalsIgnoreCase("Blaze")) {
+                                            h.setStyle(Horse.Style.WHITE);
+                                        } else if (brds3.equalsIgnoreCase("Paint")) {
+                                            h.setStyle(Horse.Style.WHITEFIELD);
+                                        } else if (brds3.equalsIgnoreCase("Speckled")) {
+                                            h.setStyle(Horse.Style.WHITE_DOTS);
+                                        } else if (brds3.equalsIgnoreCase("Appy")) {
+                                            h.setStyle(Horse.Style.BLACK_DOTS);
+                                        } else if (brds3.equalsIgnoreCase("None")) {
+                                            h.setStyle(Horse.Style.NONE);
+                                        }
+                                    }
+                                }
+                                if (e.getScoreboardTags().contains("fspd:1")) {
+                                    e.removeScoreboardTag("fspd:1");
+                                    h.addScoreboardTag("Speed:T1");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
+                                }
+                                if (e.getScoreboardTags().contains("fspd:2")) {
+                                    e.removeScoreboardTag("fspd:2");
+                                    h.addScoreboardTag("Speed:T2");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
+                                }
+                                if (e.getScoreboardTags().contains("fspd:3")) {
+                                    e.removeScoreboardTag("fspd:3");
+                                    h.addScoreboardTag("Speed:T3");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
+                                }
+                                if (e.getScoreboardTags().contains("fspd:4")) {
+                                    e.removeScoreboardTag("fspd:4");
+                                    h.addScoreboardTag("Speed:T4");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
+                                }
+                                if (e.getScoreboardTags().contains("fspd:5")) {
+                                    e.removeScoreboardTag("fspd:5");
+                                    h.addScoreboardTag("Speed:T5");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
+                                }
+                                if (e.getScoreboardTags().contains("fspd:6")) {
+                                    e.removeScoreboardTag("fspd:6");
+                                    h.addScoreboardTag("Speed:T6");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
+                                }
+                                if (e.getScoreboardTags().contains("fspd:7")) {
+                                    e.removeScoreboardTag("fspd:7");
+                                    h.addScoreboardTag("Speed:T7");
+                                    h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
+                                }
+                                if (e.getScoreboardTags().contains("fj:1")) {
+                                    e.removeScoreboardTag("fj:1");
+                                    h.addScoreboardTag("1ft");
+                                    h.setJumpStrength(.517);
+                                }
+                                if (e.getScoreboardTags().contains("fj:2")) {
+                                    e.removeScoreboardTag("fj:2");
+                                    h.addScoreboardTag("2ft");
+                                    h.setJumpStrength(.617);
+                                }
+                                if (e.getScoreboardTags().contains("fj:3")) {
+                                    e.removeScoreboardTag("fj:3");
+                                    h.addScoreboardTag("3ft");
+                                    h.setJumpStrength(.717);
+                                }
+                                if (e.getScoreboardTags().contains("fj:4")) {
+                                    e.removeScoreboardTag("fj:4");
+                                    h.addScoreboardTag("4ft");
+                                    h.setJumpStrength(.917);
+                                }
+                                if (e.getScoreboardTags().contains("fj:5")) {
+                                    e.removeScoreboardTag("fj:5");
+                                    h.addScoreboardTag("5ft");
+                                    h.setJumpStrength(1.017);
+                                }
+                                if (e.getScoreboardTags().contains("fj:6")) {
+                                    e.removeScoreboardTag("fj:6");
+                                    h.addScoreboardTag("6ft");
+                                    h.setJumpStrength(1.117);
+                                }
+                                if (e.getScoreboardTags().contains("fj:8")) {
+                                    e.removeScoreboardTag("fj:8");
+                                    h.addScoreboardTag("6ft");
+                                    h.setJumpStrength(1.117);
                                 }
                             }
                         }
-                        if (e.getScoreboardTags().contains("preg8")) {
-                            e.removeScoreboardTag("preg8");
-                            e.removeScoreboardTag("Pregnant");
-                            String nme = e.getCustomName();
-                            Location loc = e.getLocation();
-                            for (String brd : plugin.getBreedsConfig().getStringList("Breeds")) {
-                                if (e.getScoreboardTags().contains("fb:" + brd)) {
-                                    if (brd.equalsIgnoreCase("Donkey")) {
-                                        Donkey h = (Donkey) world.spawnEntity(loc, EntityType.DONKEY);
-                                        h.setAge(-25000);
-                                        h.addScoreboardTag("Hunger:10");
-                                        h.addScoreboardTag("Thirst:10");
-                                        h.addScoreboardTag("Private");
-                                        h.addScoreboardTag("Level:0");
-                                        h.addScoreboardTag("XP:1");
-                                        h.addScoreboardTag("Age:0");
-                                        h.setCustomName(nme + "'s Foal");
-                                        h.setTamed(true);
-                                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
-                                        int index = new Random().nextInt(list.size());
-                                        String rnt = list.get(index);
-                                        h.addScoreboardTag("Trait:" + rnt);
-                                        System.out.println("Birthing...");
-                                        if (e.getScoreboardTags().contains("fg:Filly")) {
-                                            h.addScoreboardTag("Gender:Filly");
-                                        }
-                                        if (e.getScoreboardTags().contains("fg:Colt")) {
-                                            h.addScoreboardTag("Gender:Colt");
-                                        }
-                                        for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
-                                            if (e.getScoreboardTags().contains("fb:" + brds)) {
-                                                h.addScoreboardTag("Breed:" + brds);
-                                                e.removeScoreboardTag("fb:" + brds);
-                                                System.out.println("Breed:" + brds);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
-                                                h.addScoreboardTag("Breed:" + brds);
-                                                System.out.println("Breed:" + brds);
-                                                break;
-                                            }
-                                        }
-                                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
-                                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
-                                                h.addScoreboardTag("Color:Gray");
-                                                e.removeScoreboardTag("fc:" + brds2);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
-                                                h.addScoreboardTag("Color:Gray");
-                                                System.out.println("Color:" + brds2);
-                                                break;
-
-                                            }
-                                        }
-                                        for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
-                                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
-                                                h.addScoreboardTag("Style:None");
-                                                e.removeScoreboardTag("fs:" + brds3);
-                                                System.out.println("Style:" + brds3);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
-                                                System.out.println("Style:" + brds3);
-                                                h.addScoreboardTag("Style:None");
-                                                break;
-                                            }
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:1")) {
-                                            e.removeScoreboardTag("fspd:1");
-                                            h.addScoreboardTag("Speed:T1");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:2")) {
-                                            e.removeScoreboardTag("fspd:2");
-                                            h.addScoreboardTag("Speed:T2");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:3")) {
-                                            e.removeScoreboardTag("fspd:3");
-                                            h.addScoreboardTag("Speed:T3");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:4")) {
-                                            e.removeScoreboardTag("fspd:4");
-                                            h.addScoreboardTag("Speed:T4");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:5")) {
-                                            e.removeScoreboardTag("fspd:5");
-                                            h.addScoreboardTag("Speed:T5");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:6")) {
-                                            e.removeScoreboardTag("fspd:6");
-                                            h.addScoreboardTag("Speed:T6");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:7")) {
-                                            e.removeScoreboardTag("fspd:7");
-                                            h.addScoreboardTag("Speed:T7");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:1")) {
-                                            e.removeScoreboardTag("fj:1");
-                                            h.addScoreboardTag("1ft");
-                                            h.setJumpStrength(.517);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:2")) {
-                                            e.removeScoreboardTag("fj:2");
-                                            h.addScoreboardTag("2ft");
-                                            h.setJumpStrength(.617);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:3")) {
-                                            e.removeScoreboardTag("fj:3");
-                                            h.addScoreboardTag("3ft");
-                                            h.setJumpStrength(.717);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:4")) {
-                                            e.removeScoreboardTag("fj:4");
-                                            h.addScoreboardTag("4ft");
-                                            h.setJumpStrength(.917);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:5")) {
-                                            e.removeScoreboardTag("fj:5");
-                                            h.addScoreboardTag("5ft");
-                                            h.setJumpStrength(1.017);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:6")) {
-                                            e.removeScoreboardTag("fj:6");
-                                            h.addScoreboardTag("6ft");
-                                            h.setJumpStrength(1.117);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:8")) {
-                                            e.removeScoreboardTag("fj:8");
-                                            h.addScoreboardTag("6ft");
-                                            h.setJumpStrength(1.117);
-                                        }
-                                    } else if(brd.equalsIgnoreCase("Mule")) {
-                                        Mule h = (Mule) world.spawnEntity(loc, EntityType.MULE);
-                                        h.setAge(-25000);
-                                        h.addScoreboardTag("Hunger:10");
-                                        h.addScoreboardTag("Thirst:10");
-                                        h.addScoreboardTag("Private");
-                                        h.addScoreboardTag("Level:0");
-                                        h.addScoreboardTag("XP:1");
-                                        h.addScoreboardTag("Age:0");
-                                        h.setCustomName(nme + "'s Foal");
-                                        h.setTamed(true);
-                                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
-                                        int index = new Random().nextInt(list.size());
-                                        String rnt = list.get(index);
-                                        h.addScoreboardTag("Trait:" + rnt);
-                                        System.out.println("Birthing...");
-                                        if (e.getScoreboardTags().contains("fg:Filly")) {
-                                            h.addScoreboardTag("Gender:Filly");
-                                        }
-                                        if (e.getScoreboardTags().contains("fg:Colt")) {
-                                            h.addScoreboardTag("Gender:Colt");
-                                        }
-                                        for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
-                                            if (e.getScoreboardTags().contains("fb:" + brds)) {
-                                                h.addScoreboardTag("Breed:" + brds);
-                                                e.removeScoreboardTag("fb:" + brds);
-                                                System.out.println("Breed:" + brds);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
-                                                h.addScoreboardTag("Breed:" + brds);
-                                                System.out.println("Breed:" + brds);
-                                                break;
-                                            }
-                                        }
-                                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
-                                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
-                                                h.addScoreboardTag("Color:Gray");
-                                                e.removeScoreboardTag("fc:" + brds2);
-                                                System.out.println("Color:" + brds2);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
-                                                h.addScoreboardTag("Color:Gray");
-                                                System.out.println("Color:" + brds2);
-                                                break;
-                                            }
-                                        }
-                                        for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
-                                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
-                                                h.addScoreboardTag("Style:None");
-                                                e.removeScoreboardTag("fs:" + brds3);
-                                                System.out.println("Style:" + brds3);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
-                                                System.out.println("Style:None");
-                                                h.addScoreboardTag("Style:None");
-                                                break;
-                                            }
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:1")) {
-                                            e.removeScoreboardTag("fspd:1");
-                                            h.addScoreboardTag("Speed:T1");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:2")) {
-                                            e.removeScoreboardTag("fspd:2");
-                                            h.addScoreboardTag("Speed:T2");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:3")) {
-                                            e.removeScoreboardTag("fspd:3");
-                                            h.addScoreboardTag("Speed:T3");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:4")) {
-                                            e.removeScoreboardTag("fspd:4");
-                                            h.addScoreboardTag("Speed:T4");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:5")) {
-                                            e.removeScoreboardTag("fspd:5");
-                                            h.addScoreboardTag("Speed:T5");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:6")) {
-                                            e.removeScoreboardTag("fspd:6");
-                                            h.addScoreboardTag("Speed:T6");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:7")) {
-                                            e.removeScoreboardTag("fspd:7");
-                                            h.addScoreboardTag("Speed:T7");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:1")) {
-                                            e.removeScoreboardTag("fj:1");
-                                            h.addScoreboardTag("1ft");
-                                            h.setJumpStrength(.517);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:2")) {
-                                            e.removeScoreboardTag("fj:2");
-                                            h.addScoreboardTag("2ft");
-                                            h.setJumpStrength(.617);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:3")) {
-                                            e.removeScoreboardTag("fj:3");
-                                            h.addScoreboardTag("3ft");
-                                            h.setJumpStrength(.717);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:4")) {
-                                            e.removeScoreboardTag("fj:4");
-                                            h.addScoreboardTag("4ft");
-                                            h.setJumpStrength(.917);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:5")) {
-                                            e.removeScoreboardTag("fj:5");
-                                            h.addScoreboardTag("5ft");
-                                            h.setJumpStrength(1.017);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:6")) {
-                                            e.removeScoreboardTag("fj:6");
-                                            h.addScoreboardTag("6ft");
-                                            h.setJumpStrength(1.117);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:8")) {
-                                            e.removeScoreboardTag("fj:8");
-                                            h.addScoreboardTag("6ft");
-                                            h.setJumpStrength(1.117);
-                                        }
-                                    } else {
-                                        Horse h = (Horse) world.spawnEntity(loc, EntityType.HORSE);
-                                        h.setAge(-25000);
-                                        h.addScoreboardTag("Hunger:10");
-                                        h.addScoreboardTag("Thirst:10");
-                                        h.addScoreboardTag("Private");
-                                        h.addScoreboardTag("Level:0");
-                                        h.addScoreboardTag("XP:1");
-                                        h.addScoreboardTag("Age:0");
-                                        h.setCustomName(nme + "'s Foal");
-                                        h.setTamed(true);
-                                        List<String> list = plugin.getTraitConfig().getStringList("Traits");
-                                        int index = new Random().nextInt(list.size());
-                                        String rnt = list.get(index);
-                                        h.addScoreboardTag("Trait:" + rnt);
-                                        System.out.println("Birthing...");
-                                        if (e.getScoreboardTags().contains("fg:Filly")) {
-                                            h.addScoreboardTag("Gender:Filly");
-                                        }
-                                        if (e.getScoreboardTags().contains("fg:Colt")) {
-                                            h.addScoreboardTag("Gender:Colt");
-                                        }
-                                        for (String brds : plugin.getBreedsConfig().getStringList("Breeds")) {
-                                            if (e.getScoreboardTags().contains("fb:" + brds)) {
-                                                h.addScoreboardTag("Breed:" + brds);
-                                                e.removeScoreboardTag("fb:" + brds);
-                                                System.out.println("Breed:" + brds);
-                                                break;
-                                            } else if (e.getScoreboardTags().contains("Breed:" + brds)) {
-                                                h.addScoreboardTag("Breed:" + brds);
-                                                System.out.println("Breed:" + brds);
-                                                break;
-                                            }
-                                        }
-                                        for (String brds2 : plugin.getCoatConfig().getStringList("Color")) {
-                                            if (e.getScoreboardTags().contains("fc:" + brds2)) {
-                                                h.addScoreboardTag("Color:" + brds2);
-                                                e.removeScoreboardTag("fc:" + brds2);
-                                                System.out.println("Color:" + brds2);
-                                                if (brds2.equalsIgnoreCase("Palomino")) {
-                                                    h.setColor(Horse.Color.CREAMY);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Chestnut")) {
-                                                    h.setColor(Horse.Color.CHESTNUT);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Black")) {
-                                                    h.setColor(Horse.Color.BLACK);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Bay")) {
-                                                    h.setColor(Horse.Color.DARK_BROWN);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Buckskin")) {
-                                                    h.setColor(Horse.Color.BROWN);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Gray")) {
-                                                    h.setColor(Horse.Color.GRAY);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("White")) {
-                                                    h.setColor(Horse.Color.WHITE);
-                                                    break;
-                                                }
-                                            } else if (e.getScoreboardTags().contains("Color:" + brds2)) {
-                                                h.addScoreboardTag("Color:" + brds2);
-                                                System.out.println("Color:" + brds2);
-                                                if (brds2.equalsIgnoreCase("Palomino")) {
-                                                    h.setColor(Horse.Color.CREAMY);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Chestnut")) {
-                                                    h.setColor(Horse.Color.CHESTNUT);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Black")) {
-                                                    h.setColor(Horse.Color.BLACK);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Bay")) {
-                                                    h.setColor(Horse.Color.DARK_BROWN);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Buckskin")) {
-                                                    h.setColor(Horse.Color.BROWN);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("Gray")) {
-                                                    h.setColor(Horse.Color.GRAY);
-                                                    break;
-                                                } else if (brds2.equalsIgnoreCase("White")) {
-                                                    h.setColor(Horse.Color.WHITE);
-                                                    break;
-                                                }
-
-                                            }
-                                        }
-                                        for (String brds3 : plugin.getCoatConfig().getStringList("Style")) {
-                                            if (e.getScoreboardTags().contains("fs:" + brds3)) {
-                                                h.addScoreboardTag("Style:" + brds3);
-                                                e.removeScoreboardTag("fs:" + brds3);
-                                                System.out.println("Style:" + brds3);
-                                                if (brds3.equalsIgnoreCase("Snip")) {
-                                                    h.setStyle(Horse.Style.WHITE);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("Paint")) {
-                                                    h.setStyle(Horse.Style.WHITEFIELD);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("Star")) {
-                                                    h.setStyle(Horse.Style.WHITE_DOTS);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("Blaze")) {
-                                                    h.setStyle(Horse.Style.BLACK_DOTS);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("None")) {
-                                                    h.setStyle(Horse.Style.NONE);
-                                                    break;
-                                                }
-                                            } else if (e.getScoreboardTags().contains("Style:" + brds3)) {
-                                                System.out.println("Style:" + brds3);
-                                                h.addScoreboardTag("Style:" + brds3);
-                                                if (brds3.equalsIgnoreCase("Snip")) {
-                                                    h.setStyle(Horse.Style.WHITE);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("Paint")) {
-                                                    h.setStyle(Horse.Style.WHITEFIELD);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("Star")) {
-                                                    h.setStyle(Horse.Style.WHITE_DOTS);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("Blaze")) {
-                                                    h.setStyle(Horse.Style.BLACK_DOTS);
-                                                    break;
-                                                } else if (brds3.equalsIgnoreCase("None")) {
-                                                    h.setStyle(Horse.Style.NONE);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:1")) {
-                                            e.removeScoreboardTag("fspd:1");
-                                            h.addScoreboardTag("Speed:T1");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t1);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:2")) {
-                                            e.removeScoreboardTag("fspd:2");
-                                            h.addScoreboardTag("Speed:T2");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t2);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:3")) {
-                                            e.removeScoreboardTag("fspd:3");
-                                            h.addScoreboardTag("Speed:T3");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t3);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:4")) {
-                                            e.removeScoreboardTag("fspd:4");
-                                            h.addScoreboardTag("Speed:T4");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t4);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:5")) {
-                                            e.removeScoreboardTag("fspd:5");
-                                            h.addScoreboardTag("Speed:T5");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t5);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:6")) {
-                                            e.removeScoreboardTag("fspd:6");
-                                            h.addScoreboardTag("Speed:T6");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t6);
-                                        }
-                                        if (e.getScoreboardTags().contains("fspd:7")) {
-                                            e.removeScoreboardTag("fspd:7");
-                                            h.addScoreboardTag("Speed:T7");
-                                            h.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(t7);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:1")) {
-                                            e.removeScoreboardTag("fj:1");
-                                            h.addScoreboardTag("1ft");
-                                            h.setJumpStrength(.517);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:2")) {
-                                            e.removeScoreboardTag("fj:2");
-                                            h.addScoreboardTag("2ft");
-                                            h.setJumpStrength(.617);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:3")) {
-                                            e.removeScoreboardTag("fj:3");
-                                            h.addScoreboardTag("3ft");
-                                            h.setJumpStrength(.717);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:4")) {
-                                            e.removeScoreboardTag("fj:4");
-                                            h.addScoreboardTag("4ft");
-                                            h.setJumpStrength(.917);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:5")) {
-                                            e.removeScoreboardTag("fj:5");
-                                            h.addScoreboardTag("5ft");
-                                            h.setJumpStrength(1.017);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:6")) {
-                                            e.removeScoreboardTag("fj:6");
-                                            h.addScoreboardTag("6ft");
-                                            h.setJumpStrength(1.117);
-                                        }
-                                        if (e.getScoreboardTags().contains("fj:8")) {
-                                            e.removeScoreboardTag("fj:8");
-                                            h.addScoreboardTag("6ft");
-                                            h.setJumpStrength(1.117);
-                                        }
-                                    }
-                                    }
-                                }
-                            }
                     }
                 }
 
@@ -2804,6 +3603,9 @@ public class Commands implements CommandExecutor {
                             e.removeScoreboardTag("hbrush");
                             e.removeScoreboardTag("sbrush");
                             e.removeScoreboardTag("hpick");
+                            e.removeScoreboardTag("comb");
+                            e.removeScoreboardTag("ccomb");
+                            e.removeScoreboardTag("Cleaned");
                         }
                     }
                 }

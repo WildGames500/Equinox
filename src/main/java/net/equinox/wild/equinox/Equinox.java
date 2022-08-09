@@ -11,7 +11,6 @@ import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BrewingStand;
 import org.bukkit.block.data.Levelled;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -20,7 +19,6 @@ import org.bukkit.entity.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.potion.PotionType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import javax.persistence.EntityManager;
@@ -55,15 +53,17 @@ public final class Equinox extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        horseParticle(this);
         babyLoop(this);
         PeeLoop(this);
         drinkLoop(this);
         drinkLoop2(this);
         poop(this);
+        loopHorses(this);
         foodToHungerValues.put(Material.GRASS_BLOCK, 1);
         foodToHungerValues.put(Material.DRIED_KELP_BLOCK, 10);
         foodToHungerValues.put(Material.HAY_BLOCK, 10);
-        eatGrainLoop(this);
+        //eatGrainLoop(this);
         eatLoop(this, Material.GRASS_BLOCK, Material.DIRT);
         eatLoop(this, Material.DRIED_KELP_BLOCK, Material.AIR);
         eatLoop(this, Material.HAY_BLOCK, Material.AIR);
@@ -650,7 +650,7 @@ public final class Equinox extends JavaPlugin {
                                         } else if (e.getScoreboardTags().contains("Thirst:4")) {
                                             e.removeScoreboardTag("Thirst:4");
                                             e.addScoreboardTag("Thirst:7");
-                                        } else if (e.getScoreboardTags().contains("Hunger:3")) {
+                                        } else if (e.getScoreboardTags().contains("Thirst:3")) {
                                             e.removeScoreboardTag("Thirst:3");
                                             e.addScoreboardTag("Thirst:6");
                                         } else if (e.getScoreboardTags().contains("Thirst:2")) {
@@ -681,10 +681,46 @@ public final class Equinox extends JavaPlugin {
                     }
                 }
             }
-        }.runTaskTimer(plugin, 11000, 11000);
+        }.runTaskTimer(plugin, 0, 100);
+    }
+    private void loopHorses(Plugin plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                for (World world : getServer().getWorlds()) {
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
+                            if (e.getScoreboardTags().contains("Trait:Aggressive")) {
+                                Location loc = e.getLocation();
+                                int x = loc.getBlockX();
+                                int y = loc.getBlockY();
+                                int z = loc.getBlockZ();
+                                for(Entity h : e.getNearbyEntities(3, 3, 3)) {
+                                    if(h instanceof Horse) {
+                                        //give horse scratches/bite
+                                    }if(h instanceof Player) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 10) {
+                                            String name = e.getName();
+                                            h.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " Has bitten you!");
+                                            ((LivingEntity) h).damage(1);
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+
+                        }
+                    }
+                }
+
+            }
+        }.runTaskTimer(plugin, 100, 100);
     }
 
-    private void eatGrainLoop(Plugin plugin) {
+    /*private void eatGrainLoop(Plugin plugin) {
         new BukkitRunnable() {
             public void run() {
                 AtomicBoolean hasEaten = new AtomicBoolean(false);
@@ -718,7 +754,7 @@ public final class Equinox extends JavaPlugin {
                 }
             }
         }.runTaskTimer(plugin, 100, 100);
-    }
+    } */
 
     private void eatLoop(Plugin plugin, Material original, Material replacement) {
         new BukkitRunnable() {
@@ -728,8 +764,15 @@ public final class Equinox extends JavaPlugin {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Location loc = e.getLocation();
-                            int radius = 2;
+                            int radius = 4;
                             if (e.getScoreboardTags().contains("Hunger")) {
+                                Random rnd2 = new Random();
+                                int i = rnd2.nextInt(100);
+                                if (i <= 10) {
+                                    if (e.getScoreboardTags().contains("Malnurished")) {
+                                        e.removeScoreboardTag("Malnurished");
+                                    }
+                                }
                                 Location foodSource = Utilities.findTypeOfBlockWithinLocation(loc, List.of(original), radius);
                                 if(foodSource != null) {
                                     if (e instanceof Horse) {
@@ -813,6 +856,59 @@ public final class Equinox extends JavaPlugin {
                 }
             }
         }.runTaskTimer(plugin, 10000, 10000);//set 10000
+    }
+    public void horseParticle(Equinox plugin) {
+        new BukkitRunnable() {
+            public void run() {
+                for (Player p : Bukkit.getOnlinePlayers()) {
+                    World world = p.getWorld();
+                    if (p.isInsideVehicle()) {
+                        Entity e = p.getVehicle();
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(235, 207, 52), 20.0F);
+                        Particle.DustOptions dustOptions1 = new Particle.DustOptions(Color.fromRGB(52, 161, 42), 20.0F);
+                        Particle.DustOptions dustOptions2 = new Particle.DustOptions(Color.fromRGB(0, 213, 255), 20.0F);
+                        Particle.DustOptions dustOptions3 = new Particle.DustOptions(Color.fromRGB(128, 0, 255), 20.0F);
+                        if (e.getScoreboardTags().contains("Walk")) {
+                            Location loc = e.getLocation();
+                            int x = (int) loc.getX();
+                            int y = (int) loc.getY();
+                            int z = (int) loc.getZ();
+                            int y1 = y + 1;
+                            world.spawnParticle(Particle.REDSTONE, x, y1, z, 0, dustOptions);
+
+
+                        }
+                        if (e.getScoreboardTags().contains("Trot")) {
+                            Location loc = e.getLocation();
+                            int x = (int) loc.getX();
+                            int y = (int) loc.getY();
+                            int z = (int) loc.getZ();
+                            int y1 = y + 1;
+                            world.spawnParticle(Particle.REDSTONE, x, y1, z, 0, dustOptions1);
+
+                        }
+                        if (e.getScoreboardTags().contains("Canter")) {
+
+                            Location loc = e.getLocation();
+                            int x = (int) loc.getX();
+                            int y = (int) loc.getY();
+                            int z = (int) loc.getZ();
+                            int y1 = y + 1;
+                            world.spawnParticle(Particle.REDSTONE, x, y1, z, 0, dustOptions2);
+
+                        }
+                        if (e.getScoreboardTags().contains("Gallop")) {
+                            Location loc = e.getLocation();
+                            int x = (int) loc.getX();
+                            int y = (int) loc.getY();
+                            int z = (int) loc.getZ();
+                            int y1 = y + 1;
+                            world.spawnParticle(Particle.REDSTONE, x, y1, z, 0, dustOptions3);
+                        }
+                    }
+                }
+            }
+        }.runTaskTimer(plugin, 0, 30);
     }
 
     public void horseRiding(Equinox plugin) {
@@ -931,7 +1027,7 @@ public final class Equinox extends JavaPlugin {
         }
 
     }
-    private void onEatGrain(Entity e, BrewingStand brewingStand) {
+    /**private void onEatGrain(Entity e, BrewingStand brewingStand) {
         if(brewingStand != null) {
             List<PotionType> validTypes = Arrays.asList(PotionType.MUNDANE, PotionType.REGEN, PotionType.NIGHT_VISION);
             List<PotionType> potions = Utilities.findPotionsInInventory(brewingStand.getSnapshotInventory(), validTypes);
@@ -955,7 +1051,7 @@ public final class Equinox extends JavaPlugin {
         }
 
     }
-
+*/
 
 
     private void onConsumeFood(Entity e, Material foodType) {
