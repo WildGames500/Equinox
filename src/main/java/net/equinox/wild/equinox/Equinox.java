@@ -82,6 +82,7 @@ public final class Equinox extends JavaPlugin {
         this.getCommand("eqa").setExecutor(new Commands(this));
         this.getCommand("cpu").setExecutor(new Commands(this));
         this.getCommand("rankup").setExecutor(new Commands(this));
+        this.getCommand("countdown").setExecutor(new Commands(this));
         this.getCommand("access").setExecutor(new Commands(this));
         this.getCommand("star").setExecutor(new Commands(this));
         this.getCommand("diamond").setExecutor(new Commands(this));

@@ -17,6 +17,9 @@ commands:
   rankup:
     description: Returns pong!
     usage: /<command> [player]
+  countdown:
+    description: Returns Countdown!
+    usage: /<command>
   access:
     description: Returns pong!
     usage: /<command>

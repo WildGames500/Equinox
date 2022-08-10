@@ -2030,6 +2030,7 @@ public class Events1 implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         Entity h = e.getPlayer();
+        Player p = e.getPlayer();
         if (h.getType() == EntityType.PLAYER) {
             if (h.getVehicle() == null) {
                 return;
@@ -2037,6 +2038,38 @@ public class Events1 implements Listener {
             if (h.getVehicle().getType() == EntityType.HORSE || h.getVehicle().getType() == EntityType.DONKEY || h.getVehicle().getType() == EntityType.MULE) {
                 World world = h.getWorld();
                 Location loc = h.getLocation();
+                if (h.getVehicle().getLocation().getBlock().getRelative(BlockFace.NORTH_EAST).getType() == Material.BROWN_STAINED_GLASS) {
+                    h.getVehicle().getLocation().getBlock().getRelative(BlockFace.NORTH_EAST).setType(Material.AIR);
+                    Location locb = h.getVehicle().getLocation().getBlock().getRelative(BlockFace.NORTH_EAST).getLocation();
+                    p.playSound(loc, Sound.BLOCK_BARREL_CLOSE, 2, .5F);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        locb.getBlock().setType(Material.BROWN_STAINED_GLASS);
+                    }, 100);
+                }
+                if (h.getVehicle().getLocation().getBlock().getRelative(BlockFace.SOUTH_EAST).getType() == Material.BROWN_STAINED_GLASS) {
+                    h.getVehicle().getLocation().getBlock().getRelative(BlockFace.SOUTH_EAST).setType(Material.AIR);
+                    Location locb = h.getVehicle().getLocation().getBlock().getRelative(BlockFace.SOUTH_EAST).getLocation();
+                    p.playSound(loc, Sound.BLOCK_BARREL_CLOSE, 2, .5F);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        locb.getBlock().setType(Material.BROWN_STAINED_GLASS);
+                    }, 100);
+                }
+                if (h.getVehicle().getLocation().getBlock().getRelative(BlockFace.NORTH_WEST).getType() == Material.BROWN_STAINED_GLASS) {
+                    h.getVehicle().getLocation().getBlock().getRelative(BlockFace.NORTH_WEST).setType(Material.AIR);
+                    Location locb = h.getVehicle().getLocation().getBlock().getRelative(BlockFace.NORTH_WEST).getLocation();
+                    p.playSound(loc, Sound.BLOCK_BARREL_CLOSE, 2, .5F);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        locb.getBlock().setType(Material.BROWN_STAINED_GLASS);
+                    }, 100);
+                }
+                if (h.getVehicle().getLocation().getBlock().getRelative(BlockFace.SOUTH_WEST).getType() == Material.BROWN_STAINED_GLASS) {
+                    h.getVehicle().getLocation().getBlock().getRelative(BlockFace.SOUTH_WEST).setType(Material.AIR);
+                    Location locb = h.getVehicle().getLocation().getBlock().getRelative(BlockFace.SOUTH_WEST).getLocation();
+                    p.playSound(loc, Sound.BLOCK_BARREL_CLOSE, 2, .5F);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        locb.getBlock().setType(Material.BROWN_STAINED_GLASS);
+                    }, 100);
+                }
 
                 if (h.getVehicle().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.BLUE_STAINED_GLASS_PANE) {
                     int radius = 5;
