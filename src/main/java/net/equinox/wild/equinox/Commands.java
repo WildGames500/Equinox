@@ -3135,24 +3135,16 @@ public class Commands implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("countdown")) {
             if (sender.hasPermission("eq.staff")) {
                 sender.getServer().broadcastMessage(ChatColor.YELLOW + "3...");
-                new BukkitRunnable() {
-                    public void run() {
-                        sender.getServer().broadcastMessage(ChatColor.YELLOW + "2...");
-                        new BukkitRunnable() {
-                            public void run() {
-                                sender.getServer().broadcastMessage(ChatColor.YELLOW + "1...");
-                                new BukkitRunnable() {
-                                    public void run() {
-                                        sender.getServer().broadcastMessage(ChatColor.GREEN + "GO!");
-
-                                    }
-                                }.runTaskTimer(plugin, 0, 20);
-
-                            }
-                        }.runTaskTimer(plugin, 0, 20);
-
-                    }
-                }.runTaskTimer(plugin, 0, 20);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    sender.getServer().broadcastMessage(ChatColor.YELLOW + "2...");
+                }, 20);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    sender.getServer().broadcastMessage(ChatColor.YELLOW + "1...");
+                }, 40);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    sender.getServer().broadcastMessage(ChatColor.GREEN + "GO!");
+                }, 60);
+                return true;
             }
         }
 
