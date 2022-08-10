@@ -141,6 +141,9 @@ public class Events1 implements Listener {
             double jump = horse.getJumpStrength();
             double jump2 = jump + 0.06;
             horse.setJumpStrength(jump2);
+            if (p.getItemInHand().getType() == Material.GOLDEN_APPLE) {
+                e.setCancelled(true);
+            }
         }
         if (h.getScoreboardTags().contains("Private")) {
             if (!p.hasPermission("eq.staff")) {
