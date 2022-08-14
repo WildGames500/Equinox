@@ -4,6 +4,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
+import net.equinox.wild.equinox.entities.DbStructures;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -664,6 +665,15 @@ public class Events1 implements Listener {
     @EventHandler
     public void onFirstJoin(PlayerJoinEvent e){
         String p = e.getPlayer().getName();
+        UUID uuid = e.getPlayer().getUniqueId();
+        try {
+            DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+            if (struc == null) {
+                plugin.getDbContext().addPlayerToDatabase(e.getPlayer());
+            }
+        } catch (NoSuchElementException exception) {
+            plugin.getDbContext().addPlayerToDatabase(e.getPlayer());
+        }
         if (e.getPlayer().hasPermission("is.newbie")) {
             if (!e.getPlayer().hasPermission("is.ranked")) {
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rankup " + p);

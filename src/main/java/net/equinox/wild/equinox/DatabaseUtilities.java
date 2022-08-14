@@ -1,6 +1,7 @@
 package net.equinox.wild.equinox;
 
 import net.equinox.wild.equinox.entities.DbHorse;
+import net.equinox.wild.equinox.entities.DbStructures;
 import net.equinox.wild.equinox.entities.IllnessColic;
 import org.bukkit.entity.Entity;
 
@@ -19,6 +20,32 @@ public class DatabaseUtilities {
         this.manager = manager;
     }
 
+    public int addPlayerToDatabase(Entity entity) {
+        System.out.println("Preparing to add to DB");
+        manager.getTransaction().begin();
+        System.out.println("Transaction begun");
+        DbStructures struc = new DbStructures();
+        struc.setUuid(entity.getUniqueId().toString());
+        struc.setSmallBarn(0);
+        struc.setMedBarn(0);
+        struc.setLargeBarn(0);
+        struc.setSmallPasture(0);
+        struc.setMedPasture(0);
+        struc.setLargePasture(0);
+        struc.setFlatArena(0);
+        struc.setSjArena(0);
+        struc.setDressageArena(0);
+        struc.setWesternArena(0);
+        struc.setXcCourse(0);
+        struc.setRaceTrack(0);
+        struc.setSteepleTrack(0);
+        struc.setRoundPen(0);
+
+        System.out.println("Persisting to DB");
+        manager.merge(struc);
+        manager.getTransaction().commit();
+        return struc.getId();
+    }
     public int addHorseToDatabase(Entity entity, String ownerId) {
         System.out.println("Preparing to add to DB");
         manager.getTransaction().begin();
@@ -43,7 +70,7 @@ public class DatabaseUtilities {
         manager.persist(colic);
         horse.setColic(colic);
         manager.persist(horse);
-        manager.getTransaction().commit();;
+        manager.getTransaction().commit();
     }
 
     public void removeColicFromHorse(DbHorse horse) {
@@ -62,6 +89,12 @@ public class DatabaseUtilities {
 
     //TODO: Update these two methods to query the database with the specific UUID/ID to prevent lag
     @SuppressWarnings("unchecked")
+    public DbStructures getPlayerFromDatabase(UUID uuid) throws NoSuchElementException {
+        Query query = manager.createQuery("from net.equinox.wild.equinox.entities.DbStructures");
+        List<DbStructures> players = query.getResultList();
+
+        return players.stream().filter(structures -> structures.getUUID().equalsIgnoreCase(uuid.toString())).findFirst().orElse(null);
+    }
     public DbHorse getHorseFromDatabase(UUID uuid) throws NoSuchElementException {
         Query query = manager.createQuery("from net.equinox.wild.equinox.entities.DbHorse");
         List<DbHorse> horses = query.getResultList();
@@ -109,6 +142,13 @@ public class DatabaseUtilities {
             updateColicInDatabase(horse.getColic());
         }
 //        System.out.println("Update transaction completed");
+    }
+    public void updatePlayerInDatabase(DbStructures struc) {
+//        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
+        manager.getTransaction().begin();
+        System.out.println(struc);
+        manager.persist(struc);
+        manager.getTransaction().commit();
     }
 
     private void updateColicInDatabase(IllnessColic colic) {

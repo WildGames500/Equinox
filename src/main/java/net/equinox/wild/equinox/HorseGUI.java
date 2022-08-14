@@ -1,5 +1,6 @@
 package net.equinox.wild.equinox;
 
+import net.equinox.wild.equinox.entities.DbStructures;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 import static org.bukkit.Bukkit.getServer;
+import static net.equinox.wild.equinox.Commands.strucp;
 
 @SuppressWarnings("all")
 public class HorseGUI implements Listener {
@@ -42,9 +44,1148 @@ public class HorseGUI implements Listener {
     public void OnInventoryClick(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
         Economy eco = Equinox.getEconomy();
-        if (e.getView().getTitle().equals("§0Menu")) {
+        if (e.getView().getTitle().equals("§0Purchased Barns") || e.getView().getTitle().equals("§0Purchased Pastures") || e.getView().getTitle().equals("§0Purchased Arenas") || e.getView().getTitle().equals("§0Purchased Other")) {
             e.setCancelled(true);
             UUID uuid = p.getUniqueId();
+            DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+            if (e.getSlot() == 20) {
+                p.closeInventory();
+                Inventory bp = getServer().createInventory(null, 27, "§0Purchased Structures");
+
+                ItemStack ref1 = new ItemStack(Material.BOOK);
+                ItemStack ref2 = new ItemStack(Material.BOOK);
+                ItemStack ref3 = new ItemStack(Material.BOOK);
+                ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref2.getItemMeta();
+                ItemMeta metaref4 = ref2.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref2);
+                ref4.setItemMeta(metaref2);
+                metaref1.setLore(Collections.singletonList("§9§oPurchased Barns"));
+                metaref2.setLore(Collections.singletonList("§9§oPurchased Arenas"));
+                metaref3.setLore(Collections.singletonList("§9§oPurchased Pastures"));
+                metaref4.setLore(Collections.singletonList("§9§oPurchased Other Structures"));
+                metaref1.setDisplayName("§b§lBarns");
+                metaref2.setDisplayName("§b§lArenas");
+                metaref3.setDisplayName("§b§lPastures");
+                metaref4.setDisplayName("§b§lOther");
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                bp.setItem(1, ref1);
+                bp.setItem(3, ref2);
+                bp.setItem(5, ref3);
+                bp.setItem(7, ref4);
+                p.openInventory(bp);
+            }
+        }
+        UUID uuid = p.getUniqueId();
+        if (strucp.containsKey(uuid)) {
+            UUID other = strucp.get(uuid);
+            String user = getServer().getPlayer(other).getName();
+            if (e.getView().getTitle().equals("§0Purchased Barns§b " + user) || e.getView().getTitle().equals("§0Purchased Pastures§b " + user) || e.getView().getTitle().equals("§0Purchased Arenas§b " + user) || e.getView().getTitle().equals("§0Purchased Other§b " + user)) {
+                e.setCancelled(true);
+                DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(other);
+                if (e.getSlot() == 20) {
+                    p.closeInventory();
+                    Inventory bp = getServer().createInventory(null, 27, "§0Purchased Structures§b " + user);
+
+                    ItemStack ref1 = new ItemStack(Material.BOOK);
+                    ItemStack ref2 = new ItemStack(Material.BOOK);
+                    ItemStack ref3 = new ItemStack(Material.BOOK);
+                    ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ItemMeta metaref2 = ref2.getItemMeta();
+                    ItemMeta metaref3 = ref2.getItemMeta();
+                    ItemMeta metaref4 = ref2.getItemMeta();
+
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref2);
+                    ref4.setItemMeta(metaref2);
+                    metaref1.setLore(Collections.singletonList("§9§oPurchased Barns"));
+                    metaref2.setLore(Collections.singletonList("§9§oPurchased Arenas"));
+                    metaref3.setLore(Collections.singletonList("§9§oPurchased Pastures"));
+                    metaref4.setLore(Collections.singletonList("§9§oPurchased Other Structures"));
+                    metaref1.setDisplayName("§b§lBarns");
+                    metaref2.setDisplayName("§b§lArenas");
+                    metaref3.setDisplayName("§b§lPastures");
+                    metaref4.setDisplayName("§b§lOther");
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref3);
+                    ref4.setItemMeta(metaref4);
+
+                    bp.setItem(1, ref1);
+                    bp.setItem(3, ref2);
+                    bp.setItem(5, ref3);
+                    bp.setItem(7, ref4);
+                    p.openInventory(bp);
+                }
+            }
+            if (e.getView().getTitle().equals("§0Purchased Structures§b " + user)) {
+                e.setCancelled(true);
+                if (strucp.containsKey(uuid)) {
+                    DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(other);
+                    if (e.getSlot() == 1) {
+                        System.out.println("Test2");
+                        p.closeInventory();
+                        Inventory bp = getServer().createInventory(null, 27, "§0Purchased Barns§b " + user);
+
+                        ItemStack ref1 = new ItemStack(Material.PAPER);
+                        ItemStack ref2 = new ItemStack(Material.PAPER);
+                        ItemStack ref3 = new ItemStack(Material.PAPER);
+                        ItemStack ref4 = new ItemStack(Material.BARRIER);
+
+                        ItemMeta metaref1 = ref1.getItemMeta();
+                        ItemMeta metaref2 = ref2.getItemMeta();
+                        ItemMeta metaref3 = ref3.getItemMeta();
+                        ItemMeta metaref4 = ref4.getItemMeta();
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+                        metaref1.setLore(Collections.singletonList("§e§o1-9 Stalls"));
+                        metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSmallBarn()));
+                        metaref2.setLore(Collections.singletonList("§e§o10-19 Stalls"));
+                        metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getMedBarn()));
+                        metaref3.setLore(Collections.singletonList("§e§o20+ Stalls"));
+                        metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getLargeBarn()));
+                        metaref1.setDisplayName("§b§lSmall Barn");
+                        metaref2.setDisplayName("§b§lMedium Barn");
+                        metaref3.setDisplayName("§b§lLarge Barn");
+                        metaref4.setDisplayName("§c§lBack");
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+
+                        bp.setItem(0, ref1);
+                        bp.setItem(1, ref2);
+                        bp.setItem(2, ref3);
+                        bp.setItem(20, ref4);
+                        p.openInventory(bp);
+                    }
+                    if (e.getSlot() == 3) {
+                        p.closeInventory();
+                        Inventory ap = getServer().createInventory(null, 27, "§0Purchased Arenas§b " + user);
+
+                        ItemStack ref1 = new ItemStack(Material.PAPER);
+                        ItemStack ref2 = new ItemStack(Material.PAPER);
+                        ItemStack ref3 = new ItemStack(Material.PAPER);
+                        ItemStack ref4 = new ItemStack(Material.PAPER);
+                        ItemStack ref5 = new ItemStack(Material.BARRIER);
+
+                        ItemMeta metaref1 = ref1.getItemMeta();
+                        ItemMeta metaref2 = ref2.getItemMeta();
+                        ItemMeta metaref3 = ref3.getItemMeta();
+                        ItemMeta metaref4 = ref4.getItemMeta();
+                        ItemMeta metaref5 = ref5.getItemMeta();
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+                        ref5.setItemMeta(metaref5);
+                        metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getFlatArena()));
+                        metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSjArena()));
+                        metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getWesternArena()));
+                        metaref4.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getDressageArena()));
+                        metaref1.setDisplayName("§b§lFlat Arena");
+                        metaref2.setDisplayName("§b§lJumps Arena");
+                        metaref3.setDisplayName("§b§lWestern Arena");
+                        metaref4.setDisplayName("§b§lDressage Arena");
+                        metaref5.setDisplayName("§c§lBack");
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+                        ref5.setItemMeta(metaref5);
+
+                        ap.setItem(0, ref1);
+                        ap.setItem(1, ref2);
+                        ap.setItem(2, ref3);
+                        ap.setItem(3, ref4);
+                        ap.setItem(20, ref5);
+                        p.openInventory(ap);
+                    }
+                    if (e.getSlot() == 5) {
+                        p.closeInventory();
+                        Inventory pp = getServer().createInventory(null, 27, "§0Purchased Pastures§b " + user);
+
+                        ItemStack ref1 = new ItemStack(Material.PAPER);
+                        ItemStack ref2 = new ItemStack(Material.PAPER);
+                        ItemStack ref3 = new ItemStack(Material.PAPER);
+                        ItemStack ref4 = new ItemStack(Material.BARRIER);
+
+                        ItemMeta metaref1 = ref1.getItemMeta();
+                        ItemMeta metaref2 = ref2.getItemMeta();
+                        ItemMeta metaref3 = ref3.getItemMeta();
+                        ItemMeta metaref4 = ref4.getItemMeta();
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+                        metaref1.setLore(Collections.singletonList("§e§o10 - 100 Blocks"));
+                        metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSmallPasture()));
+                        metaref2.setLore(Collections.singletonList("§e§o101 - 500 Blocks"));
+                        metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getMedPasture()));
+                        metaref3.setLore(Collections.singletonList("§e§o501+ Blocks"));
+                        metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getLargePasture()));
+                        metaref1.setDisplayName("§b§lSmall Pasture");
+                        metaref2.setDisplayName("§b§lMedium Pasture");
+                        metaref3.setDisplayName("§b§lLarge Pasture");
+                        metaref4.setDisplayName("§c§lBack");
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+
+                        pp.setItem(0, ref1);
+                        pp.setItem(1, ref2);
+                        pp.setItem(2, ref3);
+                        pp.setItem(20, ref4);
+                        p.openInventory(pp);
+                    }
+                    if (e.getSlot() == 7) {
+                        p.closeInventory();
+                        Inventory op = getServer().createInventory(null, 27, "§0Purchased Other§b " + user);
+
+                        ItemStack ref1 = new ItemStack(Material.PAPER);
+                        ItemStack ref2 = new ItemStack(Material.PAPER);
+                        ItemStack ref3 = new ItemStack(Material.PAPER);
+                        ItemStack ref4 = new ItemStack(Material.PAPER);
+                        ItemStack ref5 = new ItemStack(Material.BARRIER);
+
+                        ItemMeta metaref1 = ref1.getItemMeta();
+                        ItemMeta metaref2 = ref2.getItemMeta();
+                        ItemMeta metaref3 = ref3.getItemMeta();
+                        ItemMeta metaref4 = ref4.getItemMeta();
+                        ItemMeta metaref5 = ref5.getItemMeta();
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+                        ref5.setItemMeta(metaref5);
+                        metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getXcCourse()));
+                        metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getRoundPen()));
+                        metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getRaceTrack()));
+                        metaref4.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSteepleTrack()));
+                        metaref1.setDisplayName("§b§lXC Course");
+                        metaref2.setDisplayName("§b§lRound Pen");
+                        metaref3.setDisplayName("§b§lFlat Race Track");
+                        metaref4.setDisplayName("§b§lSteeple Chase Race Track");
+                        metaref5.setDisplayName("§c§lBack");
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+                        ref5.setItemMeta(metaref5);
+
+                        op.setItem(0, ref1);
+                        op.setItem(1, ref2);
+                        op.setItem(2, ref3);
+                        op.setItem(3, ref4);
+                        op.setItem(20, ref5);
+                        p.openInventory(op);
+                    }
+                }
+
+            }
+        }
+        if (e.getView().getTitle().equals("§0Purchased Structures")) {
+            e.setCancelled(true);
+            DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+            if (e.getSlot() == 1) {
+                p.closeInventory();
+                Inventory bp = getServer().createInventory(null, 27, "§0Purchased Barns");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref3.setItemMeta(metaref4);
+                metaref1.setLore(Collections.singletonList("§e§o1-9 Stalls"));
+                metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSmallBarn()));
+                metaref2.setLore(Collections.singletonList("§e§o10-19 Stalls"));
+                metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getMedBarn()));
+                metaref3.setLore(Collections.singletonList("§e§o20+ Stalls"));
+                metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getLargeBarn()));
+                metaref1.setDisplayName("§b§lSmall Barn");
+                metaref2.setDisplayName("§b§lMedium Barn");
+                metaref3.setDisplayName("§b§lLarge Barn");
+                metaref4.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                bp.setItem(0, ref1);
+                bp.setItem(1, ref2);
+                bp.setItem(2, ref3);
+                bp.setItem(20, ref4);
+                p.openInventory(bp);
+            }
+            if (e.getSlot() == 3) {
+                p.closeInventory();
+                Inventory ap = getServer().createInventory(null, 27, "§0Purchased Arenas");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.PAPER);
+                ItemStack ref5 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+                ItemMeta metaref5 = ref5.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+                metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getFlatArena()));
+                metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSjArena()));
+                metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getWesternArena()));
+                metaref4.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getDressageArena()));
+                metaref1.setDisplayName("§b§lFlat Arena");
+                metaref2.setDisplayName("§b§lJumps Arena");
+                metaref3.setDisplayName("§b§lWestern Arena");
+                metaref4.setDisplayName("§b§lDressage Arena");
+                metaref5.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+
+                ap.setItem(0, ref1);
+                ap.setItem(1, ref2);
+                ap.setItem(2, ref3);
+                ap.setItem(3, ref4);
+                ap.setItem(20, ref5);
+                p.openInventory(ap);
+            }
+            if (e.getSlot() == 5) {
+                p.closeInventory();
+                Inventory pp = getServer().createInventory(null, 27, "§0Purchased Pastures");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                metaref1.setLore(Collections.singletonList("§e§o10 - 100 Blocks"));
+                metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSmallPasture()));
+                metaref2.setLore(Collections.singletonList("§e§o101 - 500 Blocks"));
+                metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getMedPasture()));
+                metaref3.setLore(Collections.singletonList("§e§o501+ Blocks"));
+                metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getLargePasture()));
+                metaref1.setDisplayName("§b§lSmall Pasture");
+                metaref2.setDisplayName("§b§lMedium Pasture");
+                metaref3.setDisplayName("§b§lLarge Pasture");
+                metaref4.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                pp.setItem(0, ref1);
+                pp.setItem(1, ref2);
+                pp.setItem(2, ref3);
+                pp.setItem(20, ref4);
+                p.openInventory(pp);
+            }
+            if (e.getSlot() == 7) {
+                p.closeInventory();
+                Inventory op = getServer().createInventory(null, 27, "§0Purchased Other");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.PAPER);
+                ItemStack ref5 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+                ItemMeta metaref5 = ref5.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+                metaref1.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getXcCourse()));
+                metaref2.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getRoundPen()));
+                metaref3.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getRaceTrack()));
+                metaref4.setLore(Collections.singletonList("§a§oAmount Owned: §f" + struc.getSteepleTrack()));
+                metaref1.setDisplayName("§b§lXC Course");
+                metaref2.setDisplayName("§b§lRound Pen");
+                metaref3.setDisplayName("§b§lFlat Race Track");
+                metaref4.setDisplayName("§b§lSteeple Chase Race Track");
+                metaref5.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+
+                op.setItem(0, ref1);
+                op.setItem(1, ref2);
+                op.setItem(2, ref3);
+                op.setItem(3, ref4);
+                op.setItem(20, ref5);
+                p.openInventory(op);
+            }
+        }
+        if (e.getView().getTitle().equals("§0Purchase Structures")) {
+            e.setCancelled(true);
+            if (e.getSlot() == 1) {
+                p.closeInventory();
+                Inventory bp = getServer().createInventory(null, 27, "§0Purchase Barns");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                metaref1.setLore(Collections.singletonList("§e§o x1 Barn (1-9 Stalls)"));
+                metaref1.setLore(Collections.singletonList("§a§o$5,000"));
+                metaref2.setLore(Collections.singletonList("§e§o x1 Barn (10-19 Stalls)"));
+                metaref2.setLore(Collections.singletonList("§a§o$10,000"));
+                metaref3.setLore(Collections.singletonList("§e§o x1 Barn (20+ Stalls)"));
+                metaref3.setLore(Collections.singletonList("§a§o$20,000"));
+                metaref1.setDisplayName("§b§lSmall Barn");
+                metaref2.setDisplayName("§b§lMedium Barn");
+                metaref3.setDisplayName("§b§lLarge Barn");
+                metaref4.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                bp.setItem(0, ref1);
+                bp.setItem(1, ref2);
+                bp.setItem(2, ref3);
+                bp.setItem(20, ref4);
+                p.openInventory(bp);
+            }
+            if (e.getSlot() == 3) {
+                p.closeInventory();
+                Inventory ap = getServer().createInventory(null, 27, "§0Purchase Arenas");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.PAPER);
+                ItemStack ref5 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+                ItemMeta metaref5 = ref5.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref4.setItemMeta(metaref5);
+                metaref1.setLore(Collections.singletonList("§e§ox1 Flat Arena"));
+                metaref1.setLore(Collections.singletonList("§a§o$9,000"));
+                metaref2.setLore(Collections.singletonList("§e§ox1 Arena w/ Jumps"));
+                metaref2.setLore(Collections.singletonList("§a§o$10,000"));
+                metaref3.setLore(Collections.singletonList("§e§ox1 Arena w/ Poles &/ Barrels"));
+                metaref3.setLore(Collections.singletonList("§a§o$10,000"));
+                metaref4.setLore(Collections.singletonList("§e§ox1 Dressage Arena"));
+                metaref4.setLore(Collections.singletonList("§a§o$5,000"));
+                metaref1.setDisplayName("§b§lFlat Arena");
+                metaref2.setDisplayName("§b§lJumps Arena");
+                metaref3.setDisplayName("§b§lWestern Arena");
+                metaref4.setDisplayName("§b§lDressage Arena");
+                metaref5.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+
+                ap.setItem(0, ref1);
+                ap.setItem(1, ref2);
+                ap.setItem(2, ref3);
+                ap.setItem(3, ref4);
+                ap.setItem(20, ref5);
+                p.openInventory(ap);
+            }
+            if (e.getSlot() == 5) {
+                p.closeInventory();
+                Inventory pp = getServer().createInventory(null, 27, "§0Purchase Pastures");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                metaref1.setLore(Collections.singletonList("§e§ox1 Pasture (10 - 100 Blocks)"));
+                metaref1.setLore(Collections.singletonList("§a§o$500"));
+                metaref2.setLore(Collections.singletonList("§e§ox1 Pasture (101 - 500 Blocks)"));
+                metaref2.setLore(Collections.singletonList("§a§o$1,000"));
+                metaref3.setLore(Collections.singletonList("§e§ox1 Pasture (501+ Blocks)"));
+                metaref3.setLore(Collections.singletonList("§a§o$5,000"));
+                metaref1.setDisplayName("§b§lSmall Pasture");
+                metaref2.setDisplayName("§b§lMedium Pasture");
+                metaref3.setDisplayName("§b§lLarge Pasture");
+                metaref3.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                pp.setItem(0, ref1);
+                pp.setItem(1, ref2);
+                pp.setItem(2, ref3);
+                pp.setItem(20, ref4);
+                p.openInventory(pp);
+            }
+            if (e.getSlot() == 7) {
+                p.closeInventory();
+                Inventory op = getServer().createInventory(null, 27, "§0Purchase Other");
+
+                ItemStack ref1 = new ItemStack(Material.PAPER);
+                ItemStack ref2 = new ItemStack(Material.PAPER);
+                ItemStack ref3 = new ItemStack(Material.PAPER);
+                ItemStack ref4 = new ItemStack(Material.PAPER);
+                ItemStack ref5 = new ItemStack(Material.BARRIER);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref3.getItemMeta();
+                ItemMeta metaref4 = ref4.getItemMeta();
+                ItemMeta metaref5 = ref5.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+                metaref1.setLore(Collections.singletonList("§e§ox1"));
+                metaref1.setLore(Collections.singletonList("§a§o$20,000"));
+                metaref2.setLore(Collections.singletonList("§e§ox1"));
+                metaref2.setLore(Collections.singletonList("§a§o$500"));
+                metaref3.setLore(Collections.singletonList("§e§ox1"));
+                metaref3.setLore(Collections.singletonList("§a§o$12,500"));
+                metaref4.setLore(Collections.singletonList("§e§ox1"));
+                metaref4.setLore(Collections.singletonList("§a§o$10,000"));
+                metaref1.setDisplayName("§b§lXC Course");
+                metaref2.setDisplayName("§b§lRound Pen");
+                metaref3.setDisplayName("§b§lFlat Race Track");
+                metaref4.setDisplayName("§b§lSteeple Chase Race Track");
+                metaref4.setDisplayName("§c§lBack");
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+                ref5.setItemMeta(metaref5);
+
+                op.setItem(0, ref1);
+                op.setItem(1, ref2);
+                op.setItem(2, ref3);
+                op.setItem(3, ref4);
+                op.setItem(20, ref5);
+                p.openInventory(op);
+            }
+        } else if (e.getView().getTitle().equals("§0Purchase Pastures")) {
+            e.setCancelled(true);
+            try {
+                DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+                if (struc == null) {
+                    plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+                }
+                if (e.getSlot() == 0) {
+                    double cost = 500;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getSmallPasture() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newSmallPasture = struc.getSmallPasture() - 1;
+                            struc.setSmallPasture(newSmallPasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$500 You have sold x1 Small Pasture");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newSmallPasture = struc.getSmallPasture() + 1;
+                        struc.setSmallPasture(newSmallPasture);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$500 You have purchased x1 Small Pasture");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 1) {
+                    double cost = 1000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getMedPasture() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newMedPasture = struc.getMedPasture() - 1;
+                            struc.setLargePasture(newMedPasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$1000 You have sold x1 Medium Pasture");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newMedPasture = struc.getMedPasture() + 1;
+                        struc.setMedPasture(newMedPasture);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$1,000 You have purchased x1 Medium Pasture");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 2) {
+                    double cost = 5000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getLargePasture() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getLargePasture() - 1;
+                            struc.setLargePasture(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$5000 You have sold x1 Large Pasture");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newLargePasture = struc.getLargePasture() + 1;
+                        struc.setLargePasture(newLargePasture);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$5,000 You have purchased x1 Large Pasture");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }if (e.getSlot() == 20) {
+                    p.closeInventory();
+                    Inventory bp = getServer().createInventory(null, 27, "§0Purchase Structures");
+
+                    ItemStack ref1 = new ItemStack(Material.BOOK);
+                    ItemStack ref2 = new ItemStack(Material.BOOK);
+                    ItemStack ref3 = new ItemStack(Material.BOOK);
+                    ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ItemMeta metaref2 = ref2.getItemMeta();
+                    ItemMeta metaref3 = ref2.getItemMeta();
+                    ItemMeta metaref4 = ref2.getItemMeta();
+
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref2);
+                    ref4.setItemMeta(metaref2);
+                    metaref1.setLore(Collections.singletonList("§9§oPurchase Barns"));
+                    metaref2.setLore(Collections.singletonList("§9§oPurchase Arenas"));
+                    metaref3.setLore(Collections.singletonList("§9§oPurchase Pastures"));
+                    metaref4.setLore(Collections.singletonList("§9§oPurchase Other Structures"));
+                    metaref1.setDisplayName("§b§lBarns");
+                    metaref2.setDisplayName("§b§lArenas");
+                    metaref3.setDisplayName("§b§lPastures");
+                    metaref4.setDisplayName("§b§lOther");
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref3);
+                    ref4.setItemMeta(metaref4);
+
+                    bp.setItem(1, ref1);
+                    bp.setItem(3, ref2);
+                    bp.setItem(5, ref3);
+                    bp.setItem(7, ref4);
+                    p.openInventory(bp);
+                }
+            } catch (NoSuchElementException exception) {
+                plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+            }
+        } else if (e.getView().getTitle().equals("§0Purchase Arenas")) {
+            e.setCancelled(true);
+            try {
+                DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+                if (struc == null) {
+                    plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+                }
+                if (e.getSlot() == 0) {
+                    double cost = 9000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getFlatArena() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newFlatArena = struc.getFlatArena() - 1;
+                            struc.setFlatArena(newFlatArena);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$9000 You have sold x1 Flat Arena");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newFlatArena = struc.getFlatArena() + 1;
+                        struc.setFlatArena(newFlatArena);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$9,000 You have purchased x1 Flat Arena");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 1) {
+                    double cost = 10000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getSjArena() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getSjArena()- 1;
+                            struc.setSjArena(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$10,000 You have sold x1 Jumps Arena");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newJumpsArena = struc.getSjArena() + 1;
+                        struc.setSjArena(newJumpsArena);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$10,000 You have purchased x1 Jumps Arena");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 2) {
+                    double cost = 10000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getWesternArena() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getWesternArena() - 1;
+                            struc.setWesternArena(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$5000 You have sold x1 Western Arena");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newWesternArena = struc.getWesternArena() + 1;
+                        struc.setWesternArena(newWesternArena);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$10,000 You have purchased x1 Western Arena");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 3) {
+                    double cost = 5000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getDressageArena() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getDressageArena() - 1;
+                            struc.setDressageArena(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$5,000 You have sold x1 Dressage Arena");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newDressageArena = struc.getDressageArena() + 1;
+                        struc.setDressageArena(newDressageArena);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$5,000 You have purchased x1 Dressage Arena");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }if (e.getSlot() == 20) {
+                    p.closeInventory();
+                    Inventory bp = getServer().createInventory(null, 27, "§0Purchase Structures");
+
+                    ItemStack ref1 = new ItemStack(Material.BOOK);
+                    ItemStack ref2 = new ItemStack(Material.BOOK);
+                    ItemStack ref3 = new ItemStack(Material.BOOK);
+                    ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ItemMeta metaref2 = ref2.getItemMeta();
+                    ItemMeta metaref3 = ref2.getItemMeta();
+                    ItemMeta metaref4 = ref2.getItemMeta();
+
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref2);
+                    ref4.setItemMeta(metaref2);
+                    metaref1.setLore(Collections.singletonList("§9§oPurchase Barns"));
+                    metaref2.setLore(Collections.singletonList("§9§oPurchase Arenas"));
+                    metaref3.setLore(Collections.singletonList("§9§oPurchase Pastures"));
+                    metaref4.setLore(Collections.singletonList("§9§oPurchase Other Structures"));
+                    metaref1.setDisplayName("§b§lBarns");
+                    metaref2.setDisplayName("§b§lArenas");
+                    metaref3.setDisplayName("§b§lPastures");
+                    metaref4.setDisplayName("§b§lOther");
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref3);
+                    ref4.setItemMeta(metaref4);
+
+                    bp.setItem(1, ref1);
+                    bp.setItem(3, ref2);
+                    bp.setItem(5, ref3);
+                    bp.setItem(7, ref4);
+                    p.openInventory(bp);
+                }
+
+            } catch (NoSuchElementException exception) {
+                plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+            }
+        } else if (e.getView().getTitle().equals("§0Purchase Barns")) {
+            e.setCancelled(true);
+            try {
+                DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+                if (struc == null) {
+                    plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+                }
+                if (e.getSlot() == 0) {
+                    double cost = 5000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getSmallBarn() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getSmallBarn() - 1;
+                            struc.setSmallBarn(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$5,000 You have sold x1 Small Barn");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newSmallBarn = struc.getSmallBarn() + 1;
+                        struc.setSmallBarn(newSmallBarn);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$5,000 You have purchased x1 Small Barn");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 1) {
+                    double cost = 10000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getMedBarn() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getMedBarn() - 1;
+                            struc.setMedBarn(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$10,000 You have sold x1 Medium Barn");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newMedBarn = struc.getMedBarn() + 1;
+                        struc.setMedBarn(newMedBarn);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$10,000 You have purchased x1 Medium Barn");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 2) {
+                    double cost = 20000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getLargeBarn() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getLargeBarn() - 1;
+                            struc.setLargeBarn(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$5000 You have sold x1 Large Barn");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newLargeBarn = struc.getLargeBarn() + 1;
+                        struc.setLargeBarn(newLargeBarn);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$20,000 You have purchased x1 Large Barn");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }if (e.getSlot() == 20) {
+                    p.closeInventory();
+                    Inventory bp = getServer().createInventory(null, 27, "§0Purchase Structures");
+
+                    ItemStack ref1 = new ItemStack(Material.BOOK);
+                    ItemStack ref2 = new ItemStack(Material.BOOK);
+                    ItemStack ref3 = new ItemStack(Material.BOOK);
+                    ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ItemMeta metaref2 = ref2.getItemMeta();
+                    ItemMeta metaref3 = ref2.getItemMeta();
+                    ItemMeta metaref4 = ref2.getItemMeta();
+
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref2);
+                    ref4.setItemMeta(metaref2);
+                    metaref1.setLore(Collections.singletonList("§9§oPurchase Barns"));
+                    metaref2.setLore(Collections.singletonList("§9§oPurchase Arenas"));
+                    metaref3.setLore(Collections.singletonList("§9§oPurchase Pastures"));
+                    metaref4.setLore(Collections.singletonList("§9§oPurchase Other Structures"));
+                    metaref1.setDisplayName("§b§lBarns");
+                    metaref2.setDisplayName("§b§lArenas");
+                    metaref3.setDisplayName("§b§lPastures");
+                    metaref4.setDisplayName("§b§lOther");
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref3);
+                    ref4.setItemMeta(metaref4);
+
+                    bp.setItem(1, ref1);
+                    bp.setItem(3, ref2);
+                    bp.setItem(5, ref3);
+                    bp.setItem(7, ref4);
+                    p.openInventory(bp);
+                }
+
+            } catch (NoSuchElementException exception) {
+                plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+            }
+        } else if (e.getView().getTitle().equals("§0Purchase Other")) {
+            e.setCancelled(true);
+            try {
+                DbStructures struc = plugin.getDbContext().getPlayerFromDatabase(uuid);
+                if (struc == null) {
+                    plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+                }
+                if (e.getSlot() == 0) {
+                    double cost = 20000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getXcCourse() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getXcCourse() - 1;
+                            struc.setXcCourse(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$20,000 You have sold x1 XC Course");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newXCCourse = struc.getXcCourse() + 1;
+                        struc.setXcCourse(newXCCourse);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$20,000 You have purchased x1 XC Course");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 1) {
+                    double cost = 500;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getRoundPen() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getRoundPen() - 1;
+                            struc.setRoundPen(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$500 You have sold x1 Round Pen");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newRoundPen = struc.getRoundPen() + 1;
+                        struc.setRoundPen(newRoundPen);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$500 You have purchased x1 Round Pen");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 2) {
+                    double cost = 12500;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getRaceTrack() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getRaceTrack() - 1;
+                            struc.setRaceTrack(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$12,500 You have sold x1 Race Track");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newRaceTrack = struc.getRaceTrack() + 1;
+                        struc.setRaceTrack(newRaceTrack);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$12,500 You have purchased x1 Race Track");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }
+                if (e.getSlot() == 3) {
+                    double cost = 10000;
+                    double bal = eco.getBalance(p);
+                    if (e.isRightClick()) {
+                        if (struc.getSteepleTrack() >= 1) {
+                            eco.depositPlayer(p, cost);
+                            int newLargePasture = struc.getSteepleTrack() - 1;
+                            struc.setSteepleTrack(newLargePasture);
+                            plugin.getDbContext().updatePlayerInDatabase(struc);
+                            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "+$10,000 You have sold x1 SteeplChase Track");
+                            return;
+                        }
+                    }
+                    if (bal >= cost) {
+                        eco.withdrawPlayer(p, cost);
+                        int newSteeple = struc.getSteepleTrack() + 1;
+                        struc.setSteepleTrack(newSteeple);
+                        plugin.getDbContext().updatePlayerInDatabase(struc);
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "-$10,000 You have purchased x1 SteepleChase Track");
+                    }else {
+                        p.closeInventory();
+                        p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the money to purchase this structure!");
+                    }
+                }if (e.getSlot() == 20) {
+                    p.closeInventory();
+                    Inventory bp = getServer().createInventory(null, 27, "§0Purchase Structures");
+
+                    ItemStack ref1 = new ItemStack(Material.BOOK);
+                    ItemStack ref2 = new ItemStack(Material.BOOK);
+                    ItemStack ref3 = new ItemStack(Material.BOOK);
+                    ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                    ItemMeta metaref1 = ref1.getItemMeta();
+                    ItemMeta metaref2 = ref2.getItemMeta();
+                    ItemMeta metaref3 = ref2.getItemMeta();
+                    ItemMeta metaref4 = ref2.getItemMeta();
+
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref2);
+                    ref4.setItemMeta(metaref2);
+                    metaref1.setLore(Collections.singletonList("§9§oPurchase Barns"));
+                    metaref2.setLore(Collections.singletonList("§9§oPurchase Arenas"));
+                    metaref3.setLore(Collections.singletonList("§9§oPurchase Pastures"));
+                    metaref4.setLore(Collections.singletonList("§9§oPurchase Other Structures"));
+                    metaref1.setDisplayName("§b§lBarns");
+                    metaref2.setDisplayName("§b§lArenas");
+                    metaref3.setDisplayName("§b§lPastures");
+                    metaref4.setDisplayName("§b§lOther");
+                    ref1.setItemMeta(metaref1);
+                    ref2.setItemMeta(metaref2);
+                    ref3.setItemMeta(metaref3);
+                    ref4.setItemMeta(metaref4);
+
+                    bp.setItem(1, ref1);
+                    bp.setItem(3, ref2);
+                    bp.setItem(5, ref3);
+                    bp.setItem(7, ref4);
+                    p.openInventory(bp);
+                }
+
+            } catch (NoSuchElementException exception) {
+                plugin.getDbContext().addPlayerToDatabase(e.getWhoClicked());
+            }
+
+
+        }
+        else if (e.getView().getTitle().equals("§0Menu")) {
+            e.setCancelled(true);
             if (breedname.get(uuid) ==  null) {
                 breedname.put(uuid, "§bBreeds");
             }
@@ -519,7 +1660,6 @@ public class HorseGUI implements Listener {
             } else if (e.getSlot() == 25) {
                 Location loc = p.getLocation();
                 World world = p.getWorld();
-                UUID uuid = p.getUniqueId();
                 String gender = gendername.get(uuid);
                 String breed = breedname.get(uuid);
                 String coat = coatcolor.get(uuid);
@@ -733,7 +1873,6 @@ public class HorseGUI implements Listener {
             }
         } else if (e.getView().getTitle().equals("§0Genders")) {
             e.setCancelled(true);
-            UUID uuid = p.getUniqueId();
             String breed = breedname.get(uuid);
             String coat = coatcolor.get(uuid);
             String coats = coatstyle.get(uuid);
@@ -821,7 +1960,6 @@ public class HorseGUI implements Listener {
         } else if (e.getView().getTitle().equals("§0Breeds")) {
             e.setCancelled(true);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
-            UUID uuid = p.getUniqueId();
             String gender = gendername.get(uuid);
             String coat = coatcolor.get(uuid);
             String coats = coatstyle.get(uuid);
@@ -904,7 +2042,6 @@ public class HorseGUI implements Listener {
         } else if (e.getView().getTitle().equals("§0Coat Colors")) {
             e.setCancelled(true);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
-            UUID uuid = p.getUniqueId();
             String gender = gendername.get(uuid);
             String breed = breedname.get(uuid);
             String coats = coatstyle.get(uuid);
@@ -988,7 +2125,6 @@ public class HorseGUI implements Listener {
         } else if (e.getView().getTitle().equals("§0Coat Patterns")) {
             e.setCancelled(true);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
-            UUID uuid = p.getUniqueId();
             String gender = gendername.get(uuid);
             String breed = breedname.get(uuid);
             String coat = coatcolor.get(uuid);
@@ -1071,7 +2207,6 @@ public class HorseGUI implements Listener {
         } else if (e.getView().getTitle().equals("§0Speeds")) {
             e.setCancelled(true);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
-            UUID uuid = p.getUniqueId();
             String gender = gendername.get(uuid);
             String breed = breedname.get(uuid);
             String coat = coatcolor.get(uuid);
@@ -1152,7 +2287,6 @@ public class HorseGUI implements Listener {
         } else if (e.getView().getTitle().equals("§0Jumps")) {
             e.setCancelled(true);
             String sln = e.getCurrentItem().getItemMeta().getDisplayName();
-            UUID uuid = p.getUniqueId();
             String gender = gendername.get(uuid);
             String breed = breedname.get(uuid);
             String coat = coatcolor.get(uuid);

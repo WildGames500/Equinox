@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 import static net.equinox.wild.equinox.Events1.collection;
+import static org.bukkit.Bukkit.getServer;
 
 @SuppressWarnings("all")
 public class Commands implements CommandExecutor {
@@ -34,6 +35,7 @@ public class Commands implements CommandExecutor {
     public static HashMap<UUID, String> access = new HashMap<UUID, String>();
     public static HashMap<UUID, String> bell = new HashMap<UUID, String>();
     public HashMap<String, Long> cooldowns = new HashMap<String, Long>();
+    public static HashMap<UUID, UUID> strucp = new HashMap<UUID, UUID>();
 
 
     public Commands(Equinox plugin) {
@@ -2093,6 +2095,124 @@ public class Commands implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "  ●" + ChatColor.YELLOW + " Your horse has starved to death.");
                     player.sendMessage(" ");
                 }
+            } else if (args[0].equalsIgnoreCase("purchased")) {
+                Player player = (Player) sender;
+                if (args.length == 2) {
+                    if (player.hasPermission("eq.staff")) {
+                        Player p2 = Bukkit.getServer().getPlayer(args[1]);
+                        UUID uuid = p2.getUniqueId();
+                        strucp.put(player.getUniqueId(), uuid);
+                        String user = getServer().getPlayer(uuid).getName();
+
+                        Inventory struc = Bukkit.getServer().createInventory(null, 9, "§0Purchased Structures§b " + user);
+
+                        ItemStack ref1 = new ItemStack(Material.BOOK);
+                        ItemStack ref2 = new ItemStack(Material.BOOK);
+                        ItemStack ref3 = new ItemStack(Material.BOOK);
+                        ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                        ItemMeta metaref1 = ref1.getItemMeta();
+                        ItemMeta metaref2 = ref2.getItemMeta();
+                        ItemMeta metaref3 = ref2.getItemMeta();
+                        ItemMeta metaref4 = ref2.getItemMeta();
+
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref2);
+                        ref4.setItemMeta(metaref2);
+                        metaref1.setLore(Collections.singletonList("§9§oPurchased Barns"));
+                        metaref2.setLore(Collections.singletonList("§9§oPurchased Arenas"));
+                        metaref3.setLore(Collections.singletonList("§9§oPurchased Pastures"));
+                        metaref4.setLore(Collections.singletonList("§9§oPurchased Other Structures"));
+                        metaref1.setDisplayName("§b§lBarns");
+                        metaref2.setDisplayName("§b§lArenas");
+                        metaref3.setDisplayName("§b§lPastures");
+                        metaref4.setDisplayName("§b§lOther");
+                        ref1.setItemMeta(metaref1);
+                        ref2.setItemMeta(metaref2);
+                        ref3.setItemMeta(metaref3);
+                        ref4.setItemMeta(metaref4);
+
+                        struc.setItem(1, ref1);
+                        struc.setItem(3, ref2);
+                        struc.setItem(5, ref3);
+                        struc.setItem(7, ref4);
+                        player.openInventory(struc);
+                        return true;
+                    }
+                }
+                Inventory struc = Bukkit.getServer().createInventory(null, 9, "§0Purchased Structures");
+
+                ItemStack ref1 = new ItemStack(Material.BOOK);
+                ItemStack ref2 = new ItemStack(Material.BOOK);
+                ItemStack ref3 = new ItemStack(Material.BOOK);
+                ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref2.getItemMeta();
+                ItemMeta metaref4 = ref2.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref2);
+                ref4.setItemMeta(metaref2);
+                metaref1.setLore(Collections.singletonList("§9§oPurchased Barns"));
+                metaref2.setLore(Collections.singletonList("§9§oPurchased Arenas"));
+                metaref3.setLore(Collections.singletonList("§9§oPurchased Pastures"));
+                metaref4.setLore(Collections.singletonList("§9§oPurchased Other Structures"));
+                metaref1.setDisplayName("§b§lBarns");
+                metaref2.setDisplayName("§b§lArenas");
+                metaref3.setDisplayName("§b§lPastures");
+                metaref4.setDisplayName("§b§lOther");
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                struc.setItem(1, ref1);
+                struc.setItem(3, ref2);
+                struc.setItem(5, ref3);
+                struc.setItem(7, ref4);
+                player.openInventory(struc);
+                return true;
+            } else if (args[0].equalsIgnoreCase("struc")) {
+                Player player = (Player) sender;
+                Inventory struc = Bukkit.getServer().createInventory(null, 9, "§0Purchase Structures");
+
+                ItemStack ref1 = new ItemStack(Material.BOOK);
+                ItemStack ref2 = new ItemStack(Material.BOOK);
+                ItemStack ref3 = new ItemStack(Material.BOOK);
+                ItemStack ref4 = new ItemStack(Material.BOOK);
+
+                ItemMeta metaref1 = ref1.getItemMeta();
+                ItemMeta metaref2 = ref2.getItemMeta();
+                ItemMeta metaref3 = ref2.getItemMeta();
+                ItemMeta metaref4 = ref2.getItemMeta();
+
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref2);
+                ref4.setItemMeta(metaref2);
+                metaref1.setLore(Collections.singletonList("§9§oPurchase Barns"));
+                metaref2.setLore(Collections.singletonList("§9§oPurchase Arenas"));
+                metaref3.setLore(Collections.singletonList("§9§oPurchase Pastures"));
+                metaref4.setLore(Collections.singletonList("§9§oPurchase Other Structures"));
+                metaref1.setDisplayName("§b§lBarns");
+                metaref2.setDisplayName("§b§lArenas");
+                metaref3.setDisplayName("§b§lPastures");
+                metaref4.setDisplayName("§b§lOther");
+                ref1.setItemMeta(metaref1);
+                ref2.setItemMeta(metaref2);
+                ref3.setItemMeta(metaref3);
+                ref4.setItemMeta(metaref4);
+
+                struc.setItem(1, ref1);
+                struc.setItem(3, ref2);
+                struc.setItem(5, ref3);
+                struc.setItem(7, ref4);
+                player.openInventory(struc);
+                return true;
             } else if (args[0].equalsIgnoreCase("menu")) {
                 Player player = (Player) sender;
                 if (player.hasPermission("eq.staff")) {
