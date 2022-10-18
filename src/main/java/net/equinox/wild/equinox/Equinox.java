@@ -817,13 +817,15 @@ public final class Equinox extends JavaPlugin {
                                 if (i <= 10) {
                                     Location loc = e.getLocation();
                                     int x = loc.getBlockX();
-                                    int y = loc.getBlockY();
+                                    int y1 = loc.getBlockY();
                                     int z = loc.getBlockZ();
-                                    int y1 = y - 1;
-                                    Block b = world.getBlockAt(x, y1, z);
+                                    int lowestY = y1 - 1;
                                     world.playSound(loc, Sound.ENTITY_GHAST_DEATH, 1, 1);
-                                    if (b.getType() == Material.YELLOW_GLAZED_TERRACOTTA) {
-                                        b.setType(Material.BROWN_GLAZED_TERRACOTTA);
+                                    for(int y = lowestY; y <= y1; y++) {
+                                        Block b = world.getBlockAt(x, y, z);
+                                        if (b.getType() == Material.SNOW) {
+                                            b.setType(Material.LIME_CARPET);
+                                        }
                                     }
                                 }
                             }

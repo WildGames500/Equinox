@@ -13,6 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
@@ -40,6 +41,42 @@ public class Events1 implements Listener {
     public Events1(Equinox plugin) {
         this.plugin = plugin;
     }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent e) {
+        Player player = e.getPlayer();
+        if (e.getBlock().getType().equals(Material.SNOW) ||  e.getBlock().getType().equals(Material.LIME_CARPET)) {
+            if (player.getItemInHand().getType() == Material.WOODEN_SHOVEL) {
+                e.setCancelled(false);
+                return;
+            }
+            if (player.getItemInHand().getType() == Material.STONE_SHOVEL) {
+                e.setCancelled(false);
+                return;
+            }
+            if (player.getItemInHand().getType() == Material.IRON_SHOVEL) {
+                e.setCancelled(false);
+                return;
+            }
+            if (player.getItemInHand().getType() == Material.GOLDEN_SHOVEL) {
+                e.setCancelled(false);
+                return;
+            }
+            if (player.getItemInHand().getType() == Material.DIAMOND_SHOVEL) {
+                e.setCancelled(false);
+                return;
+            }
+            if (player.getItemInHand().getType() == Material.NETHERITE_SHOVEL) {
+                e.setCancelled(false);
+                return;
+            }else{
+                e.setCancelled(true);
+                return;
+            }
+
+        }
+    }
+
     @EventHandler
     public void onClickBrewingSlot(InventoryClickEvent event) {
         if (event.getInventory() instanceof BrewerInventory && event.getView().getTopInventory().equals(event.getClickedInventory())) {
