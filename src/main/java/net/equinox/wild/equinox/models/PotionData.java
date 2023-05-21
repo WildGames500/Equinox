@@ -11,7 +11,6 @@ public class PotionData {
     /**
      * numberOfPotions = 2
      * (list) types = [FIRE_RESISTANCE, FIRE_RESISTANCE, NIGHT_VISION]
-     *
      */
 
     public PotionData(int numberOfPotions, List<PotionType> type) {

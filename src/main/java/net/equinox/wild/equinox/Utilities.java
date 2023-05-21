@@ -21,11 +21,11 @@ public class Utilities {
     public static Location findTypeOfBlockWithinLocation(Location loc, List<Material> validTypes, int radius) {
 //        Block block = loc.getWorld().getBlockAt(loc);
         for(int x = loc.getBlockX(); x <= (loc.getBlockX() + radius); x++) {
-            for(int y = loc.getBlockY(); y <= (loc.getBlockY() + radius); y++) {
-                for(int z = loc.getBlockZ(); z <= (loc.getBlockZ() + radius); z++) {
+            for (int y = loc.getBlockY(); y <= (loc.getBlockY() + radius); y++) {
+                for (int z = loc.getBlockZ(); z <= (loc.getBlockZ() + radius); z++) {
                     Material type = loc.getWorld().getBlockAt(x, y, z).getType();
                     Location target = new Location(loc.getWorld(), x, y, z);
-                    if(loc.distance(target) <= radius && validTypes.contains(loc.getWorld().getBlockAt(x, y, z).getType())) {
+                    if (loc.distance(target) <= radius && validTypes.contains(loc.getWorld().getBlockAt(x, y, z).getType())) {
                         return new Location(loc.getWorld(), x, y, z);
                     }
                 }

@@ -25,6 +25,7 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 import static net.equinox.wild.equinox.Events1.collection;
+import static org.apache.logging.log4j.LogManager.getLogger;
 import static org.bukkit.Bukkit.getServer;
 
 @SuppressWarnings("all")
@@ -136,7 +137,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
-                if(collection.isEmpty()) {
+                if (collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -148,10 +149,12 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("DayH-1")) {
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse has not eaten for 1 day!");
                                     return true;
-                                } if (e.getScoreboardTags().contains("DayH-2")) {
+                                }
+                                if (e.getScoreboardTags().contains("DayH-2")) {
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse has not eaten for 2 days!");
                                     return true;
-                                } if (e.getScoreboardTags().contains("DayH-3")) {
+                                }
+                                if (e.getScoreboardTags().contains("DayH-3")) {
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse has not eaten for 3 days!");
                                     return true;
                                 } else {
@@ -207,7 +210,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
-                player.sendMessage(ChatColor.GRAY + "["+ ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >>" + ChatColor.GREEN + "You hace successfully changed this horses color!");
+                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >>" + ChatColor.GREEN + "You hace successfully changed this horses color!");
                 if (player.hasPermission("eq.staff")) {
                     if (args[1].equalsIgnoreCase("black")) {
                         for (Entity e : world.getEntities()) {
@@ -965,7 +968,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
-                player.sendMessage(ChatColor.GRAY + "["+ ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >>" + ChatColor.GREEN + "You hace successfully changed this horses markings!");
+                player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >>" + ChatColor.GREEN + "You hace successfully changed this horses markings!");
                 if (player.hasPermission("eq.staff")) {
                     if (args[1].equalsIgnoreCase("none")) {
                         for (Entity e : world.getEntities()) {
@@ -1066,7 +1069,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
-                if(euid.equals(null)) {
+                if (euid.equals(null)) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -1089,7 +1092,7 @@ public class Commands implements CommandExecutor {
                                     plugin.getDbContext().updateHorseInDatabase(horse);
                                     System.out.printf("(Sent Home) Updated horse #%s%n", horse.getId());
                                 }
-                            } catch(IllegalArgumentException exception) {
+                            } catch (IllegalArgumentException exception) {
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Could not send home! Does your horse have a home set?");
                                 exception.printStackTrace();
                                 return true;
@@ -1106,7 +1109,7 @@ public class Commands implements CommandExecutor {
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
                 World world = player.getWorld();
-                if(euid.equals(null)) {
+                if (euid.equals(null)) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -1116,7 +1119,7 @@ public class Commands implements CommandExecutor {
                         if (euid.equals(h)) {
                             DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
 
-                            if(horse != null) {
+                            if (horse != null) {
                                 horse.setHome(loc);
                                 plugin.getDbContext().updateHorseInDatabase(horse);
                                 System.out.printf("(Home Set) Updated horse #%s%n", horse.getId());
@@ -1145,7 +1148,7 @@ public class Commands implements CommandExecutor {
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
                     String name = sender.getName();
-                    if(euid.equals(null)) {
+                    if (euid.equals(null)) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1284,7 +1287,8 @@ public class Commands implements CommandExecutor {
                         player.sendMessage(ChatColor.AQUA + " ● " + ChatColor.WHITE + "Breeding");
                     } else {
                         return true;
-                    } return true;
+                    }
+                    return true;
                 }
             } else if (args[0].equalsIgnoreCase("killall")) {
                 Player player = (Player) sender;
@@ -1327,7 +1331,7 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     String name2 = p2.getName();
-                    if(collection.isEmpty()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1377,7 +1381,7 @@ public class Commands implements CommandExecutor {
                     World world = player.getWorld();
                     String name = sender.getName();
                     int cost = Integer.parseInt(args[2]);
-                    if(collection.isEmpty()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1387,7 +1391,7 @@ public class Commands implements CommandExecutor {
                             String n = e.getCustomName();
                             if (euid.equals(h)) {
                                 if (e.getScoreboardTags().contains("Owner:30807522-e3c9-471f-a366-c7b152650dfc")) {
-                                    if(player.hasPermission("eq.staff")) {
+                                    if (player.hasPermission("eq.staff")) {
                                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " sent lease request for " + "$" + cost + "!");
                                         p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " would like to lease you" + n + " for " + "$" + cost + "!");
                                         TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
@@ -1398,8 +1402,7 @@ public class Commands implements CommandExecutor {
                                         return true;
                                     }
 
-                                }
-                                else if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                } else if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " sent lease request for " + "$" + cost + "!");
                                     p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + name + " would like to lease you" + n + " for " + "$" + cost + "!");
                                     TextComponent msg = new TextComponent(ChatColor.GRAY + "[" + ChatColor.GREEN + "Accept" + ChatColor.GRAY + "]");
@@ -1437,10 +1440,10 @@ public class Commands implements CommandExecutor {
                     UUID targetPlayerUuid = p2.getUniqueId();
 
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + args[1] + "'s Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                    for(DbHorse horse : plugin.getDbContext().getHorsesOwnedByPlayer(targetPlayerUuid.toString())) {
+                    for (DbHorse horse : plugin.getDbContext().getHorsesOwnedByPlayer(targetPlayerUuid.toString())) {
                         StringBuilder name = new StringBuilder();
                         String hn = horse.getName();
-                        if(hn == null) {
+                        if (hn == null) {
                             hn = "No Name";
                         }
                         TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
@@ -1469,10 +1472,10 @@ public class Commands implements CommandExecutor {
                     Location loc = player.getLocation();
 
                     player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Horse List" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
-                    for(DbHorse horse : plugin.getDbContext().getHorsesOwnedByPlayer(uuid.toString())) {
+                    for (DbHorse horse : plugin.getDbContext().getHorsesOwnedByPlayer(uuid.toString())) {
                         StringBuilder name = new StringBuilder();
                         String hn = horse.getName();
-                        if(hn == null) {
+                        if (hn == null) {
                             hn = "No Name";
                         }
                         TextComponent msg = new TextComponent(ChatColor.AQUA + " ● " + ChatColor.WHITE + hn);
@@ -1510,8 +1513,8 @@ public class Commands implements CommandExecutor {
                         Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
                             @Override
                             public void run() {
-                                for(Entity e : lastWorld.getEntities()) {
-                                    if(e.getUniqueId().toString().equalsIgnoreCase(horse.getUuid())) {
+                                for (Entity e : lastWorld.getEntities()) {
+                                    if (e.getUniqueId().toString().equalsIgnoreCase(horse.getUuid())) {
                                         if (e.getScoreboardTags().contains("Owner:" + uuid.toString())) {
                                             if (horse.getOwnerUuid().equalsIgnoreCase("EMPTY")) {
                                                 System.out.println("This horse does not have an owner set... Correcting!");
@@ -1528,7 +1531,7 @@ public class Commands implements CommandExecutor {
                         return true;
 
 
-                    } catch(NoSuchElementException e) {
+                    } catch (NoSuchElementException e) {
                         // Send message to player saying the horse with the specified id was not found
                         e.printStackTrace();
                     }
@@ -1547,7 +1550,7 @@ public class Commands implements CommandExecutor {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                if (e.getCustomName().equals(args[1])){
+                                if (e.getCustomName().equals(args[1])) {
                                     ((LivingEntity) e).damage(1, player);
                                     return true;
                                 }
@@ -1557,7 +1560,7 @@ public class Commands implements CommandExecutor {
                     for (Entity e : world2.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
-                                if (e.getCustomName().equals(args[1])){
+                                if (e.getCustomName().equals(args[1])) {
                                     ((LivingEntity) e).damage(1, player);
                                     return true;
                                 }
@@ -1631,7 +1634,7 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Owner:" + uuid2)) {
                                     double bal = eco.getBalance(player);
                                     System.out.println(bal);
-                                    if(bal < cost) {
+                                    if (bal < cost) {
                                         p2.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Player does not have enough money to lease this horse!");
                                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have enough money to lease this horse!");
                                         return true;
@@ -1683,7 +1686,7 @@ public class Commands implements CommandExecutor {
                     UUID uuid2 = p2.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
-                    if(collection.isEmpty()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1714,7 +1717,7 @@ public class Commands implements CommandExecutor {
                     UUID uuid = player.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
-                    if(euid.equals(null)) {
+                    if (euid.equals(null)) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1735,8 +1738,8 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
-                for(World world : plugin.getServer().getWorlds()) {
-                    if(collection.isEmpty()) {
+                for (World world : plugin.getServer().getWorlds()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1758,7 +1761,8 @@ public class Commands implements CommandExecutor {
                                         return true;
 
                                     }
-                                } if (args[1].equalsIgnoreCase("2ft")) {
+                                }
+                                if (args[1].equalsIgnoreCase("2ft")) {
                                     UUID h = e.getUniqueId();
                                     if (euid.equals(h)) {
                                         ((Horse) e).setJumpStrength(.617);
@@ -1773,7 +1777,8 @@ public class Commands implements CommandExecutor {
                                         return true;
 
                                     }
-                                } if (args[1].equalsIgnoreCase("3ft")) {
+                                }
+                                if (args[1].equalsIgnoreCase("3ft")) {
                                     UUID h = e.getUniqueId();
                                     if (euid.equals(h)) {
                                         ((Horse) e).setJumpStrength(.717);
@@ -1788,7 +1793,8 @@ public class Commands implements CommandExecutor {
                                         return true;
 
                                     }
-                                }if (args[1].equalsIgnoreCase("4ft")) {
+                                }
+                                if (args[1].equalsIgnoreCase("4ft")) {
                                     UUID h = e.getUniqueId();
                                     if (euid.equals(h)) {
                                         ((Horse) e).setJumpStrength(.817);
@@ -1803,7 +1809,8 @@ public class Commands implements CommandExecutor {
                                         return true;
 
                                     }
-                                }if (args[1].equalsIgnoreCase("5ft")) {
+                                }
+                                if (args[1].equalsIgnoreCase("5ft")) {
                                     UUID h = e.getUniqueId();
                                     if (euid.equals(h)) {
                                         ((Horse) e).setJumpStrength(.917);
@@ -1818,7 +1825,8 @@ public class Commands implements CommandExecutor {
                                         return true;
 
                                     }
-                                }if (args[1].equalsIgnoreCase("6ft")) {
+                                }
+                                if (args[1].equalsIgnoreCase("6ft")) {
                                     UUID h = e.getUniqueId();
                                     if (euid.equals(h)) {
                                         ((Horse) e).setJumpStrength(1.117);
@@ -1843,8 +1851,8 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 Location loc = player.getLocation();
-                for(World world : plugin.getServer().getWorlds()) {
-                    if(collection.isEmpty()) {
+                for (World world : plugin.getServer().getWorlds()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1865,8 +1873,8 @@ public class Commands implements CommandExecutor {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
-                for(World world : plugin.getServer().getWorlds()) {
-                    if(collection.isEmpty()) {
+                for (World world : plugin.getServer().getWorlds()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1881,6 +1889,39 @@ public class Commands implements CommandExecutor {
                             }
                         }
                     }
+                }
+            } else if (args[0].equalsIgnoreCase("diagnose")) {
+                Player player = (Player) sender;
+                UUID uuid = player.getUniqueId();
+                UUID euid = collection.get(uuid);
+                World world = player.getWorld();
+                if (args[1].equalsIgnoreCase("flu")) {
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                if (player.hasPermission("eq.vet")) {
+                                    e.addScoreboardTag("flug");
+                                    e.removeScoreboardTag("stranglesg");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have diagnosed this horse with the flu!");
+                                }
+                            }
+                        }
+                    }
+                }if (args[1].equalsIgnoreCase("strangles")) {
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                if (player.hasPermission("eq.vet")) {
+                                    e.addScoreboardTag("stranglesg");
+                                    e.removeScoreboardTag("flug");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have diagnosed this horse with strangles!");
+                                }
+                            }
+                        }
+                    }
+
                 }
 
             } else if (args[0].equalsIgnoreCase("kill")) {
@@ -1900,7 +1941,8 @@ public class Commands implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have permission to kill horses!");
                             }
                         }
-                    } if (e instanceof Donkey) {
+                    }
+                    if (e instanceof Donkey) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (player.hasPermission("eq.op")) {
@@ -1911,7 +1953,8 @@ public class Commands implements CommandExecutor {
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have permission to kill horses!");
                             }
                         }
-                    } if (e instanceof Mule) {
+                    }
+                    if (e instanceof Mule) {
                         UUID h = e.getUniqueId();
                         if (euid.equals(h)) {
                             if (player.hasPermission("eq.op")) {
@@ -1930,7 +1973,7 @@ public class Commands implements CommandExecutor {
                     UUID uuid = player.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = player.getWorld();
-                    if(collection.isEmpty()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -1941,14 +1984,14 @@ public class Commands implements CommandExecutor {
                                 DbHorse horse = plugin.getDbContext().getHorseFromDatabase(euid);
                                 StringBuilder name = new StringBuilder();
                                 // Test Name
-                                for(int i = 0; i < args.length; i++) {
+                                for (int i = 0; i < args.length; i++) {
                                     String word = args[i];
-                                    if(word.equalsIgnoreCase("name")) {
+                                    if (word.equalsIgnoreCase("name")) {
                                         continue;
                                     }
                                     word = word.replace('&', '§');
                                     word = word.trim();
-                                    if(i == args.length - 1) {
+                                    if (i == args.length - 1) {
                                         name.append(word);
                                     } else {
                                         name.append(word + " ");
@@ -1956,7 +1999,7 @@ public class Commands implements CommandExecutor {
                                 }
                                 if (player.hasPermission("eq.dev")) {
                                     e.setCustomName(name.toString());
-                                    if(horse != null) {
+                                    if (horse != null) {
                                         horse.setName(name.toString());
                                         plugin.getDbContext().updateHorseInDatabase(horse);
                                     } else {
@@ -1969,7 +2012,7 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {
                                     e.setCustomName(name.toString());
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
-                                    if(horse != null) {
+                                    if (horse != null) {
                                         horse.setName(name.toString());
                                         plugin.getDbContext().updateHorseInDatabase(horse);
                                     } else {
@@ -1979,7 +2022,7 @@ public class Commands implements CommandExecutor {
                                 } else if (e.getScoreboardTags().contains("Member:" + uuid)) {
                                     e.setCustomName(name.toString());
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have named this horse!");
-                                    if(horse != null) {
+                                    if (horse != null) {
                                         horse.setName(name.toString());
                                         plugin.getDbContext().updateHorseInDatabase(horse);
                                     } else {
@@ -2028,7 +2071,7 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
-                if(collection.isEmpty()) {
+                if (collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -2041,7 +2084,8 @@ public class Commands implements CommandExecutor {
                                 e.addScoreboardTag("Public");
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse public!");
                                 return true;
-                            } if (player.hasPermission("eq.dev")) {
+                            }
+                            if (player.hasPermission("eq.dev")) {
                                 e.removeScoreboardTag("Private");
                                 e.addScoreboardTag("Public");
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse private!");
@@ -2059,7 +2103,7 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
-                if(collection.isEmpty()) {
+                if (collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -2072,7 +2116,8 @@ public class Commands implements CommandExecutor {
                                 e.addScoreboardTag("Private");
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse private!");
                                 return true;
-                            }if (player.hasPermission("eq.dev")) {
+                            }
+                            if (player.hasPermission("eq.dev")) {
                                 e.removeScoreboardTag("Public");
                                 e.addScoreboardTag("Private");
                                 sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.GREEN + "You have made this horse private!");
@@ -2240,22 +2285,13 @@ public class Commands implements CommandExecutor {
                 }
             } else if (args[0].equalsIgnoreCase("lunge")) {
                 Player p = (Player) sender;
-                int cooldownTime = 25; // The number of seconds the player has to wait
-                if(cooldowns.containsKey(p.getName())) {
-                    long secondsLeft = ((cooldowns.get(p.getName())/1000)+cooldownTime) - (System.currentTimeMillis()/1000);
-                    if(secondsLeft>0) {
-                        sender.sendMessage("You cant do this for another "+ secondsLeft +" seconds!");
-                        return true;
-                    }
-                }
-                cooldowns.put(p.getName(), System.currentTimeMillis());
-                if(false) {
+                if (false) {
                     p.sendMessage("&7[&bEQ&7] >> &cThis command is currently disabled!");
-                }else {
+                } else {
                     UUID uuid = p.getUniqueId();
                     UUID euid = collection.get(uuid);
                     World world = p.getWorld();
-                    if(collection.isEmpty()) {
+                    if (collection.isEmpty()) {
                         sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         return true;
                     }
@@ -2270,7 +2306,7 @@ public class Commands implements CommandExecutor {
                                 if (((LivingEntity) e).getLeashHolder() instanceof Player) {
                                     Player leash = (Player) ((LivingEntity) e).getLeashHolder();
                                     lungestat.put(uuid, true);
-                                    if (p != leash){
+                                    if (p != leash) {
                                         return true;
                                     }
                                     if (e.getScoreboardTags().contains("Trait:Stubborn")) {
@@ -2287,17 +2323,19 @@ public class Commands implements CommandExecutor {
                                         int timer = 0;
 
                                         public void run() {
+                                            //final float radius = 4.0f;
+                                            //final float radPerSec = (float) (2 * Math.PI / 4);
+                                            //final float radPerTick = radPerSec * tick / 20f;
                                             final float radius = 4.0f;
                                             final float radPerSec = (float) (2 * Math.PI / 4);
                                             final float radPerTick = radPerSec * tick / 20f;
                                             final Location center = p.getLocation();
                                             NBTEditor.set(e, (byte) 0, "EatingHaystack");
-                                            DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
-                                            horse.setRecentlyLunged(true);
-                                            plugin.getDbContext().updateHorseInDatabase(horse);
+                                            //horse.setRecentlyLunged(true);
+                                            //plugin.getDbContext().updateHorseInDatabase(horse);
                                             ++tick;
 
-                                            if(!plugin.lungeStatus.get(e.getUniqueId())) {
+                                            if (!plugin.lungeStatus.get(e.getUniqueId())) {
                                                 this.cancel();
                                                 plugin.lungeStatus.remove(e.getUniqueId());
                                                 return;
@@ -2313,16 +2351,17 @@ public class Commands implements CommandExecutor {
                                             ++timer;
 
                                             if (timer == 100 || timer == 200 || timer == 300) {
+                                                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(e.getUniqueId());
                                                 horse.setXp(horse.getXp() + 1);
                                                 if (doublexp.get("dxp") == "true") {
                                                     p.giveExp(6);
                                                     p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+6 XP"));
-                                                }else{
+                                                } else {
                                                     p.giveExp(3);
                                                     p.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.GREEN + "+3 XP"));
                                                 }
                                                 int requiredForNext = Utilities.getXpNeededForLevel(horse.getLevel() + 1);
-                                                if(requiredForNext <= horse.getXp()) {
+                                                if (requiredForNext <= horse.getXp()) {
                                                     horse.setLevel(horse.getLevel() + 1);
                                                     String message = String.format("%s, [%sEQ%s] >> %sYour horse is now level %s!", ChatColor.GRAY, ChatColor.AQUA, ChatColor.GRAY, ChatColor.GREEN, horse.getLevel());
                                                     p.sendMessage(message);
@@ -2348,7 +2387,7 @@ public class Commands implements CommandExecutor {
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
                 World world = player.getWorld();
-                if(collection.isEmpty()) {
+                if (collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
@@ -2361,7 +2400,7 @@ public class Commands implements CommandExecutor {
                             TextComponent msg = new TextComponent(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "--------------------" + "[" + ChatColor.WHITE + "<<" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "/" + ChatColor.YELLOW + "2" + ChatColor.GRAY + "]" + "" + ChatColor.STRIKETHROUGH + "----------------------");
                             msg.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/eq info"));
                             player.spigot().sendMessage(msg);
-                            player.sendMessage(ChatColor.GRAY +  "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
+                            player.sendMessage(ChatColor.GRAY + "          " + "[" + ChatColor.YELLOW + hn + ChatColor.YELLOW + "'s Info" + ChatColor.GRAY + "]" + "          ");
                             player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-------------------------------------------------------");
                             player.sendMessage(" ");
                             if (e.getScoreboardTags().contains("Vaxed")) {
@@ -2375,18 +2414,50 @@ public class Commands implements CommandExecutor {
                             }
                             player.sendMessage(" ");
                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.WHITE + "Illnesses & Injuries" + ChatColor.GRAY + "]");
-                            if (e.getScoreboardTags().contains("Flu")) {
+                            if (e.getScoreboardTags().contains("flug") || e.getScoreboardTags().contains("Flu1") || e.getScoreboardTags().contains("Flu2") || e.getScoreboardTags().contains("Flu3") || e.getScoreboardTags().contains("Flu4") || e.getScoreboardTags().contains("Flu5") || e.getScoreboardTags().contains("Flu6") || e.getScoreboardTags().contains("Flu7")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Flu");
                             }
-                            if (horse.getColic() != null) {
-                                if(horse.getColic().isDiagnosed()) {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Colic");
-                                } else {
-                                    player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Unknown Illness");
-                                }
+                            if (e.getScoreboardTags().contains("Strangles1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
                             }
-                            if (e.getScoreboardTags().contains("Strangles")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles");
+                            if (e.getScoreboardTags().contains("strangles")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles2") && e.getScoreboardTags().contains("Strangles1d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles1d") && !e.getScoreboardTags().contains("Strangles2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles3") && e.getScoreboardTags().contains("Strangles2d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles2d") && !e.getScoreboardTags().contains("Strangles3")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles4") && e.getScoreboardTags().contains("Strangles3d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles3d") && !e.getScoreboardTags().contains("Strangles4")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles5") && e.getScoreboardTags().contains("Strangles4d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles4d") && !e.getScoreboardTags().contains("Strangles5")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles6") && e.getScoreboardTags().contains("Strangles5d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles5d") && !e.getScoreboardTags().contains("Strangles6")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles7") && e.getScoreboardTags().contains("Strangles6d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Strangles6d") && !e.getScoreboardTags().contains("Strangles7")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
                             }
                             if (e.getScoreboardTags().contains("West Nile Virus")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " West Nile Virus");
@@ -2458,7 +2529,7 @@ public class Commands implements CommandExecutor {
                             }
                             return true;
 
-                        } else if(collection.isEmpty()) {
+                        } else if (collection.isEmpty()) {
                             sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                         }
                     }
@@ -2468,11 +2539,11 @@ public class Commands implements CommandExecutor {
                 Player player = (Player) sender;
                 UUID uuid = player.getUniqueId();
                 UUID euid = collection.get(uuid);
-                if(collection.isEmpty()) {
+                if (collection.isEmpty()) {
                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
                     return true;
                 }
-                for(World world : plugin.getServer().getWorlds()) {
+                for (World world : plugin.getServer().getWorlds()) {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             UUID h = e.getUniqueId();
@@ -2779,48 +2850,6 @@ public class Commands implements CommandExecutor {
                     }
                 }
                 return true;
-            } else if (args[0].equalsIgnoreCase("testill")) {
-                Player player = (Player) sender;
-                UUID uuid = player.getUniqueId();
-                UUID euid = collection.get(uuid);
-                World world = player.getWorld();
-                if(collection.isEmpty()) {
-                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
-                    return true;
-                }
-
-                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(euid);
-                IllnessColic colic = horse.getColic();
-                colic.setSicknessTime(colic.getSicknessTime() + 10);
-                horse.setColic(colic);
-                plugin.getDbContext().updateHorseInDatabase(horse);
-
-                return true;
-            } else if (args[0].equalsIgnoreCase("diagnose")) {
-                Player player = (Player) sender;
-                UUID uuid = player.getUniqueId();
-                UUID euid = collection.get(uuid);
-                World world = player.getWorld();
-                if(collection.isEmpty()) {
-                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Please first select your horse!");
-                    return true;
-                }
-
-                DbHorse horse = plugin.getDbContext().getHorseFromDatabase(euid);
-
-                if(player.hasPermission("eq.vet")) {
-                    if(args[1].equalsIgnoreCase("colic")) {
-                        if(horse.getColic() != null) {
-                            IllnessColic colic = horse.getColic();
-                            colic.setDiagnosed(true);
-                            horse.setColic(colic);
-                            plugin.getDbContext().updateHorseInDatabase(horse);
-                            sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You've succesfully diagnosed this horse with colic!");
-                        }
-                    }
-                } else {
-                    // Send no permissions message
-                }
             }
         }
         if (cmd.getName().equalsIgnoreCase("Diamond")) {
@@ -3198,60 +3227,6 @@ public class Commands implements CommandExecutor {
                 }.runTaskTimer(plugin, 0, 200);
             }
         }
-        if (cmd.getName().equalsIgnoreCase("access")) {
-            String name = sender.getName();
-            UUID uuid = sender.getServer().getPlayerUniqueId(name);
-            access.put(uuid, "True");
-            String ac = access.get(uuid);
-            if (ac == null) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
-                access.put(uuid, "false");
-                new BukkitRunnable() {
-                    public void run() {
-                        access.put(uuid, "True");
-                        return;
-
-                    }
-                }.runTaskTimer(plugin, 0, 200);
-            } else if (ac.isEmpty()) {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
-                access.put(uuid, "false");
-                new BukkitRunnable() {
-                    public void run() {
-                        access.put(uuid, "True");
-                        return;
-
-                    }
-                }.runTaskTimer(plugin, 0, 200);
-            } else if (ac == "True") {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
-                access.put(uuid, "false");
-                new BukkitRunnable() {
-                    public void run() {
-                        access.put(uuid, "True");
-                        return;
-
-                    }
-                }.runTaskTimer(plugin, 0, 200);
-
-            } else if (ac == "false") {
-                return true;
-            } else {
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "lp user " + name + " permission settemp group.banknote true 1m");
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "discord broadcast #874699434364112976 [Bank Notes] " + name + " has access for (1 minute)");
-                access.put(uuid, "false");
-                new BukkitRunnable() {
-                    public void run() {
-                        access.put(uuid, "True");
-                        return;
-
-                    }
-                }.runTaskTimer(plugin, 0, 200);
-            }
-        }
         if (cmd.getName().equalsIgnoreCase("countdown")) {
             if (sender.hasPermission("eq.staff")) {
                 sender.getServer().broadcastMessage(ChatColor.YELLOW + "3...");
@@ -3590,6 +3565,16 @@ public class Commands implements CommandExecutor {
                                             }
                                         }
                                         break;
+                                    }if (e.getScoreboardTags().contains("vax" + num)) {
+                                        e.removeScoreboardTag("vax" + num);
+                                        ++num;
+                                        e.addScoreboardTag("vax" + num);
+                                        if (num == 30) {
+                                            e.removeScoreboardTag("vax" + num);
+                                            e.removeScoreboardTag("Vaxed");
+                                            break;
+                                        }
+                                        break;
                                     }
                                     ++num;
                                 }
@@ -3600,40 +3585,6 @@ public class Commands implements CommandExecutor {
                 }
             }
 
-            if (args[0].equalsIgnoreCase("updatecolic")) {
-                for(DbHorse horse : plugin.getDbContext().getAllHorsesFromDatabase()) {
-                    if(horse.getColic() != null) {
-                        IllnessColic colic = horse.getColic();
-
-                        if(colic.getSicknessTime() >= 14 && colic.isDiagnosed()) {
-                            plugin.getDbContext().removeColicFromHorse(horse);
-                        } else {
-                            if(horse.isRecentlyLunged()) {
-                                colic.setSicknessTime(colic.getSicknessTime() + 1);
-                                horse.setColic(colic);
-                                plugin.getDbContext().updateHorseInDatabase(horse);
-                            }
-                        }
-
-                        if(!colic.isDiagnosed()) {
-                            colic.setTimeUndiagnosed(colic.getTimeUndiagnosed() + 1);
-                            if(colic.getTimeUndiagnosed() >= 8) {
-                                OfflinePlayer offp = Bukkit.getOfflinePlayer(UUID.fromString(horse.getOwnerUuid()));
-                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp.getName() + " Your horse " + horse.getName() + " has died of colic. ");
-
-                                plugin.getDbContext().deleteHorseFromDatabase(horse);
-                                for(World world : plugin.getServer().getWorlds()) {
-                                    Entity e = world.getEntity(UUID.fromString(horse.getUuid()));
-                                    if(e != null) {
-                                        ((LivingEntity) e).setHealth(0);
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
 
             //I guess this is a ok way to do this.... I mean it works soo??
             // Possibly look into a better way...
@@ -3688,14 +3639,84 @@ public class Commands implements CommandExecutor {
                                 if (e.getScoreboardTags().contains("Owner:" + puuid)) {
                                     String offp = p.getName();
                                     String name = e.getCustomName();
+                                    if (e.getScoreboardTags().contains("Flu7")) {
+                                        e.removeScoreboardTag("Flu7");
+                                        e.removeScoreboardTag("Contagius2");
+                                        e.removeScoreboardTag("flug");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Flu6")) {
+                                        e.addScoreboardTag("Flu7");
+                                        e.removeScoreboardTag("Flu6");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Flu5")) {
+                                        e.addScoreboardTag("Flu6");
+                                        e.removeScoreboardTag("Flu5");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Flu4")) {
+                                        e.addScoreboardTag("Flu5");
+                                        e.removeScoreboardTag("Flu4");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Flu3")) {
+                                        e.addScoreboardTag("Flu4");
+                                        e.removeScoreboardTag("Flu3");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Flu2")) {
+                                        e.addScoreboardTag("Flu3");
+                                        e.removeScoreboardTag("Flu2");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Flu")) {
+                                        e.addScoreboardTag("Flu2");
+                                        e.removeScoreboardTag("Flu");
+                                        continue;
+                                    }
+                                    if (e.getScoreboardTags().contains("Strangles7")) {
+                                        e.removeScoreboardTag("Strangles7d");
+                                        e.removeScoreboardTag("Strangles7");
+                                        e.removeScoreboardTag("stranglesg");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Strangles6")) {
+                                        e.addScoreboardTag("Strangles7d");
+                                        e.removeScoreboardTag("Strangles6d");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Strangles5")) {
+                                        e.addScoreboardTag("Strangles5d");
+                                        e.removeScoreboardTag("Strangles4d");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Strangles4")) {
+                                        e.addScoreboardTag("Strangles4d");
+                                        e.removeScoreboardTag("Strangles3d");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Strangles3")) {
+                                        e.addScoreboardTag("Strangles3d");
+                                        e.removeScoreboardTag("Strangles2d");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Strangles2")) {
+                                        e.addScoreboardTag("Strangles2d");
+                                        e.removeScoreboardTag("Strangles1d");
+                                        e.removeScoreboardTag("Contagius1");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Strangles1")) {
+                                        e.addScoreboardTag("Strangles1d");
+                                        continue;
+                                    }
+                                    if (e.getScoreboardTags().contains("uill1") || e.getScoreboardTags().contains("Strangles")) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 8) {
+                                            ((LivingEntity) e).setHealth(0);
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died from strangles ");
+                                        }
+                                    }
                                     if (!e.getScoreboardTags().contains("Vaxed")) {
                                         Random rnd = new Random();
                                         int i = rnd.nextInt(100);
                                         if (i <= 20) {
                                             if (!e.getScoreboardTags().contains("uill1")) {
-                                                e.addScoreboardTag("uill1");
-                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
-                                                continue;
+                                                if (!e.getScoreboardTags().contains("Stranglesg")) {
+                                                    e.addScoreboardTag("uill1");
+                                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
+                                                    continue;
+                                                }
                                             }
                                         }
                                         if (i <= 30) {
@@ -3706,7 +3727,7 @@ public class Commands implements CommandExecutor {
                                             }
                                         }
                                         if (i <= 15) {
-                                            if (!e.getScoreboardTags().contains("uill3")) {
+                                            if (!e.getScoreboardTags().contains("uill3") || !e.getScoreboardTags().contains("Contagius2")) {
                                                 e.addScoreboardTag("uill3");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                                 continue;
@@ -3761,7 +3782,65 @@ public class Commands implements CommandExecutor {
                                             for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
                                                 UUID uuid = p.getUniqueId();
                                                 if (e.getScoreboardTags().contains("Owner:" + uuid)) {
-                                                    p.getPlayer();
+                                                    String offp = p.getName();
+                                                    String name = e.getCustomName();
+                                                    Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of old age. ");
+                                                }
+                                            }
+                                        }if (i <= 25) {
+                                            Random rnd = new Random();
+                                            int i2 = rnd.nextInt(100);
+                                            if (i2 <= 10) {
+                                                ((LivingEntity) e).setHealth(0);
+                                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                                    UUID uuid = p.getUniqueId();
+                                                    if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                                        String offp = p.getName();
+                                                        String name = e.getCustomName();
+                                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of old age. ");
+                                                    }
+                                                }
+                                            }
+                                        }if (i <= 30) {
+                                            Random rnd = new Random();
+                                            int i2 = rnd.nextInt(100);
+                                            if (i2 <= 20) {
+                                                ((LivingEntity) e).setHealth(0);
+                                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                                    UUID uuid = p.getUniqueId();
+                                                    if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                                        String offp = p.getName();
+                                                        String name = e.getCustomName();
+                                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of old age. ");
+                                                    }
+                                                }
+                                            }
+                                        }if (i <= 40) {
+                                            Random rnd = new Random();
+                                            int i2 = rnd.nextInt(100);
+                                            if (i2 <= 30) {
+                                                ((LivingEntity) e).setHealth(0);
+                                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                                    UUID uuid = p.getUniqueId();
+                                                    if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                                        String offp = p.getName();
+                                                        String name = e.getCustomName();
+                                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of old age. ");
+                                                    }
+                                                }
+                                            }
+                                        }if (i <= 50) {
+                                            Random rnd = new Random();
+                                            int i2 = rnd.nextInt(100);
+                                            if (i2 <= 40) {
+                                                ((LivingEntity) e).setHealth(0);
+                                                for (OfflinePlayer p : Bukkit.getServer().getOfflinePlayers()) {
+                                                    UUID uuid = p.getUniqueId();
+                                                    if (e.getScoreboardTags().contains("Owner:" + uuid)) {
+                                                        String offp = p.getName();
+                                                        String name = e.getCustomName();
+                                                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of old age. ");
+                                                    }
                                                 }
                                             }
                                         }

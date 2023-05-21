@@ -97,7 +97,7 @@ public class DbHorse {
         return Utilities.convertStringToLocation(this.home);
     }
 
-    public void setHome(Location loc ) {
+    public void setHome(Location loc) {
         this.home = Utilities.convertLocationToString(loc);
     }
 

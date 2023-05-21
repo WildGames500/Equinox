@@ -715,6 +715,38 @@ public final class Equinox extends JavaPlugin {
                                 }
 
 
+                            } if (e.getScoreboardTags().contains("Contagius1")) {
+                                Location loc = e.getLocation();
+                                int x = loc.getBlockX();
+                                int y = loc.getBlockY();
+                                int z = loc.getBlockZ();
+                                for(Entity h : e.getNearbyEntities(2, 2, 2)) {
+                                    if (h instanceof Horse) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 20) {
+                                            h.addScoreboardTag("uill1");
+                                        }
+                                    }
+                                }
+
+
+                            }if (e.getScoreboardTags().contains("Contagius2")) {
+                                Location loc = e.getLocation();
+                                int x = loc.getBlockX();
+                                int y = loc.getBlockY();
+                                int z = loc.getBlockZ();
+                                for(Entity h : e.getNearbyEntities(2, 2, 2)) {
+                                    if (h instanceof Horse) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 20) {
+                                            h.addScoreboardTag("uill3");
+                                        }
+                                    }
+                                }
+
+
                             }
 
                         }
@@ -765,6 +797,10 @@ public final class Equinox extends JavaPlugin {
                     for (Entity e : world.getEntities()) {
                         if (e instanceof Horse || e instanceof Donkey || e instanceof Mule) {
                             Location loc = e.getLocation();
+                            int x = loc.getBlockX();
+                            int y1 = loc.getBlockY();
+                            int z = loc.getBlockZ();
+                            int lowestY = y1 - 1;
                             int radius = 4;
                             if (e.getScoreboardTags().contains("Hunger")) {
                                 Random rnd2 = new Random();
@@ -775,11 +811,26 @@ public final class Equinox extends JavaPlugin {
                                     }
                                 }
                                 Location foodSource = Utilities.findTypeOfBlockWithinLocation(loc, List.of(original), radius);
+                                for(int y = lowestY; y <= y1; y++) {
+                                    Block b = world.getBlockAt(x, y, z);
+                                    if (b.getType() == Material.GRASS_BLOCK) {
+                                        ((Horse) e).getPathfinder().findPath(b.getLocation());
+                                        if(!hasEaten.get()) {
+                                            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                                                NBTEditor.set(e, (byte) 1, "EatingHaystack");
+                                                for (Player player : world.getNearbyPlayers(loc, 5)) {
+                                                    player.playSound(loc, "entity.horse.eat", 2, 1F);
+                                                }
+                                                b.setType(Material.DIRT);
+                                                onConsumeFood(e, Material.GRASS_BLOCK);
+                                                hasEaten.set(true);
+                                            }, 100);
+                                        }
+                                    }
+                                }
                                 if(foodSource != null) {
                                     if (e instanceof Horse) {
                                         ((Horse) e).getPathfinder().findPath(foodSource);
-                                        System.out.println(e.getName() + " " + original);
-                                        System.out.println(e.getName() + " " + replacement);
                                     } if (e instanceof Donkey) {
                                         ((Donkey) e).getPathfinder().findPath(foodSource);
                                     } if (e instanceof Mule) {

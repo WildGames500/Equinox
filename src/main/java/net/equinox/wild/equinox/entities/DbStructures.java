@@ -59,9 +59,11 @@ public class DbStructures {
     public Integer getId() {
         return id;
     }
+
     public String getUUID() {
         return uuid;
     }
+
     public void setUuid(String uuid) {
         this.uuid = uuid;
     }
@@ -69,6 +71,7 @@ public class DbStructures {
     public Integer getSmallBarn() {
         return amount;
     }
+
     public void setSmallBarn(Integer amount) {
         this.amount = amount;
     }
@@ -76,6 +79,7 @@ public class DbStructures {
     public Integer getMedBarn() {
         return amount2;
     }
+
     public void setMedBarn(Integer amount2) {
         this.amount2 = amount2;
     }
@@ -83,6 +87,7 @@ public class DbStructures {
     public Integer getLargeBarn() {
         return amount3;
     }
+
     public void setLargeBarn(Integer amount3) {
         this.amount3 = amount3;
     }
@@ -91,6 +96,7 @@ public class DbStructures {
     public Integer getSmallPasture() {
         return amount4;
     }
+
     public void setSmallPasture(Integer amount4) {
         this.amount4 = amount4;
     }
@@ -98,6 +104,7 @@ public class DbStructures {
     public Integer getMedPasture() {
         return amount5;
     }
+
     public void setMedPasture(Integer amount5) {
         this.amount5 = amount5;
     }
@@ -105,6 +112,7 @@ public class DbStructures {
     public Integer getLargePasture() {
         return amount6;
     }
+
     public void setLargePasture(Integer amount6) {
         this.amount6 = amount6;
     }
@@ -112,6 +120,7 @@ public class DbStructures {
     public Integer getFlatArena() {
         return amount7;
     }
+
     public void setFlatArena(Integer amount7) {
         this.amount7 = amount7;
     }
@@ -120,6 +129,7 @@ public class DbStructures {
     public Integer getSjArena() {
         return amount8;
     }
+
     public void setSjArena(Integer amount8) {
         this.amount8 = amount8;
     }
@@ -127,6 +137,7 @@ public class DbStructures {
     public Integer getDressageArena() {
         return amount9;
     }
+
     public void setDressageArena(Integer amount9) {
         this.amount9 = amount9;
     }
@@ -134,6 +145,7 @@ public class DbStructures {
     public Integer getWesternArena() {
         return amount10;
     }
+
     public void setWesternArena(Integer amount10) {
         this.amount10 = amount10;
     }
@@ -141,6 +153,7 @@ public class DbStructures {
     public Integer getXcCourse() {
         return amount11;
     }
+
     public void setXcCourse(Integer amount11) {
         this.amount11 = amount11;
     }
@@ -148,6 +161,7 @@ public class DbStructures {
     public Integer getRaceTrack() {
         return amount12;
     }
+
     public void setRaceTrack(Integer amount12) {
         this.amount12 = amount12;
     }
@@ -155,6 +169,7 @@ public class DbStructures {
     public Integer getSteepleTrack() {
         return amount13;
     }
+
     public void setSteepleTrack(Integer amount13) {
         this.amount13 = amount13;
     }
@@ -162,6 +177,7 @@ public class DbStructures {
     public Integer getRoundPen() {
         return amount14;
     }
+
     public void setRoundPen(Integer amount14) {
         this.amount14 = amount14;
     }

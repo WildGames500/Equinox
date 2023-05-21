@@ -131,7 +131,7 @@ public class IllnessColic {
     }
 
     private void update() {
-        if(sicknessTime > 20) {
+        if (sicknessTime > 20) {
             hasGiIssues = true;
         }
     }

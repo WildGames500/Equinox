@@ -196,6 +196,11 @@ public class Events1 implements Listener {
                     }
                 }
             }
+        }if (h.getScoreboardTags().contains("uill1") || h.getScoreboardTags().contains("uill3") || h.getScoreboardTags().contains("stranglesg") || h.getScoreboardTags().contains("Contagious2")) {
+            h.removePassenger(p);
+            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse is sick and can not be ridden!");
+            e.setCancelled(true);
+            return;
         }
     }
 
@@ -767,42 +772,101 @@ public class Events1 implements Listener {
                             heldItem.setAmount(heldItem.getAmount() - 1);
                             player.updateInventory();
                         }
-                    } else if (player.hasPermission("eq.vettech")) {
-                        e.getEntity().addScoreboardTag("Vaxed");
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now vaccinated!");
-                        ItemStack heldItem = player.getItemInHand();
-                        if (heldItem.getType() == Material.SPIDER_EYE) {
-                            heldItem.setAmount(heldItem.getAmount() - 1);
-                            player.updateInventory();
-                        }
                     } else {
                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
                     }
-                } else if (player.getItemInHand().getType() == Material.GOLD_NUGGET) {
-                    if (e.getEntity().getScoreboardTags().contains("Flu")) {
-                        ItemStack heldItem = player.getItemInHand();
-                        if (heldItem.getType() == Material.GOLD_NUGGET) {
-                            heldItem.setAmount(heldItem.getAmount() - 1);
-                            player.updateInventory();
-                        }
-                        e.getEntity().removeScoreboardTag("Flu");
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
-                    }
+                    // Prismarine = Antibiotics
                 } else if (player.getItemInHand().getType() == Material.PRISMARINE_CRYSTALS) {
                     if (e.getEntity().getScoreboardTags().contains("Strangles")) {
                         ItemStack heldItem = player.getItemInHand();
                         e.getEntity().removeScoreboardTag("Strangles");
+                        e.getEntity().addScoreboardTag("Strangles1");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
                         if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
                             heldItem.setAmount(heldItem.getAmount() - 1);
                             player.updateInventory();
+                            return;
                         }
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
                     }
+                    if (e.getEntity().getScoreboardTags().contains("Strangles1d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill1");
+                        e.getEntity().removeScoreboardTag("Strangles1");
+                        e.getEntity().addScoreboardTag("Strangles2");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Strangles2d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill1");
+                        e.getEntity().removeScoreboardTag("Strangles2");
+                        e.getEntity().addScoreboardTag("Strangles3");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Strangles3d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill1");
+                        e.getEntity().removeScoreboardTag("Strangles3");
+                        e.getEntity().addScoreboardTag("Strangles4");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Strangles4d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill1");
+                        e.getEntity().removeScoreboardTag("Strangles4");
+                        e.getEntity().addScoreboardTag("Strangles5");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Strangles5d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill1");
+                        e.getEntity().removeScoreboardTag("Strangles5");
+                        e.getEntity().addScoreboardTag("Strangles6");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Strangles6d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill1");
+                        e.getEntity().removeScoreboardTag("Strangles6");
+                        e.getEntity().addScoreboardTag("Strangles7");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    } else {
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "Incorrect Treatment Please Contact Vet Immediatly!");
+                    }
+
                 } else if (player.getItemInHand().getType() == Material.NETHER_WART) {
                     if (e.getEntity().getScoreboardTags().contains("West Nile Virus")) {
                         ItemStack heldItem = player.getItemInHand();
-                        e.getEntity().removeScoreboardTag("Strangles");
-                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                        if (heldItem.getType() == Material.NETHER_WART) {
                             heldItem.setAmount(heldItem.getAmount() - 1);
                             player.updateInventory();
                         }
@@ -813,9 +877,21 @@ public class Events1 implements Listener {
                 } else if (player.getItemInHand().getType() == Material.FLINT) {
                     if (player.hasPermission("eq.vet")) {
                         if (e.getEntity().getScoreboardTags().contains("uill1")) {
+                            Random r = new Random();
+                            int low = 103;
+                            int high = 106;
+                            int result = r.nextInt(high-low) + low;
+                            Random r2 = new Random();
+                            int low2 = 28;
+                            int high2 = 40;
+                            int result2 = r2.nextInt(high2-low2) + low2;
                             e.getEntity().removeScoreboardTag("uill1");
                             e.getEntity().addScoreboardTag("Strangles");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has strangles!");
+                            e.getEntity().addScoreboardTag("Contagius1");
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Results" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                            player.sendMessage(ChatColor.YELLOW + "Heartbeat: " + ChatColor.WHITE + result2 + "BPM");
+                            player.sendMessage(ChatColor.YELLOW + "Symptoms: " + ChatColor.WHITE + "Lathargic, Loss of apitite, Nasal Discharge, and Swollen Lymph Nodes");
+                            player.sendMessage(ChatColor.YELLOW + "Temp: " + ChatColor.WHITE + result + "°F");
                         }
                         if (e.getEntity().getScoreboardTags().contains("uill2")) {
                             e.getEntity().removeScoreboardTag("uill2");
@@ -823,9 +899,21 @@ public class Events1 implements Listener {
                             player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has west nile virus!");
                         }
                         if (e.getEntity().getScoreboardTags().contains("uill3")) {
+                            Random r = new Random();
+                            int low = 103;
+                            int high = 106;
+                            int result = r.nextInt(high-low) + low;
+                            Random r2 = new Random();
+                            int low2 = 28;
+                            int high2 = 40;
+                            int result2 = r2.nextInt(high2-low2) + low2;
                             e.getEntity().removeScoreboardTag("uill3");
                             e.getEntity().addScoreboardTag("Flu");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has flu!");
+                            e.getEntity().addScoreboardTag("Contagius2");
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Results" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                            player.sendMessage(ChatColor.YELLOW + "Heartbeat: " + ChatColor.WHITE + result2 + "BPM");
+                            player.sendMessage(ChatColor.YELLOW + "Symptoms: " + ChatColor.WHITE + "Lathargic, Loss of apitite, Nasal Discharge, and Cough");
+                            player.sendMessage(ChatColor.YELLOW + "Temp: " + ChatColor.WHITE + result + "°F");
                         }
                     } else {
                         player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "You do not have the training to do this.");
