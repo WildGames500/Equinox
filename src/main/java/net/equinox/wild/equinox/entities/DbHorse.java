@@ -41,13 +41,8 @@ public class DbHorse {
     @Column(name = "last_chunk_z")
     private Integer lastChunkZ = 0;
 
-    @Column(name = "recently_lunged")
-    private boolean recentlyLunged;
 
     @OneToOne
-    @JoinColumn(name = "colic_id")
-    private IllnessColic colic;
-
 
     public Integer getId() {
         return id;
@@ -101,14 +96,6 @@ public class DbHorse {
         this.home = Utilities.convertLocationToString(loc);
     }
 
-    public IllnessColic getColic() {
-        return colic;
-    }
-
-    public void setColic(IllnessColic colic) {
-        this.colic = colic;
-    }
-
     public String getLastWorld() {
         return lastWorld;
     }
@@ -131,14 +118,6 @@ public class DbHorse {
 
     public void setLastChunkZ(Integer lastChunkZ) {
         this.lastChunkZ = lastChunkZ;
-    }
-
-    public boolean isRecentlyLunged() {
-        return recentlyLunged;
-    }
-
-    public void setRecentlyLunged(boolean recentlyLunged) {
-        this.recentlyLunged = recentlyLunged;
     }
 
 

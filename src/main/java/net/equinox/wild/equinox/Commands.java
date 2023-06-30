@@ -1,9 +1,7 @@
 package net.equinox.wild.equinox;
 
 
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
-import net.equinox.wild.equinox.entities.IllnessColic;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -1903,6 +1901,7 @@ public class Commands implements CommandExecutor {
                                 if (player.hasPermission("eq.vet")) {
                                     e.addScoreboardTag("flug");
                                     e.removeScoreboardTag("stranglesg");
+                                    e.removeScoreboardTag("tickborneg");
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have diagnosed this horse with the flu!");
                                 }
                             }
@@ -1916,7 +1915,23 @@ public class Commands implements CommandExecutor {
                                 if (player.hasPermission("eq.vet")) {
                                     e.addScoreboardTag("stranglesg");
                                     e.removeScoreboardTag("flug");
+                                    e.removeScoreboardTag("tickborneg");
                                     sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have diagnosed this horse with strangles!");
+                                }
+                            }
+                        }
+                    }
+
+                }if (args[1].equalsIgnoreCase("tickborne")) {
+                    for (Entity e : world.getEntities()) {
+                        if (e instanceof Horse) {
+                            UUID h = e.getUniqueId();
+                            if (euid.equals(h)) {
+                                if (player.hasPermission("eq.vet")) {
+                                    e.addScoreboardTag("tickborneg");
+                                    e.removeScoreboardTag("flug");
+                                    e.removeScoreboardTag("stranglesg");
+                                    sender.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "You have diagnosed this horse with tickborne!");
                                 }
                             }
                         }
@@ -2330,7 +2345,6 @@ public class Commands implements CommandExecutor {
                                             final float radPerSec = (float) (2 * Math.PI / 4);
                                             final float radPerTick = radPerSec * tick / 20f;
                                             final Location center = p.getLocation();
-                                            NBTEditor.set(e, (byte) 0, "EatingHaystack");
                                             //horse.setRecentlyLunged(true);
                                             //plugin.getDbContext().updateHorseInDatabase(horse);
                                             ++tick;
@@ -2408,7 +2422,6 @@ public class Commands implements CommandExecutor {
                                 player.sendMessage(" ");
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Rabies");
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Tetanus");
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " West Nile Virus");
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Strangles");
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.AQUA + " Flu");
                             }
@@ -2417,10 +2430,25 @@ public class Commands implements CommandExecutor {
                             if (e.getScoreboardTags().contains("flug") || e.getScoreboardTags().contains("Flu1") || e.getScoreboardTags().contains("Flu2") || e.getScoreboardTags().contains("Flu3") || e.getScoreboardTags().contains("Flu4") || e.getScoreboardTags().contains("Flu5") || e.getScoreboardTags().contains("Flu6") || e.getScoreboardTags().contains("Flu7")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Flu");
                             }
+                            if (e.getScoreboardTags().contains("Tickborne1")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tickborne " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Tickborne")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tickborne " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Tickborne2") && e.getScoreboardTags().contains("Tickborne1d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tickborne " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Tickborne1d") && !e.getScoreboardTags().contains("Tickborne2")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tickborne " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
+                            }
+                            if (e.getScoreboardTags().contains("Tickborne3") && e.getScoreboardTags().contains("Tickborne2d")) {
+                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tickborne " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
+                            }
                             if (e.getScoreboardTags().contains("Strangles1")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.GREEN + "✓" + ChatColor.GRAY + "]");
                             }
-                            if (e.getScoreboardTags().contains("strangles")) {
+                            if (e.getScoreboardTags().contains("Strangles")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
                             }
                             if (e.getScoreboardTags().contains("Strangles2") && e.getScoreboardTags().contains("Strangles1d")) {
@@ -2458,9 +2486,6 @@ public class Commands implements CommandExecutor {
                             }
                             if (e.getScoreboardTags().contains("Strangles6d") && !e.getScoreboardTags().contains("Strangles7")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Strangles " + ChatColor.GRAY + "[" + ChatColor.RED + "x" + ChatColor.GRAY + "]");
-                            }
-                            if (e.getScoreboardTags().contains("West Nile Virus")) {
-                                player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " West Nile Virus");
                             }
                             if (e.getScoreboardTags().contains("Tetanus")) {
                                 player.sendMessage(ChatColor.WHITE + "  ●" + ChatColor.YELLOW + " Illness:" + ChatColor.WHITE + " Tetanus");
@@ -3698,6 +3723,26 @@ public class Commands implements CommandExecutor {
                                     } if (e.getScoreboardTags().contains("Strangles1")) {
                                         e.addScoreboardTag("Strangles1d");
                                         continue;
+                                    } if (e.getScoreboardTags().contains("Strangles3")) {
+                                        e.removeScoreboardTag("Tickborne3");
+                                        e.removeScoreboardTag("Tickborne2d");
+                                        e.removeScoreboardTag("tickborneg");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Tickborne2")) {
+                                        e.addScoreboardTag("Tickborne2d");
+                                        e.removeScoreboardTag("Tickborne1d");
+                                        continue;
+                                    } if (e.getScoreboardTags().contains("Tickborne1")) {
+                                        e.addScoreboardTag("Tickborne1d");
+                                        continue;
+                                    }
+                                    if (e.getScoreboardTags().contains("uill2") || e.getScoreboardTags().contains("Tickborne")) {
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 10) {
+                                            ((LivingEntity) e).setHealth(0);
+                                            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died from strangles ");
+                                        }
                                     }
                                     if (e.getScoreboardTags().contains("uill1") || e.getScoreboardTags().contains("Strangles")) {
                                         Random rnd = new Random();
@@ -3719,13 +3764,6 @@ public class Commands implements CommandExecutor {
                                                 }
                                             }
                                         }
-                                        if (i <= 30) {
-                                            if (!e.getScoreboardTags().contains("uill2")) {
-                                                e.addScoreboardTag("uill2");
-                                                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
-                                                continue;
-                                            }
-                                        }
                                         if (i <= 15) {
                                             if (!e.getScoreboardTags().contains("uill3") || !e.getScoreboardTags().contains("Contagius2")) {
                                                 e.addScoreboardTag("uill3");
@@ -3733,16 +3771,14 @@ public class Commands implements CommandExecutor {
                                                 continue;
                                             }
                                         }
-                                        if (i <= 5) {
-                                            if (e.getScoreboardTags().contains("Thirst:0")) {
-                                                if(horse != null) {
-                                                    if(horse.getColic() == null) {
-                                                        plugin.getDbContext().giveColicToHorse(horse);
-                                                    }
-                                                }
+                                    }else{
+                                        Random rnd = new Random();
+                                        int i = rnd.nextInt(100);
+                                        if (i <= 2) {
+                                            if (!e.getScoreboardTags().contains("uill2") || !e.getScoreboardTags().contains("tickborneg")) {
+                                                e.addScoreboardTag("uill2");
                                                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has a unknown illness. ");
                                                 continue;
-
                                             }
                                         }
                                     }
@@ -3787,7 +3823,7 @@ public class Commands implements CommandExecutor {
                                                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "mail send " + offp + " Your horse " + name + " has died of old age. ");
                                                 }
                                             }
-                                        }if (i <= 25) {
+                                        }if (i >= 25) {
                                             Random rnd = new Random();
                                             int i2 = rnd.nextInt(100);
                                             if (i2 <= 10) {
@@ -3801,7 +3837,7 @@ public class Commands implements CommandExecutor {
                                                     }
                                                 }
                                             }
-                                        }if (i <= 30) {
+                                        }if (i >= 30) {
                                             Random rnd = new Random();
                                             int i2 = rnd.nextInt(100);
                                             if (i2 <= 20) {
@@ -3815,7 +3851,7 @@ public class Commands implements CommandExecutor {
                                                     }
                                                 }
                                             }
-                                        }if (i <= 40) {
+                                        }if (i >= 40) {
                                             Random rnd = new Random();
                                             int i2 = rnd.nextInt(100);
                                             if (i2 <= 30) {
@@ -3829,7 +3865,7 @@ public class Commands implements CommandExecutor {
                                                     }
                                                 }
                                             }
-                                        }if (i <= 50) {
+                                        }if (i >= 50) {
                                             Random rnd = new Random();
                                             int i2 = rnd.nextInt(100);
                                             if (i2 <= 40) {

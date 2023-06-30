@@ -2,7 +2,6 @@ package net.equinox.wild.equinox;
 
 import com.earth2me.essentials.Essentials;
 import dev.dbassett.skullcreator.SkullCreator;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -75,7 +74,6 @@ public final class Equinox extends JavaPlugin {
         hungerLoop(this);
         thirstLoop(this);
         createCustomConfig();
-        boolean useHolographicDisplays = Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays");
         getServer().getPluginManager().registerEvents(new Events1(this), this);
         getServer().getPluginManager().registerEvents(new HorseGUI(this), this);
         this.getCommand("eq").setExecutor(new Commands(this));
@@ -94,11 +92,6 @@ public final class Equinox extends JavaPlugin {
             System.out.println("No Economy Plugin Found! Disabling Vault...");
             getServer().getPluginManager().disablePlugin(this);
             return;
-        }
-        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
-            getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
-            getLogger().severe("*** This plugin will be disabled. ***");
-            this.setEnabled(false);
         }
 
         setupDatabaseConnection();
@@ -336,7 +329,6 @@ public final class Equinox extends JavaPlugin {
                                                         ((Mule) e).getPathfinder().findPath(loc2);
                                                     }
                                                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                                        NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                                         if (e.getScoreboardTags().contains("Thirst:9")) {
                                                             e.removeScoreboardTag("Thirst:9");
                                                             e.addScoreboardTag("Thirst:10");
@@ -632,7 +624,6 @@ public final class Equinox extends JavaPlugin {
                                         ((Mule) e).getPathfinder().findPath(loc2);
                                     }
                                     Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                        NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                         block.setType(Material.AIR);
                                         if (e.getScoreboardTags().contains("Thirst:9")) {
                                             e.removeScoreboardTag("Thirst:9");
@@ -817,7 +808,6 @@ public final class Equinox extends JavaPlugin {
                                         ((Horse) e).getPathfinder().findPath(b.getLocation());
                                         if(!hasEaten.get()) {
                                             Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                                NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                                 for (Player player : world.getNearbyPlayers(loc, 5)) {
                                                     player.playSound(loc, "entity.horse.eat", 2, 1F);
                                                 }
@@ -838,7 +828,6 @@ public final class Equinox extends JavaPlugin {
                                     }
                                     if(!hasEaten.get()) {
                                         Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                            NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                             for(Player player : world.getNearbyPlayers(loc, 5)) {
                                                 player.playSound(loc, "entity.horse.eat", 2, 1F);
                                             }

@@ -3,7 +3,7 @@ version: ${project.version}
 main: net.equinox.wild.equinox.Equinox
 api-version: 1.18
 authors: [ WildGames500 ]
-depend: [ Vault, HolographicDisplays ]
+depend: [ Vault ]
 commands:
   cpu:
     description: Returns pong!

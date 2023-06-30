@@ -1,10 +1,9 @@
 package net.equinox.wild.equinox;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import net.equinox.wild.equinox.entities.DbHorse;
 import net.equinox.wild.equinox.entities.DbStructures;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -100,7 +99,6 @@ public class Events1 implements Listener {
                                 ((Horse) e).getPathfinder().findPath(loc);
                                 System.out.println("Found");
                                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                                    NBTEditor.set(e, (byte) 1, "EatingHaystack");
                                     player.playSound(loc, "entity.horse.eat", 2, 1F);
                                     if (event.getInventory() instanceof BrewerInventory) {
                                         if (event.getInventory().contains(Material.WHEAT_SEEDS)) {
@@ -196,10 +194,14 @@ public class Events1 implements Listener {
                     }
                 }
             }
-        }if (h.getScoreboardTags().contains("uill1") || h.getScoreboardTags().contains("uill3") || h.getScoreboardTags().contains("stranglesg") || h.getScoreboardTags().contains("Contagious2")) {
-            h.removePassenger(p);
-            p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse is sick and can not be ridden!");
-            e.setCancelled(true);
+        }if (p.getItemInHand().getType() != Material.LEAD) {
+            if (h.getScoreboardTags().contains("uill1") || h.getScoreboardTags().contains("uill3") || h.getScoreboardTags().contains("uill2") || h.getScoreboardTags().contains("stranglesg") || h.getScoreboardTags().contains("Contagious2") || h.getScoreboardTags().contains("tickborneg")) {
+                h.removePassenger(p);
+                p.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.RED + "This horse is sick and can not be ridden!");
+                e.setCancelled(true);
+                return;
+            }
+        }else {
             return;
         }
     }
@@ -670,23 +672,16 @@ public class Events1 implements Listener {
             int z = locate.getBlockZ();
             int y1 = y + 1;
             Location loc = locate.set(x, y1, z);
-            Hologram hologram = HologramsAPI.createHologram(plugin, loc);
             player.playSound(loc, "entity.slime.jump", 1, .5F);
             if(doublexp.get("dxp") != null && doublexp.get("dxp").equalsIgnoreCase("true")) {
                 player.giveExp(2);
-                hologram.appendTextLine(ChatColor.YELLOW + "+2 xp");
+                player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_AQUA + "+2 XP"));
             } else {
                 player.giveExp(1);
-                hologram.appendTextLine(ChatColor.YELLOW + "+1 xp");
+                player.sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(ChatColor.DARK_AQUA + "+1 XP"));
             }
 
             block.setType(Material.AIR);
-            Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    hologram.delete();
-                }
-            }, 100);
 
         }
 
@@ -864,14 +859,40 @@ public class Events1 implements Listener {
                     }
 
                 } else if (player.getItemInHand().getType() == Material.NETHER_WART) {
-                    if (e.getEntity().getScoreboardTags().contains("West Nile Virus")) {
+                    if (e.getEntity().getScoreboardTags().contains("Tickborne")) {
                         ItemStack heldItem = player.getItemInHand();
-                        if (heldItem.getType() == Material.NETHER_WART) {
+                        e.getEntity().removeScoreboardTag("Tickborne");
+                        e.getEntity().addScoreboardTag("Tickborne1");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
                             heldItem.setAmount(heldItem.getAmount() - 1);
                             player.updateInventory();
+                            return;
                         }
-                        e.getEntity().removeScoreboardTag("West Nile Virus");
-                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse is now cured!");
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Tickborne1d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill2");
+                        e.getEntity().removeScoreboardTag("Tickborne1");
+                        e.getEntity().addScoreboardTag("Tickborne2");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
+                    }
+                    if (e.getEntity().getScoreboardTags().contains("Tickborne2d")) {
+                        ItemStack heldItem = player.getItemInHand();
+                        e.getEntity().removeScoreboardTag("uill2");
+                        e.getEntity().removeScoreboardTag("Tickborne2");
+                        e.getEntity().addScoreboardTag("Tickborne3");
+                        player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "Treatment Given!");
+                        if (heldItem.getType() == Material.PRISMARINE_CRYSTALS) {
+                            heldItem.setAmount(heldItem.getAmount() - 1);
+                            player.updateInventory();
+                            return;
+                        }
                     }
 
                 } else if (player.getItemInHand().getType() == Material.FLINT) {
@@ -895,8 +916,19 @@ public class Events1 implements Listener {
                         }
                         if (e.getEntity().getScoreboardTags().contains("uill2")) {
                             e.getEntity().removeScoreboardTag("uill2");
-                            e.getEntity().addScoreboardTag("West Nile Virus");
-                            player.sendMessage(ChatColor.GRAY + "[" + ChatColor.AQUA + "EQ" + ChatColor.GRAY + "] >> " + ChatColor.YELLOW + "This horse has west nile virus!");
+                            e.getEntity().addScoreboardTag("Tickborne");
+                            Random r = new Random();
+                            int low = 104;
+                            int high = 108;
+                            int result = r.nextInt(high-low) + low;
+                            Random r2 = new Random();
+                            int low2 = 28;
+                            int high2 = 40;
+                            int result2 = r2.nextInt(high2-low2) + low2;
+                            player.sendMessage(ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------" + ChatColor.GRAY + "][" + ChatColor.YELLOW + "Results" + ChatColor.GRAY + "][" + ChatColor.GRAY + "" + ChatColor.STRIKETHROUGH + "-----------");
+                            player.sendMessage(ChatColor.YELLOW + "Heartbeat: " + ChatColor.WHITE + result2 + "BPM");
+                            player.sendMessage(ChatColor.YELLOW + "Symptoms: " + ChatColor.WHITE + "decreased appetite, moderate limb edema, stumbling, and ataxia");
+                            player.sendMessage(ChatColor.YELLOW + "Temp: " + ChatColor.WHITE + result + "°F");
                         }
                         if (e.getEntity().getScoreboardTags().contains("uill3")) {
                             Random r = new Random();

@@ -597,7 +597,7 @@ public class HorseGUI implements Listener {
                 metaref1.setDisplayName("§b§lSmall Pasture");
                 metaref2.setDisplayName("§b§lMedium Pasture");
                 metaref3.setDisplayName("§b§lLarge Pasture");
-                metaref3.setDisplayName("§c§lBack");
+                metaref4.setDisplayName("§c§lBack");
 
                 ref1.setItemMeta(metaref1);
                 ref2.setItemMeta(metaref2);

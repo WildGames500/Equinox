@@ -2,7 +2,6 @@ package net.equinox.wild.equinox;
 
 import net.equinox.wild.equinox.entities.DbHorse;
 import net.equinox.wild.equinox.entities.DbStructures;
-import net.equinox.wild.equinox.entities.IllnessColic;
 import org.bukkit.entity.Entity;
 
 import javax.persistence.EntityManager;
@@ -64,23 +63,6 @@ public class DatabaseUtilities {
         return horse.getId();
     }
 
-    public void giveColicToHorse(DbHorse horse) {
-        manager.getTransaction().begin();
-        IllnessColic colic = new IllnessColic();
-        manager.persist(colic);
-        horse.setColic(colic);
-        manager.persist(horse);
-        manager.getTransaction().commit();
-    }
-
-    public void removeColicFromHorse(DbHorse horse) {
-        manager.getTransaction().begin();
-        manager.remove(horse.getColic());
-        horse.setColic(null);
-        manager.persist(horse);
-        manager.getTransaction().commit();
-    }
-
     public void deleteHorseFromDatabase(DbHorse horse) {
         manager.getTransaction().begin();
         manager.remove(horse);
@@ -138,9 +120,6 @@ public class DatabaseUtilities {
         manager.getTransaction().begin();
         manager.persist(horse);
         manager.getTransaction().commit();
-        if(horse.getColic() != null) {
-            updateColicInDatabase(horse.getColic());
-        }
 //        System.out.println("Update transaction completed");
     }
     public void updatePlayerInDatabase(DbStructures struc) {
@@ -149,14 +128,6 @@ public class DatabaseUtilities {
         System.out.println(struc);
         manager.persist(struc);
         manager.getTransaction().commit();
-    }
-
-    private void updateColicInDatabase(IllnessColic colic) {
-//        System.out.printf("Preparing update transaction (Updating Horse # %s)%n", horse.getId());
-        manager.getTransaction().begin();
-        manager.persist(colic);
-        manager.getTransaction().commit();
-//        System.out.println("Update transaction completed");
     }
 
 }
