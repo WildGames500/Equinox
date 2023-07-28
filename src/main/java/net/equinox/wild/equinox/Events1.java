@@ -12,6 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -20,25 +21,148 @@ import org.bukkit.event.world.EntitiesLoadEvent;
 import org.bukkit.event.world.EntitiesUnloadEvent;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
-import java.util.HashMap;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.UUID;
+import java.lang.reflect.Field;
+import java.util.*;
 
 import static net.equinox.wild.equinox.Commands.doublexp;
 import static net.equinox.wild.equinox.Commands.lungestat;
+import static org.bukkit.Bukkit.getServer;
 
 @SuppressWarnings("all")
 // Storage Of Selected Horse
 public class Events1 implements Listener {
     public static HashMap<UUID, UUID> collection = new HashMap<UUID, UUID>();
     public static HashMap<UUID, Float> playerxp = new HashMap<UUID, Float>();
+
     private final Equinox plugin;
+    private Map<Horse, Villager> invisibleEntities = new HashMap<>();
+    private Map<Horse, BukkitRunnable> followTasks = new HashMap<>();
 
     public Events1(Equinox plugin) {
         this.plugin = plugin;
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Entity clickedEntity = event.getRightClicked();
+
+        if (clickedEntity instanceof Horse) {
+            Player player = event.getPlayer();
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+            if (itemInHand.getType() == Material.LEAD) {
+                Horse horse = (Horse) clickedEntity;
+
+                if (!horse.isLeashed()) {
+                    horse.setLeashHolder(player);
+                } else {
+                    if (invisibleEntities.containsKey(horse)) {
+                        return;
+                    } else {
+                        Villager invisibleEntity = (Villager) horse.getWorld().spawnEntity(horse.getLocation(), EntityType.VILLAGER);
+                        invisibleEntity.setAI(true);
+                        invisibleEntity.setSilent(true);
+                        invisibleEntity.setInvulnerable(true);
+                        invisibleEntity.setCollidable(false);
+                        invisibleEntity.setCustomNameVisible(false);
+                        invisibleEntity.setGravity(false);
+                        invisibleEntity.setInvisible(true);
+
+                        invisibleEntities.put(horse, invisibleEntity);
+
+                        // Attach the leash to the invisible villager
+                        ItemStack leashItem = new ItemStack(Material.LEAD);
+                        player.getInventory().addItem(leashItem);
+                        invisibleEntity.setLeashHolder(player);
+
+                        // Make the horse follow the invisible villager
+                        BukkitRunnable followTask = new BukkitRunnable() {
+                            @Override
+                            public void run() {
+                                Location targetLocation = invisibleEntity.getLocation();
+                                horse.teleport(targetLocation);
+                            }
+                        };
+                        followTask.runTaskTimer(plugin, 0L, 1L);
+                        followTasks.put(horse, followTask);
+                    }
+                }
+
+                event.setCancelled(true); // Prevent default lead behavior
+            }
+        }
+    }
+
+    @EventHandler
+    public void onEntityUnleash(EntityUnleashEvent event) {
+        Entity entity = event.getEntity();
+        if (entity instanceof Horse) {
+            Horse horse = (Horse) entity;
+            if (invisibleEntities.containsKey(horse)) {
+                Villager invisibleEntity = invisibleEntities.get(horse);
+                invisibleEntity.remove();
+                invisibleEntities.remove(horse);
+
+                // Cancel the follow task
+                BukkitRunnable followTask = followTasks.get(horse);
+                if (followTask != null) {
+                    followTask.cancel();
+                }
+                followTasks.remove(horse);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            Player player = event.getPlayer();
+            ItemStack itemInHand = player.getInventory().getItemInMainHand();
+
+            if (itemInHand.getType() == Material.LEAD) {
+                Block clickedBlock = event.getClickedBlock();
+                if (clickedBlock != null && clickedBlock.getType() == Material.OAK_FENCE) {
+                    Villager villager = getLeashedVillager(player);
+                    if (villager != null) {
+                        villager.setAI(false); // Disable AI when attached to a fence post
+                    }
+                }
+            }
+        }
+    }
+
+    private Villager getLeashedVillager(Player player) {
+        for (Entity entity : player.getWorld().getEntities()) {
+            if (entity instanceof Villager) {
+                Villager villager = (Villager) entity;
+                if (villager.isValid() && villager.isLeashed() && isLeashHolder(player, villager)) {
+                    return villager;
+                }
+            }
+        }
+        return null;
+    }
+
+    private boolean isLeashHolder(Player player, Villager villager) {
+        Location leashHitchLocation = villager.getLocation();
+        for (Entity entity : villager.getPassengers()) {
+            if (entity instanceof LeashHitch) {
+                LeashHitch leashHitch = (LeashHitch) entity;
+                if (leashHitch.getLocation().equals(leashHitchLocation)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @EventHandler
@@ -2145,7 +2269,7 @@ public class Events1 implements Listener {
         for(Entity e : event.getEntities()) {
             if(e instanceof Donkey || e instanceof Horse || e instanceof Mule) {
                 Chunk sourceChunk = e.getChunk();
-                ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
+                ConsoleCommandSender console = getServer().getConsoleSender();
                 int x = sourceChunk.getX();
                 int z = sourceChunk.getZ();
                 sourceChunk.getWorld().loadChunk(x, z);
